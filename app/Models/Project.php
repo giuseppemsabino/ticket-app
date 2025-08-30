@@ -10,4 +10,9 @@ class Project extends Model
     {
         return $this->hasMany(Area::class);
     }
+
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class);
+    }
 }

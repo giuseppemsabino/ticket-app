@@ -4,15 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Area extends Model
+class Status extends Model
 {
-    public function projects()
-    {
-        return $this->belongsTo(Project::class);
-    }
+
+    protected $table = 'statuses';
 
     public function tickets()
     {
         return $this->hasMany(Ticket::class);
-    }
+    }   
 }
