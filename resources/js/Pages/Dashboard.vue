@@ -26,6 +26,8 @@ import { Head } from '@inertiajs/vue3';
               + Nuovo Ticket
             </PrimaryButton>
 
+
+
           </div>
         </div>
       </div>
