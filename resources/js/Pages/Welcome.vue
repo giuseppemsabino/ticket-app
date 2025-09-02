@@ -31,17 +31,13 @@ function handleImageError() {
 <template>
 
   <Head title="Benvenuto" />
-  <div class="bg-gray-50 text-black/50 dark:bg-black dark:text-white/50">
-    <img id="background" class="absolute -left-20 top-0 max-w-[877px]"
+  <div class="bg-light text-secondary dark-mode">
+    <img id="background" class="position-absolute ms-n5 top-0"
       src="https://laravel.com/assets/img/welcome/background.svg" />
-
-
 
     <main>
       <Login />
     </main>
-
-
 
   </div>
 </template>
