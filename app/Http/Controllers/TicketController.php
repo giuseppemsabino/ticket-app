@@ -56,9 +56,22 @@ class TicketController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Ticket $ticket)
     {
-        //
+         $tickets = Ticket::all();
+        $areas = Area::all();
+        $statuses = Status::all();
+        $projects = Project::all();
+        $userLog = [
+            'id' => Auth::user()->id,
+            'name' => Auth::user()->name
+            
+        ];
+        $technicians = User::whereHas('roles', function($query) {
+            $query->where('role_id', 2);
+        })->get();
+
+        return inertia('Tickets/Show', compact('ticket', 'areas', 'statuses', 'projects', 'userLog', 'technicians'));
     }
 
     /**
