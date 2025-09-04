@@ -6,6 +6,7 @@ use App\Models\Area;
 use App\Models\Project;
 use App\Models\Status;
 use App\Models\Ticket;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,16 +21,20 @@ class TicketController extends Controller
         $areas = Area::all();
         $statuses = Status::all();
         $projects = Project::all();
-        $user = [
+        $userLog = [
             'id' => Auth::user()->id,
             'name' => Auth::user()->name
+            
         ];
+        $technicians = User::whereHas('roles', function($query) {
+            $query->where('role_id', 2);
+        })->get();
 
-        $tecnitian = Auth::user()->roles;
 
-        dd($tecnitian);
 
-        return inertia('Tickets/Index', compact('tickets', 'areas', 'statuses', 'projects', 'user', 'tecnitian'));
+        //  dd($technicians);
+
+        return inertia('Tickets/Index', compact('tickets', 'areas', 'statuses', 'projects', 'userLog', 'technicians'));
     }
 
     /**
@@ -37,7 +42,7 @@ class TicketController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
