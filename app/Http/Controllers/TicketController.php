@@ -42,9 +42,16 @@ class TicketController extends Controller
      */
     public function create()
     {
+        $areas = Area::all();
+        $statuses = Status::all();
+        $projects = Project::all();
+        $userLog = [
+            'id' => Auth::user()->id,
+            'name' => Auth::user()->name
+        ];
+        // dd($userLog, $areas, $statuses, $projects);  //? se vuoi vedere i dati che stai passando alla vista decommenta questa linea
 
-        
-        return inertia('Tickets/Create');
+        return inertia('Tickets/Create', compact('areas', 'statuses', 'projects', 'userLog'));
     }
 
     /**
@@ -52,7 +59,20 @@ class TicketController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all(); // Ottieni tutti i dati dalla richiesta
+
+        $newTicket = new Ticket();
+
+        $newTicket->project_id = $data['project_id'];
+        $newTicket->area_id = $data['area_id'];
+        $newTicket->status_id = $data['status_id'];
+        $newTicket->description = $data['description'];
+        $newTicket->user_id = Auth::user()->id;
+
+        // dd($data); //? se vuoi vedere i dati che stai passando alla vista decommenta questa linea
+        $newTicket->save();
+
+        return redirect()->route('tickets.show', $newTicket);
     }
 
     /**
