@@ -42,7 +42,7 @@ class TicketController extends Controller
      */
     public function create()
     {
-        
+        return inertia('Tickets/Create');
     }
 
     /**
