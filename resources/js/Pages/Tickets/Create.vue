@@ -6,7 +6,7 @@ const props = defineProps({
   areas: Array,
   statuses: Array,
   projects: Array,
-  userLog: Object,   // opzionale: per mostrare chi sta creando il ticket
+  userLog: Object, // opzionale: solo per mostrare chi crea il ticket
 })
 
 const form = useForm({
@@ -23,71 +23,71 @@ function submit() {
 </script>
 
 <template>
-  <div class="max-w-2xl mx-auto p-6 bg-white rounded shadow">
-    <h1 class="text-xl font-bold mb-4">Crea Nuovo Ticket</h1>
+  <div class="container mt-5">
+    <div class="card shadow">
+      <div class="card-body">
+        <h1 class="h4 mb-4">Crea Nuovo Ticket</h1>
 
-    <!-- Mostra utente loggato -->
-    <p class="text-gray-600 mb-4">
-      Creato da: <strong>{{ props.userLog.name }}</strong>
-    </p>
+        <!-- Mostra utente loggato -->
+        <p class="text-muted mb-4">
+          Creato da: <strong>{{ props.userLog.name }}</strong>
+        </p>
 
-    <form @submit.prevent="submit" class="space-y-4">
+        <form @submit.prevent="submit">
 
-      <!-- Descrizione -->
-      <div>
-        <label class="block font-medium">Descrizione</label>
-        <textarea
-          v-model="form.description"
-          class="border rounded p-2 w-full"
-          placeholder="Inserisci la descrizione del ticket"
-        ></textarea>
-        <div v-if="form.errors.description" class="text-red-500 text-sm">{{ form.errors.description }}</div>
+          <!-- Descrizione -->
+          <div class="mb-3">
+            <label class="form-label">Descrizione</label>
+            <textarea
+              v-model="form.description"
+              class="form-control"
+              placeholder="Inserisci la descrizione del ticket"
+            ></textarea>
+            <div v-if="form.errors.description" class="text-danger small">
+              {{ form.errors.description }}
+            </div>
+          </div>
+
+          <!-- Area -->
+          <div class="mb-3">
+            <label class="form-label">Area</label>
+            <select v-model="form.area_id" class="form-select">
+              <option disabled value="">-- Seleziona Area --</option>
+              <option v-for="area in props.areas" :key="area.id" :value="area.id">
+                {{ area.name }}
+              </option>
+            </select>
+            <div v-if="form.errors.area_id" class="text-danger small">
+              {{ form.errors.area_id }}
+            </div>
+          </div>
+
+         
+
+          <!-- Progetto -->
+          <div class="mb-3">
+            <label class="form-label">Progetto</label>
+            <select v-model="form.project_id" class="form-select">
+              <option disabled value="">-- Seleziona Progetto --</option>
+              <option v-for="project in props.projects" :key="project.id" :value="project.id">
+                {{ project.name }}
+              </option>
+            </select>
+            <div v-if="form.errors.project_id" class="text-danger small">
+              {{ form.errors.project_id }}
+            </div>
+          </div>
+
+          <!-- Pulsante salva -->
+          <button
+            type="submit"
+            class="btn btn-primary"
+            :disabled="form.processing"
+          >
+            Salva Ticket
+          </button>
+        </form>
       </div>
-
-      <!-- Area -->
-      <div>
-        <label class="block font-medium">Area</label>
-        <select v-model="form.area_id" class="border rounded p-2 w-full">
-          <option disabled value="">-- Seleziona Area --</option>
-          <option v-for="area in props.areas" :key="area.id" :value="area.id">
-            {{ area.name }}
-          </option>
-        </select>
-        <div v-if="form.errors.area_id" class="text-red-500 text-sm">{{ form.errors.area_id }}</div>
-      </div>
-
-      <!-- Stato -->
-      <div>
-        <label class="block font-medium">Stato</label>
-        <select v-model="form.status_id" class="border rounded p-2 w-full">
-          <option disabled value="">-- Seleziona Stato --</option>
-          <option v-for="status in props.statuses" :key="status.id" :value="status.id">
-            {{ status.name }}
-          </option>
-        </select>
-        <div v-if="form.errors.status_id" class="text-red-500 text-sm">{{ form.errors.status_id }}</div>
-      </div>
-
-      <!-- Progetto -->
-      <div>
-        <label class="block font-medium">Progetto</label>
-        <select v-model="form.project_id" class="border rounded p-2 w-full">
-          <option disabled value="">-- Seleziona Progetto --</option>
-          <option v-for="project in props.projects" :key="project.id" :value="project.id">
-            {{ project.name }}
-          </option>
-        </select>
-        <div v-if="form.errors.project_id" class="text-red-500 text-sm">{{ form.errors.project_id }}</div>
-      </div>
-
-      <!-- Pulsante salva -->
-      <button
-        type="submit"
-        class="bg-blue-600 text-white px-4 py-2 rounded"
-        :disabled="form.processing"
-      >
-        Salva Ticket
-      </button>
-    </form>
+    </div>
   </div>
 </template>
