@@ -147,11 +147,27 @@ class TicketController extends Controller
         return redirect()->route('tickets.show', $ticket);
     }
 
+    public function archive()
+    {
+        $tickets = Ticket::onlyTrashed()->get();
+        $areas = Area::all();
+        $statuses = Status::all();
+        $projects = Project::all();
+        
+        $technicians = User::whereHas('roles', function ($query) {
+            $query->where('role_id', 2);
+        })->get();
+
+        return inertia('Tickets/Archive', compact('tickets', 'areas', 'statuses', 'projects', 'technicians'));
+    }
+
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Ticket $ticket)
     {
-        //
+        $ticket->delete();
+
+        return redirect()->route('tickets.index');
     }
 }
