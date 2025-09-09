@@ -15,7 +15,7 @@ export default {
         },
         getUserName(userId) {
             if (userId === this.userLog.id) return this.userLog.name;
-            const commentUser = this.comments.find(c => c.user.id === userId);
+            const commentUser = this.comments.find((c) => c.user.id === userId);
             return commentUser ? commentUser.user.name : "N/A";
         },
         getStatusName(statusId) {
@@ -42,8 +42,13 @@ export default {
             <p><strong>Descrizione:</strong> {{ ticket.description }}</p>
             <p><strong>Area:</strong> {{ getAreaName(ticket.area_id) }}</p>
             <p><strong>Creatore:</strong> {{ getUserName(ticket.user_id) }}</p>
-            <p><strong>Tecnico:</strong> {{ getTechnicianName(ticket.assigned_to) }}</p>
-            <p><strong>Status:</strong> {{ getStatusName(ticket.status_id) }}</p>
+            <p>
+                <strong>Tecnico:</strong>
+                {{ getTechnicianName(ticket.assigned_to) }}
+            </p>
+            <p>
+                <strong>Status:</strong> {{ getStatusName(ticket.status_id) }}
+            </p>
             <p><strong>Creato il:</strong> {{ ticket.created_at }}</p>
             <p><strong>Aggiornato il:</strong> {{ ticket.updated_at }}</p>
 
@@ -56,8 +61,13 @@ export default {
                         :key="comment.id"
                         class="comment p-2 mb-2 border rounded"
                     >
-                        <p><strong>{{ comment.user.name }}:</strong> {{ comment.content }}</p>
-                        <small class="text-muted">{{ comment.created_at }}</small>
+                        <p>
+                            <strong>{{ comment.user.name }}:</strong>
+                            {{ comment.content }}
+                        </p>
+                        <small class="text-muted">{{
+                            comment.created_at
+                        }}</small>
                     </div>
                 </div>
                 <div v-else>

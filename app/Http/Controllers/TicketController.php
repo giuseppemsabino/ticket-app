@@ -111,6 +111,10 @@ class TicketController extends Controller
         if ($user->roles->contains('id', 1)) {
             abort(403, 'Unauthorized action.');
         }
+         $ticket->load('comments.user');
+
+        // dd($ticket->comments);
+        $comments = $ticket->comments;
 
         $areas = Area::all();
         $statuses = Status::all();

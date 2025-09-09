@@ -27,6 +27,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::post('tickets/{ticket}/comments', [CommentController::class, 'store'])->name('comments.store');
+Route::delete('comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
 
 Route::get('tickets/archive', [TicketController::class, 'archive'])->name('tickets.archive');
 Route::get('tickets/{ticket}/restore', [TicketController::class, 'restore'])->name('tickets.restore');
