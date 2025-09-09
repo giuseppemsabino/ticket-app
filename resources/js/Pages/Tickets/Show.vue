@@ -6,6 +6,7 @@ export default {
         userLog: Object,
         statuses: Array,
         technicians: Array,
+        comments: Array, // ✅ aggiunto per i commenti
     },
     methods: {
         getAreaName(areaId) {
@@ -13,9 +14,9 @@ export default {
             return area ? area.name : "N/A";
         },
         getUserName(userId) {
-            return this.userLog && this.userLog.id === userId
-                ? this.userLog.name
-                : "N/A";
+            if (userId === this.userLog.id) return this.userLog.name;
+            const commentUser = this.comments.find(c => c.user.id === userId);
+            return commentUser ? commentUser.user.name : "N/A";
         },
         getStatusName(statusId) {
             const status = this.statuses.find(
@@ -32,6 +33,7 @@ export default {
     },
 };
 </script>
+
 <template>
     <div class="ticket-show">
         <h1>Dettaglio Ticket</h1>
@@ -40,22 +42,34 @@ export default {
             <p><strong>Descrizione:</strong> {{ ticket.description }}</p>
             <p><strong>Area:</strong> {{ getAreaName(ticket.area_id) }}</p>
             <p><strong>Creatore:</strong> {{ getUserName(ticket.user_id) }}</p>
-            <p>
-                <strong>Tecnico:</strong>
-                {{ getTechnicianName(ticket.assigned_to) }}
-            </p>
-            <p>
-                <strong>Status:</strong> {{ getStatusName(ticket.status_id) }}
-            </p>
+            <p><strong>Tecnico:</strong> {{ getTechnicianName(ticket.assigned_to) }}</p>
+            <p><strong>Status:</strong> {{ getStatusName(ticket.status_id) }}</p>
             <p><strong>Creato il:</strong> {{ ticket.created_at }}</p>
             <p><strong>Aggiornato il:</strong> {{ ticket.updated_at }}</p>
+
+            <!-- Lista commenti -->
+            <div class="comments mt-4">
+                <h2>Commenti</h2>
+                <div v-if="comments && comments.length">
+                    <div
+                        v-for="comment in comments"
+                        :key="comment.id"
+                        class="comment p-2 mb-2 border rounded"
+                    >
+                        <p><strong>{{ comment.user.name }}:</strong> {{ comment.content }}</p>
+                        <small class="text-muted">{{ comment.created_at }}</small>
+                    </div>
+                </div>
+                <div v-else>
+                    <p>Nessun commento ancora.</p>
+                </div>
+            </div>
         </div>
         <div v-else>
             <p>Caricamento ticket...</p>
         </div>
     </div>
 </template>
-
 
 <style scoped>
 .ticket-show {
@@ -71,5 +85,11 @@ export default {
 }
 .ticket-show p {
     margin: 0.5rem 0;
+}
+.comments h2 {
+    margin-bottom: 1rem;
+}
+.comment {
+    background: #f9f9f9;
 }
 </style>
