@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TicketController;
 use Illuminate\Foundation\Application;
@@ -24,6 +25,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::post('tickets/{ticket}/comments', [CommentController::class, 'store'])->name('comments.store');
+Route::delete('comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
 
 Route::get('tickets/archive', [TicketController::class, 'archive'])->name('tickets.archive');
 Route::get('tickets/{ticket}/restore', [TicketController::class, 'restore'])->name('tickets.restore');

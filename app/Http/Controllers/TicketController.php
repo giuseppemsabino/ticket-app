@@ -82,7 +82,10 @@ class TicketController extends Controller
      */
     public function show(Ticket $ticket)
     {
-        $tickets = Ticket::all();
+        $ticket->load('comments.user');
+
+        // dd($ticket->comments);
+        $comments = $ticket->comments;
         $areas = Area::all();
         $statuses = Status::all();
         $projects = Project::all();
@@ -95,7 +98,7 @@ class TicketController extends Controller
             $query->where('role_id', 2);
         })->get();
 
-        return inertia('Tickets/Show', compact('ticket', 'areas', 'statuses', 'projects', 'userLog', 'technicians'));
+        return inertia('Tickets/Show', compact('ticket', 'areas', 'statuses', 'projects', 'userLog', 'technicians', 'comments'));
     }
 
     /**
@@ -108,6 +111,10 @@ class TicketController extends Controller
         if ($user->roles->contains('id', 1)) {
             abort(403, 'Unauthorized action.');
         }
+         $ticket->load('comments.user');
+
+        // dd($ticket->comments);
+        $comments = $ticket->comments;
 
         $areas = Area::all();
         $statuses = Status::all();
