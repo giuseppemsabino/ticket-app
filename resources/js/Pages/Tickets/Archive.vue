@@ -22,8 +22,13 @@
                     <td>{{ getStatusName(ticket.status_id) }}</td>
                     <td>{{ getTechnicianName(ticket.assigned_to) }}</td>
                     <td>
-                        <button @click="deleteTicket(ticket.id)">
+                        <button @click="forceDeleteTicket(ticket.id)">
                             Elimina
+                        </button>
+                    </td>
+                    <td>
+                        <button @click="restore(ticket.id)">
+                            Ripristina
                         </button>
                     </td>
                 </tr>
@@ -65,11 +70,14 @@ export default {
             );
             return technician ? technician.name : "N/A";
         },
-        deleteTicket(ticketId) {
-            if (confirm("Sei sicuro di voler eliminare questo ticket?")) {
-                router.delete(route("tickets.destroy", ticketId));
+        forceDeleteTicket(ticketId) {
+            if (confirm("Sei sicuro di voler eliminare definitivamente questo ticket?")) {
+                router.delete(route('tickets.forceDestroy', ticketId));
             }
         },
+        restore(ticketId) {
+            router.get(route('tickets.restore', ticketId));
+        }
     },
 };
 </script>

@@ -25,7 +25,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::get('tickets/archive', [TicketController::class, 'archive'])->name('tickets.archive');
+Route::get('tickets/{ticket}/restore', [TicketController::class, 'restore'])->name('tickets.restore');
+Route::delete('tickets/{ticket}/force', [TicketController::class,'forceDestroy'])->name('tickets.forceDestroy');
 Route::resource('tickets', TicketController::class);
+
 
 
 require __DIR__.'/auth.php';

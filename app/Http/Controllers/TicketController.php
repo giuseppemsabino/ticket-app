@@ -27,6 +27,7 @@ class TicketController extends Controller
             'name' => Auth::user()->name
 
         ];
+        // Ottieni tutti gli utenti con il ruolo di tecnico (role_id = 2)
         $technicians = User::whereHas('roles', function ($query) {
             $query->where('role_id', 2);
         })->get();
@@ -147,11 +148,50 @@ class TicketController extends Controller
         return redirect()->route('tickets.show', $ticket);
     }
 
+    public function archive()
+    {
+        $tickets = Ticket::onlyTrashed()->get();
+        $areas = Area::all();
+        $statuses = Status::all();
+        $projects = Project::all();
+        
+        $technicians = User::whereHas('roles', function ($query) {
+            $query->where('role_id', 2);
+        })->get();
+
+        return inertia('Tickets/Archive', compact('tickets', 'areas', 'statuses', 'projects', 'technicians'));
+    }
+
+    public function restore($id){
+        $ticket = Ticket::withTrashed()->findOrFail($id);
+        $ticket->restore();
+
+        return redirect()->route('tickets.index')->with('success', 'Ticket restored successfully.');
+    }
+
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Ticket $ticket)
     {
-        //
+       
+        // If the ticket is already soft-deleted, force delete it
+        if ($ticket->trashed()) {
+            $ticket->forceDelete();
+            return redirect()->route('tickets.archive');
+        }
+        
+        $ticket->delete();
+
+        return redirect()->route('tickets.index');
+    }
+
+    public function forceDestroy($id)
+    {
+        $ticket = Ticket::withTrashed()->findOrFail($id);
+        $ticket->forceDelete();
+
+        return redirect()->route('tickets.archive')->with('success', 'Ticket permanently deleted.');
     }
 }
+
