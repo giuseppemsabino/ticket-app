@@ -32,11 +32,8 @@ const submit = () => {
 <template>
   <GuestLayout>
 
-    <div v-if="status" class="mb-4 small fw-medium text-success">
-      {{ status }}
-    </div>
 
-    <form @submit.prevent="submit">
+    <form style="width:800px" @submit.prevent="submit">
       <div>
         <InputLabel for="email" value="Email" />
 
