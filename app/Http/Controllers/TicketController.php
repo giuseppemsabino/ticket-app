@@ -18,7 +18,17 @@ class TicketController extends Controller
      */
     public function index()
     {
-        $tickets = Ticket::all();
+
+        $user = Auth::user();
+
+        if (in_array($user->role_id, [2, 3, 4])) {
+            // Se è tecnico (2), admin (3) o superadmin (4)
+            $tickets = Ticket::all();
+        } else {
+            // Altri utenti → solo i propri ticket
+            $tickets = Ticket::where('user_id', $user->id)
+                ->get();
+        }
         $areas = Area::all();
         $statuses = Status::all();
         $projects = Project::all();
@@ -111,7 +121,7 @@ class TicketController extends Controller
         if ($user->roles->contains('id', 1)) {
             abort(403, 'Unauthorized action.');
         }
-         $ticket->load('comments.user');
+        $ticket->load('comments.user');
 
         // dd($ticket->comments);
         $comments = $ticket->comments;
@@ -161,7 +171,7 @@ class TicketController extends Controller
         $areas = Area::all();
         $statuses = Status::all();
         $projects = Project::all();
-        
+
         $technicians = User::whereHas('roles', function ($query) {
             $query->where('role_id', 2);
         })->get();
@@ -169,7 +179,8 @@ class TicketController extends Controller
         return inertia('Tickets/Archive', compact('tickets', 'areas', 'statuses', 'projects', 'technicians'));
     }
 
-    public function restore($id){
+    public function restore($id)
+    {
         $ticket = Ticket::withTrashed()->findOrFail($id);
         $ticket->restore();
 
@@ -181,13 +192,13 @@ class TicketController extends Controller
      */
     public function destroy(Ticket $ticket)
     {
-       
+
         // If the ticket is already soft-deleted, force delete it
         if ($ticket->trashed()) {
             $ticket->forceDelete();
             return redirect()->route('tickets.archive');
         }
-        
+
         $ticket->delete();
 
         return redirect()->route('tickets.index');
@@ -201,4 +212,3 @@ class TicketController extends Controller
         return redirect()->route('tickets.archive')->with('success', 'Ticket permanently deleted.');
     }
 }
-
