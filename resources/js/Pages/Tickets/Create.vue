@@ -1,4 +1,5 @@
 <script setup>
+import PrimaryButton from '@/Components/PrimaryButton.vue'
 import { useForm } from '@inertiajs/vue3'
 
 // Props che ricevi dal controller
@@ -38,11 +39,8 @@ function submit() {
           <!-- Descrizione -->
           <div class="mb-3">
             <label class="form-label">Descrizione</label>
-            <textarea
-              v-model="form.description"
-              class="form-control"
-              placeholder="Inserisci la descrizione del ticket"
-            ></textarea>
+            <textarea v-model="form.description" class="form-control"
+              placeholder="Inserisci la descrizione del ticket"></textarea>
             <div v-if="form.errors.description" class="text-danger small">
               {{ form.errors.description }}
             </div>
@@ -62,7 +60,7 @@ function submit() {
             </div>
           </div>
 
-         
+
 
           <!-- Progetto -->
           <div class="mb-3">
@@ -79,13 +77,9 @@ function submit() {
           </div>
 
           <!-- Pulsante salva -->
-          <button
-            type="submit"
-            class="btn btn-primary"
-            :disabled="form.processing"
-          >
-            Salva Ticket
-          </button>
+          <PrimaryButton :disabled="form.processing" :type="'submit'">
+            Crea Ticket
+          </PrimaryButton>
         </form>
       </div>
     </div>
