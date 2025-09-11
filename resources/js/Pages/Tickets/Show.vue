@@ -41,22 +41,36 @@ export default {
 
 <template>
   <div class="ticket-show card p-4 shadow">
-    <div class="card-header d-flex justify-content-between align-items-center mb-4">
-      <h1>Dettaglio Ticket</h1>
 
+    <div class="card-header d-flex justify-content-between align-items-center mb-4">
+      <h1>Ticket #{{ ticket.id }}</h1>
+      <!-- status -->
       <span v-if="ticket"
-        :class="'fs-5 badge bg-' + (ticket.status_id === 1 ? 'info' : ticket.status_id === 2 ? 'success' : ticket.status_id === 3 ? 'success' : 'danger')">
+        :class="'fs-5 badge bg-' + (ticket.status_id === 1 ? 'info' : comments.length && ticket.status_id === 2 ? 'success' : ticket.status_id === 3 ? 'success' : 'danger')">
         {{ getStatusName(ticket.status_id) }}
       </span>
-
-
     </div>
+
+    <!-- date -->
+    <div class="dates">
+      <p class="text-muted">
+        Creato il: {{ new Date(ticket.created_at).toLocaleString() }}
+      </p>
+      <p v-if="ticket.updated_at" class="text-muted mb-4">
+        Ultimo aggiornamento: {{ new Date(ticket.updated_at).toLocaleString() }}
+      </p>
+      <hr>
+    </div>
+
+    <!-- Details -->
     <div v-if="ticket">
       <!-- <p><strong>ID:</strong> {{ ticket.id }}</p> -->
-      <p><strong>Progetto:</strong> {{ getProjectName(ticket.project_id) }}</p>
-      <p><strong>Area:</strong> {{ getAreaName(ticket.area_id) }}</p>
+      <div class="d-flex justify-content-between">
+        <p><strong>Progetto:</strong> {{ getProjectName(ticket.project_id) }}</p>
+        <p><strong>Area:</strong> {{ getAreaName(ticket.area_id) }}</p>
+      </div>
       <p class="mt-4"><strong>Descrizione:</strong> </p>
-      <p class="mb-4">
+      <p class="mb-4 fs-4">
         {{ ticket.description }}
       </p>
       <p><strong>Creatore:</strong> {{ getUserName(ticket.user_id) }}</p>
@@ -66,9 +80,9 @@ export default {
       </p>
 
 
-      <!-- Lista commenti -->
+      <!-- Interventi -->
       <div class=" comments mt-4">
-        <h2>Commenti</h2>
+        <h2 class="text-danger fw-bold">Interventi</h2>
         <div v-if="comments && comments.length">
           <div v-for="comment in comments" :key="comment.id" class="comment p-2 mb-2 border rounded">
             <p>
@@ -77,7 +91,7 @@ export default {
             </p>
             <small class="text-muted">{{
               new Date(comment.created_at).toLocaleString()
-            }}</small>
+              }}</small>
           </div>
         </div>
         <div v-else>

@@ -22,6 +22,12 @@ console.log(usePage().props);
         <div class="row">
           <div class="col-4">
             PROFILO UTENTE
+            <div>
+              {{ usePage().props.auth.user.name }}
+            </div>
+            <div>
+              {{ usePage().props.auth.user.email }}
+            </div>
           </div>
 
           <div class="col-7">
