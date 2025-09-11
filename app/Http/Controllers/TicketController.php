@@ -34,7 +34,8 @@ class TicketController extends Controller
         $projects = Project::all();
         $userLog = [
             'id' => Auth::user()->id,
-            'name' => Auth::user()->name
+            'name' => Auth::user()->name,
+            'role_id' => Auth::user()->roles->first()->id
 
         ];
         // Ottieni tutti gli utenti con il ruolo di tecnico (role_id = 2)
@@ -44,7 +45,7 @@ class TicketController extends Controller
 
 
 
-        //  dd($technicians);
+        dd($userLog);
 
         return inertia('Tickets/Index', compact('tickets', 'areas', 'statuses', 'projects', 'userLog', 'technicians'));
     }
