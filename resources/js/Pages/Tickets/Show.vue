@@ -40,14 +40,23 @@ export default {
 </script>
 
 <template>
-  <div class="ticket-show">
-    <h1>Dettaglio Ticket</h1>
+  <div class="ticket-show card p-4 shadow">
+    <div class="card-header d-flex justify-content-between align-items-center mb-4">
+      <h1>Dettaglio Ticket</h1>
+
+      <span v-if="ticket"
+        :class="'fs-5 badge bg-' + (ticket.status_id === 1 ? 'info' : ticket.status_id === 2 ? 'success' : ticket.status_id === 3 ? 'success' : 'danger')">
+        {{ getStatusName(ticket.status_id) }}
+      </span>
+
+
+    </div>
     <div v-if="ticket">
       <!-- <p><strong>ID:</strong> {{ ticket.id }}</p> -->
       <p><strong>Progetto:</strong> {{ getProjectName(ticket.project_id) }}</p>
       <p><strong>Area:</strong> {{ getAreaName(ticket.area_id) }}</p>
-      <p><strong>Descrizione:</strong> </p>
-      <p>
+      <p class="mt-4"><strong>Descrizione:</strong> </p>
+      <p class="mb-4">
         {{ ticket.description }}
       </p>
       <p><strong>Creatore:</strong> {{ getUserName(ticket.user_id) }}</p>
@@ -55,18 +64,10 @@ export default {
         <strong>Tecnico:</strong>
         {{ getTechnicianName(ticket.assigned_to) }}
       </p>
-      <p>
-        <strong>Status:</strong>
-        <span
-          :class="'badge bg-' + (ticket.status_id === 1 ? 'info' : ticket.status_id === 2 ? 'success' : ticket.status_id === 3 ? 'success' : 'danger')">
-          {{ getStatusName(ticket.status_id) }}
-        </span>
-      </p>
-      <p><strong>Creato il:</strong> {{ new Date(ticket.created_at).toLocaleString() }}</p>
-      <p><strong>Aggiornato il:</strong> {{ new Date(ticket.updated_at).toLocaleString() }}</p>
+
 
       <!-- Lista commenti -->
-      <div class="comments mt-4">
+      <div class=" comments mt-4">
         <h2>Commenti</h2>
         <div v-if="comments && comments.length">
           <div v-for="comment in comments" :key="comment.id" class="comment p-2 mb-2 border rounded">
@@ -75,8 +76,8 @@ export default {
               {{ comment.content }}
             </p>
             <small class="text-muted">{{
-              comment.created_at
-              }}</small>
+              new Date(comment.created_at).toLocaleString()
+            }}</small>
           </div>
         </div>
         <div v-else>
