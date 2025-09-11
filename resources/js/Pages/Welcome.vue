@@ -32,10 +32,9 @@ function handleImageError() {
 
   <Head title="Benvenuto" />
   <div class="bg-light text-secondary dark-mode">
-    <img id="background" class="position-absolute ms-n5 top-0"
-      src="https://laravel.com/assets/img/welcome/background.svg" />
 
-    <main>
+
+    <main class="container  p-4">
       <Login />
     </main>
 
