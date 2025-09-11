@@ -45,7 +45,7 @@ class TicketController extends Controller
 
 
 
-        dd($userLog);
+        // dd($userLog);
 
         return inertia('Tickets/Index', compact('tickets', 'areas', 'statuses', 'projects', 'userLog', 'technicians'));
     }
@@ -60,7 +60,8 @@ class TicketController extends Controller
         $projects = Project::all();
         $userLog = [
             'id' => Auth::user()->id,
-            'name' => Auth::user()->name
+            'name' => Auth::user()->name,
+            'role_id' => Auth::user()->roles->first()->id
         ];
         // dd($userLog, $areas, $statuses, $projects);  //? se vuoi vedere i dati che stai passando alla vista decommenta questa linea
 
@@ -102,8 +103,8 @@ class TicketController extends Controller
         $projects = Project::all();
         $userLog = [
             'id' => Auth::user()->id,
-            'name' => Auth::user()->name
-
+            'name' => Auth::user()->name,
+            'role_id' => Auth::user()->roles->first()->id
         ];
         $technicians = User::whereHas('roles', function ($query) {
             $query->where('role_id', 2);
@@ -132,7 +133,8 @@ class TicketController extends Controller
         $projects = Project::all();
         $userLog = [
             'id' => Auth::user()->id,
-            'name' => Auth::user()->name
+            'name' => Auth::user()->name,
+            'role_id' => Auth::user()->roles->first()->id
         ];
         $technicians = User::whereHas('roles', function ($query) {
             $query->where('role_id', 2);
