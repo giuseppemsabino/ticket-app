@@ -1,8 +1,9 @@
 <script setup>
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/vue3';
+import { Head, Link, usePage } from '@inertiajs/vue3';
 
+console.log(usePage().props);
 </script>
 
 <template>
@@ -18,18 +19,31 @@ import { Head } from '@inertiajs/vue3';
 
     <div class="py-4">
       <div class="container-fluid container-lg">
-        <div class="card shadow-sm rounded">
-          <div class="p-4 text-dark">
-            <h3 class="mb-4">I tuoi Ticket</h3>
+        <div class="row">
+          <div class="col-4">
+            PROFILO UTENTE
+            <div>
+              {{ usePage().props.auth.user.name }}
+            </div>
+            <div>
+              {{ usePage().props.auth.user.email }}
+            </div>
+          </div>
 
-            <PrimaryButton>
-              + Nuovo Ticket
-            </PrimaryButton>
-
-
-
+          <div class="col-7">
+            <div class="card shadow-sm rounded">
+              <div class=" d-flex p-4 text-dark align-items-center justify-content-between">
+                <h3 class="mb-4">I tuoi Ticket</h3>
+                <PrimaryButton>
+                  <Link href="/tickets/create" class="text-white text-decoration-none">
+                  + Nuovo Ticket
+                  </Link>
+                </PrimaryButton>
+              </div>
+            </div>
           </div>
         </div>
+
       </div>
     </div>
   </AuthenticatedLayout>
