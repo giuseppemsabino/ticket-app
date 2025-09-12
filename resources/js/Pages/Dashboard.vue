@@ -5,10 +5,8 @@ import { Head, Link } from '@inertiajs/vue3';
 
 // Dichiari che ti aspetti userLog come prop
 const props = defineProps({
-  userLog: {
-    type: Object,
-    default: () => null,
-  },
+  tickets: Array,
+  userLog: Object,
 });
 const role = props.userLog?.role_id ?? '—';
 
@@ -29,7 +27,6 @@ const role = props.userLog?.role_id ?? '—';
           <div class="col-4">
             PROFILO UTENTE
             <div>{{ props.userLog?.name ?? '—' }}</div>
-            <div>{{ props.userLog?.role_id ?? '—' }}</div>
           </div>
 
           <div class="col-7">
@@ -43,8 +40,9 @@ const role = props.userLog?.role_id ?? '—';
                 </PrimaryButton>
               </div>
               <div class="ticket_list">
-                <div>Role ID: {{ props.userLog?.role_id ?? '—' }}</div>
-                <div v-if="role === 2"> Ciao Utente!</div>
+                <ul v-for="ticket in tickets" :key="ticket.id" class="list-unstyled mb-0">
+                  <li>{{ ticket.description }}</li>
+                </ul>
               </div>
             </div>
           </div>
