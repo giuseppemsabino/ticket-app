@@ -1,9 +1,17 @@
 <script setup>
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, Link, usePage } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 
-console.log(usePage().props);
+// Dichiari che ti aspetti userLog come prop
+const props = defineProps({
+  userLog: {
+    type: Object,
+    default: () => null,
+  },
+});
+const role = props.userLog?.role_id ?? '—';
+
 </script>
 
 <template>
@@ -12,9 +20,7 @@ console.log(usePage().props);
 
   <AuthenticatedLayout>
     <template #header>
-      <h2 class="fs-4 fw-semibold text-dark">
-        Dashboard
-      </h2>
+      <h2 class="fs-4 fw-semibold text-dark">Dashboard</h2>
     </template>
 
     <div class="py-4">
@@ -22,17 +28,13 @@ console.log(usePage().props);
         <div class="row">
           <div class="col-4">
             PROFILO UTENTE
-            <div>
-              {{ usePage().props.auth.user.name }}
-            </div>
-            <div>
-              {{ usePage().props.auth.user.email }}
-            </div>
+            <div>{{ props.userLog?.name ?? '—' }}</div>
+            <div>{{ props.userLog?.role_id ?? '—' }}</div>
           </div>
 
           <div class="col-7">
             <div class="card shadow-sm rounded">
-              <div class=" d-flex p-4 text-dark align-items-center justify-content-between">
+              <div class="d-flex p-4 text-dark align-items-center justify-content-between">
                 <h3 class="mb-4">I tuoi Ticket</h3>
                 <PrimaryButton>
                   <Link href="/tickets/create" class="text-white text-decoration-none">
@@ -40,10 +42,13 @@ console.log(usePage().props);
                   </Link>
                 </PrimaryButton>
               </div>
+              <div class="ticket_list">
+                <div>Role ID: {{ props.userLog?.role_id ?? '—' }}</div>
+                <div v-if="role === 2"> Ciao Utente!</div>
+              </div>
             </div>
           </div>
         </div>
-
       </div>
     </div>
   </AuthenticatedLayout>
