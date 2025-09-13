@@ -18,26 +18,7 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    $user = Auth::user();
-
-  if (in_array($user->role_id, [2, 3, 4])) {
-            // Se è tecnico (2), admin (3) o superadmin (4)
-            $tickets = Ticket::all();
-        } else {
-            // Altri utenti → solo i propri ticket
-            $tickets = Ticket::where('user_id', $user->id)
-                ->get();
-        }
-    return Inertia::render('Dashboard', [
-        'userLog' => [
-            'id' => Auth::id(),
-            'name' => Auth::user()->name,
-            'role_id' => Auth::user()->roles()->first()?->id,
-        ],
-        'tickets' => $tickets,
-    ]);
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [TicketController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
