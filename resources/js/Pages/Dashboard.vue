@@ -39,7 +39,8 @@ const role = props.userLog?.role_id ?? '—';
                   </Link>
                 </PrimaryButton>
               </div>
-              <div class="ticket_list">
+              <hr>
+              <div class="ticket_list p-3">
                 <ul v-for="ticket in tickets" :key="ticket.id" class="list-unstyled mb-0">
                   <li>{{ ticket.description }}</li>
                 </ul>

@@ -42,7 +42,7 @@ export default {
 <template>
   <div class="ticket-show card p-4 shadow">
 
-    <div class="card-header d-flex justify-content-between align-items-center mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center mb-4" style="border-bottom: dashed;">
       <h1>Ticket #{{ ticket.id }}</h1>
       <!-- status -->
       <span v-if="ticket"
