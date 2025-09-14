@@ -46,28 +46,37 @@ const role = props.userLog?.role_id ?? '—';
               <hr>
 
               <!-- Tickets List -->
-              <div v-for="ticket in tickets" :key="ticket.id" class="ticket_list p-3">
-                <div class="accordion" id={{ ticket.id }}>
-                  <div class="accordion-item">
-                    <h2 class="accordion-header d-flex justify-content-between align-items-center"
-                      :id="'heading' + ticket.id">
+              <div class="ticket_list p-3">
+
+
+                <div class="accordion" id="TicketAccordion">
+                  <div v-for="ticket in props.tickets" :key="ticket.id" class="accordion-item">
+                    <h2 class="accordion-header" :id="`haeding-${ticket.id}`">
                       <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        <div class="title ">
-                          {{ ticket?.description }}
-                        </div>
-                        <StatusBadge :status-id="ticket.status_id" :statuses="statuses" size="fs-6" />
+                        :data-bs-target="`#collapse-${ticket.id}`" aria-expanded="true"
+                        :aria-controls="`#collapse-${ticket.id}`">
+                        {{ ticket.description }}
                       </button>
                     </h2>
-                    <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent={{ ticket.id }}>
+                    <div :id="`collapse-${ticket.id}`" class="accordion-collapse collapse"
+                      data-bs-parent="#TicketAccordion" :aria-labelledby="`heading-${ticket.id}`">
                       <div class="accordion-body">
-                        <div v-for="comment in comments" :key="comment.id" class="mb-3 p-3 border rounded ">
+                        <div v-for="comment in props.comments" class="comments">
                           {{ comment.content }}
+                        </div>
+                        <StatusBadge :status-id="ticket.status_id" :statuses="statuses" size="fs-6" />
+                        <div class="mt-3">
+                          <Link :href="`/tickets/${ticket.id}`" class="btn btn-primary">
+                          Vedi Dettagli
+                          </Link>
                         </div>
                       </div>
                     </div>
                   </div>
+
                 </div>
+
+
               </div>
 
 
