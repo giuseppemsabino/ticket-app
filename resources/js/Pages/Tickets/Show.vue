@@ -1,4 +1,6 @@
 <script>
+import StatusBadge from '@/Components/StatusBadge.vue';
+
 export default {
   props: {
     ticket: Object,
@@ -45,10 +47,7 @@ export default {
     <div class="card-header d-flex justify-content-between align-items-center mb-4" style="border-bottom: dashed;">
       <h1>Ticket #{{ ticket.id }}</h1>
       <!-- status -->
-      <span v-if="ticket"
-        :class="'fs-5 badge bg-' + (ticket.status_id === 1 ? 'info' : comments.length && ticket.status_id === 2 ? 'success' : ticket.status_id === 3 ? 'success' : 'danger')">
-        {{ getStatusName(ticket.status_id) }}
-      </span>
+      <StatusBadge :status-id="ticket.status_id" :statuses="statuses" size="fs-5" />
     </div>
 
     <!-- date -->
@@ -91,7 +90,7 @@ export default {
             </p>
             <small class="text-muted">{{
               new Date(comment.created_at).toLocaleString()
-              }}</small>
+            }}</small>
           </div>
         </div>
         <div v-else>

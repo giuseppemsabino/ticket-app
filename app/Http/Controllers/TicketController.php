@@ -53,6 +53,10 @@ class TicketController extends Controller
     public function dashboard(){
         $user = Auth::user();
 
+        $areas = Area::all();
+        $statuses = Status::all();
+        $projects = Project::all();
+
         if (in_array($user->role_id, [2, 3, 4])) {
             // Se è tecnico (2), admin (3) o superadmin (4)
             $tickets = Ticket::all();
@@ -61,9 +65,7 @@ class TicketController extends Controller
             $tickets = Ticket::where('user_id', $user->id)
                 ->get();
         }
-        $areas = Area::all();
-        $statuses = Status::all();
-        $projects = Project::all();
+
         $userLog = [
             'id' => Auth::user()->id,
             'name' => Auth::user()->name,
