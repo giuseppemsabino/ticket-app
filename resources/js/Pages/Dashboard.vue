@@ -28,15 +28,19 @@ const role = props.userLog?.role_id ?? '—';
     <div class="py-4">
       <div class="container-fluid container-lg">
         <div class="row">
+
+          <!-- User -->
           <div class="col-4">
             PROFILO UTENTE
             <div>{{ props.userLog?.name ?? '—' }}</div>
           </div>
 
+          <!-- List and option -->
           <div class="col-7">
             <div class="card shadow-sm rounded">
               <div class="d-flex p-4 text-dark align-items-center justify-content-between">
                 <h3 class="mb-4">I tuoi Ticket</h3>
+                <!-- New Ticket -->
                 <PrimaryButton>
                   <Link href="/tickets/create" class="text-white text-decoration-none">
                   + Nuovo Ticket
@@ -48,14 +52,18 @@ const role = props.userLog?.role_id ?? '—';
               <!-- Tickets List -->
               <div class="ticket_list p-3">
 
-
                 <div class="accordion" id="TicketAccordion">
                   <div v-for="ticket in props.tickets" :key="ticket.id" class="accordion-item">
                     <h2 class="accordion-header" :id="`haeding-${ticket.id}`">
                       <button class="accordion-button" type="button" data-bs-toggle="collapse"
                         :data-bs-target="`#collapse-${ticket.id}`" aria-expanded="true"
                         :aria-controls="`#collapse-${ticket.id}`">
-                        {{ ticket.description }}
+                        <div class="badge">
+                          <StatusBadge :status-id="ticket.status_id" :statuses="statuses" size="fs-6" />
+                        </div>
+                        <div class="description">
+                          {{ ticket.description }}
+                        </div>
                       </button>
                     </h2>
                     <div :id="`collapse-${ticket.id}`" class="accordion-collapse collapse"
@@ -64,18 +72,22 @@ const role = props.userLog?.role_id ?? '—';
                         <div v-for="comment in props.comments" class="comments">
                           {{ comment.content }}
                         </div>
-                        <StatusBadge :status-id="ticket.status_id" :statuses="statuses" size="fs-6" />
-                        <div class="mt-3">
-                          <Link :href="`/tickets/${ticket.id}`" class="btn btn-primary">
-                          Vedi Dettagli
-                          </Link>
+                        <div class="text-end">
+                          <span class="text-muted">
+                            Ultimo aggiornamento: {{ new Date(ticket.updated_at).toLocaleString() }}
+                          </span>
+                        </div>
+                        <div class="mt-3 text-end">
+                          <PrimaryButton>
+                            <Link :href="`/tickets/${ticket.id}`" class="text-white text-decoration-none">
+                            Vedi Dettagli
+                            </Link>
+                          </PrimaryButton>
                         </div>
                       </div>
                     </div>
                   </div>
-
                 </div>
-
 
               </div>
 
