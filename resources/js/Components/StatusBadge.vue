@@ -13,7 +13,7 @@ const statusName = status ? status.name : "N/A";
 
 <template>
   <span v-if="status"
-    :class="`${size} badge bg-` + (status.id === 1 ? 'info' : status.id === 2 ? 'success' : status.id === 3 ? 'success' : 'danger')">
+    :class="`${size} badge bg-` + (status.id === 1 ? 'secondary' : status.id === 2 ? 'success' : status.id === 3 ? 'success' : 'danger')">
     {{ statusName }}
   </span>
 </template>
