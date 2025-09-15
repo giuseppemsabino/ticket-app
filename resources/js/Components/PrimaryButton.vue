@@ -8,7 +8,24 @@
 </script>
 
 <template>
-  <button :type="type" class="d-inline-flex align-items-center btn btn-dark text-uppercase fw-semibold text-white">
+  <button :type="type" class="d-inline-flex align-items-center btn  text-uppercase fw-semibold ">
     <slot />
   </button>
 </template>
+
+<style scoped>
+.btn {
+  background-color: #00285B;
+  color: #FFDF48;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #001F3F;
+  color: #FFFFFF;
+  text-decoration: none;
+}
+</style>

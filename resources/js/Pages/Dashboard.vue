@@ -26,8 +26,8 @@ const role = props.userLog?.role_id ?? '—';
   <Head title="Dashboard" />
 
   <AuthenticatedLayout>
-    <template #header>
-      <h2 class="fs-4 fw-semibold text-dark">Dashboard</h2>
+    <template #header class="header">
+      <h2 class="fs-4 fw-semibold">Dashboard</h2>
     </template>
 
     <div class="py-4">

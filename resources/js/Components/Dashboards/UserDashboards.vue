@@ -1,6 +1,7 @@
 <script setup>
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import StatusBadge from '@/Components/StatusBadge.vue';
+import { Link } from '@inertiajs/vue3';
 
 const props = defineProps({
   tickets: Array,
@@ -17,7 +18,7 @@ const props = defineProps({
       <h3 class="mb-4">I tuoi Ticket</h3>
       <!-- New Ticket -->
       <PrimaryButton>
-        <Link href="/tickets/create" class="text-white text-decoration-none">
+        <Link href="/tickets/create" class="text-decoration-none" style="color: var(--mt-accent-color);">
         + Nuovo Ticket
         </Link>
       </PrimaryButton>
@@ -53,7 +54,8 @@ const props = defineProps({
               </div>
               <div class="mt-3 text-end">
                 <PrimaryButton>
-                  <Link :href="`/tickets/${ticket.id}`" class="text-white text-decoration-none">
+                  <Link :href="`/tickets/${ticket.id}`" class="text-decoration-none"
+                    style="color: var(--mt-accent-color);">
                   Vedi Dettagli
                   </Link>
                 </PrimaryButton>
@@ -68,3 +70,11 @@ const props = defineProps({
 
   </div>
 </template>
+
+<style>
+.accordion {
+  --bs-accordion-btn-focus-box-shadow: none;
+  --bs-accordion-active-bg: #00285B;
+  --bs-accordion-active-color: #ffffff;
+}
+</style>

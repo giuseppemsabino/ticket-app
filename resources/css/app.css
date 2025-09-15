@@ -1,1 +1,7 @@
 @import 'bootstrap';
+
+:root {
+  --mt-color-lighter: #f8f9fa;
+  --mt-primary-color: #00285B;
+  --mt-accent-color: #FFDF48;
+}
