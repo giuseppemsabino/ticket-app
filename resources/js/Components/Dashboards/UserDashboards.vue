@@ -30,9 +30,9 @@ const props = defineProps({
 
       <div class="accordion" id="TicketAccordion">
         <div v-for="ticket in props.tickets" :key="ticket.id" class="accordion-item">
-          <h2 class="accordion-header" :id="`haeding-${ticket.id}`">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse"
-              :data-bs-target="`#collapse-${ticket.id}`" aria-expanded="true" :aria-controls="`#collapse-${ticket.id}`">
+          <h2 class="accordion-header" :id="`heading-${ticket.id}`">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+              :data-bs-target="`#collapse-${ticket.id}`" aria-expanded="false" :aria-controls="`collapse-${ticket.id}`">
               <div class="badge">
                 <StatusBadge :status-id="ticket.status_id" :statuses="statuses" size="fs-6" />
               </div>
