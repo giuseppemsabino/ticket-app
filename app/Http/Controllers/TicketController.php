@@ -11,8 +11,14 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
 class TicketController extends Controller
 {
+    use AuthorizesRequests;
+
+    
+
     /**
      * Display a listing of the resource.
      */
@@ -21,13 +27,12 @@ class TicketController extends Controller
 
         $user = Auth::user();
 
-        if (in_array($user->role_id, [2, 3, 4])) {
+        if ($user->roles->contains('id', 2) || $user->roles->contains('id', 3) || $user->roles->contains('id', 4)) {
             // Se è tecnico (2), admin (3) o superadmin (4)
             $tickets = Ticket::all();
         } else {
             // Altri utenti → solo i propri ticket
-            $tickets = Ticket::where('user_id', $user->id)
-                ->get();
+            $tickets = Ticket::where('user_id', $user->id)->get();
         }
         $areas = Area::all();
         $statuses = Status::all();
@@ -50,10 +55,11 @@ class TicketController extends Controller
         return inertia('Tickets/Index', compact('tickets', 'areas', 'statuses', 'projects', 'userLog', 'technicians'));
     }
 
-    public function dashboard(){
+    public function dashboard()
+    {
         $user = Auth::user();
 
-        if (in_array($user->role_id, [2, 3, 4])) {
+        if ($user->roles->contains('id', 2) || $user->roles->contains('id', 3) || $user->roles->contains('id', 4)) {
             // Se è tecnico (2), admin (3) o superadmin (4)
             $tickets = Ticket::all();
         } else {
@@ -125,6 +131,7 @@ class TicketController extends Controller
     public function show(Ticket $ticket)
     {
         $ticket->load('comments.user');
+        
 
         // dd($ticket->comments);
         $comments = $ticket->comments;
@@ -148,11 +155,11 @@ class TicketController extends Controller
      */
     public function edit(Ticket $ticket)
     {
+        $this->authorize('update', $ticket);
+
         $user = User::with('roles')->find(Auth::id());
 
-        if ($user->roles->contains('id', 1)) {
-            abort(403, 'Unauthorized action.');
-        }
+
         $ticket->load('comments.user');
 
         // dd($ticket->comments);
@@ -180,9 +187,7 @@ class TicketController extends Controller
     {
         $user = User::with('roles')->find(Auth::id());
 
-        if ($user->roles->contains('id', 1)) {
-            abort(403, 'Unauthorized action.');
-        }
+
         $data = $request->all(); // Ottieni tutti i dati dalla richiesta
 
         // Aggiorna i campi del ticket con i nuovi dati
