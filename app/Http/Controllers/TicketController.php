@@ -17,7 +17,7 @@ class TicketController extends Controller
 {
     use AuthorizesRequests;
 
-    
+
 
     /**
      * Display a listing of the resource.
@@ -50,7 +50,7 @@ class TicketController extends Controller
 
 
 
-        // dd($userLog);
+         //dd($tickets);
 
         return inertia('Tickets/Index', compact('tickets', 'areas', 'statuses', 'projects', 'userLog', 'technicians'));
     }
@@ -63,10 +63,11 @@ class TicketController extends Controller
             // Se è tecnico (2), admin (3) o superadmin (4)
             $tickets = Ticket::all();
         } else {
-            // Altri utenti → solo i propri ticket
-            $tickets = Ticket::where('user_id', $user->id)
-                ->get();
+          // Altri utenti → solo i propri ticket
+          $tickets = Ticket::where('user_id', $user->id)
+          ->get();
         }
+
         $areas = Area::all();
         $statuses = Status::all();
         $projects = Project::all();
@@ -81,7 +82,8 @@ class TicketController extends Controller
             $query->where('role_id', 2);
         })->get();
 
-        // dd($tickets);
+         //dd($comments);
+
 
         return inertia('Dashboard', compact('tickets', 'areas', 'statuses', 'projects', 'userLog', 'technicians'));
     }
@@ -131,7 +133,7 @@ class TicketController extends Controller
     public function show(Ticket $ticket)
     {
         $ticket->load('comments.user');
-        
+
 
         // dd($ticket->comments);
         $comments = $ticket->comments;
