@@ -115,7 +115,7 @@ const showingNavigationDropdown = ref(false);
       </nav>
 
       <!-- Page Heading -->
-      <header class="bg-white shadow" v-if="$slots.header">
+      <header class="shadow" v-if="$slots.header">
         <div class="container-fluid container-lg py-4">
           <slot name="header" />
         </div>
@@ -128,3 +128,12 @@ const showingNavigationDropdown = ref(false);
     </div>
   </div>
 </template>
+
+<style scoped>
+header {
+  background-color: #00285B;
+  color: #FFDF48;
+  padding: 1rem;
+  border-bottom: 1px solid #dee2e6;
+}
+</style>
