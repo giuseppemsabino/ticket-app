@@ -5,3 +5,12 @@
   --mt-primary-color: #00285B;
   --mt-accent-color: #FFDF48;
 }
+
+.btn-link {
+  color: var(--mt-accent-color);
+
+  &:hover {
+    color: var(--mt-primary-color);
+    text-decoration: none;
+  }
+}

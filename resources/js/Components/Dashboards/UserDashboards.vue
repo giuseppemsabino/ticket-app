@@ -10,6 +10,8 @@ const props = defineProps({
   comments: Array
 });
 
+const ticketComments = (ticketId) =>
+  (props.comments || []).filter(c => c.ticket_id === ticketId);
 </script>
 
 <template>
@@ -18,7 +20,7 @@ const props = defineProps({
       <h3 class="mb-4">I tuoi Ticket</h3>
       <!-- New Ticket -->
       <PrimaryButton>
-        <Link href="/tickets/create" class="text-decoration-none" style="color: var(--mt-accent-color);">
+        <Link href="/tickets/create" class="btn-link text-decoration-none ">
         + Nuovo Ticket
         </Link>
       </PrimaryButton>
@@ -44,8 +46,20 @@ const props = defineProps({
           <div :id="`collapse-${ticket.id}`" class="accordion-collapse collapse" data-bs-parent="#TicketAccordion"
             :aria-labelledby="`heading-${ticket.id}`">
             <div class="accordion-body">
-              <div v-for="comment in props.comments" class="comments">
-                {{ comment.content }}
+              <div class=" comments mt-4">
+                <div v-if="ticketComments(ticket.id).length">
+                  <div v-for="comment in ticketComments(ticket.id)" :key="comment.id"
+                    class="comment p-2 mb-2 border rounded">
+                    <p>
+                      <strong>{{ comment.user.name }}:</strong>
+                      {{ comment.content }}
+                    </p>
+                    <small class="text-muted">{{ new Date(comment.created_at).toLocaleString() }}</small>
+                  </div>
+                </div>
+                <div v-else>
+                  <p>Nessun commento per questo ticket.</p>
+                </div>
               </div>
               <div class="text-end">
                 <span class="text-muted">
@@ -54,8 +68,7 @@ const props = defineProps({
               </div>
               <div class="mt-3 text-end">
                 <PrimaryButton>
-                  <Link :href="`/tickets/${ticket.id}`" class="text-decoration-none"
-                    style="color: var(--mt-accent-color);">
+                  <Link :href="`/tickets/${ticket.id}`" class="btn-link text-decoration-none">
                   Vedi Dettagli
                   </Link>
                 </PrimaryButton>
