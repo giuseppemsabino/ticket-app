@@ -47,7 +47,7 @@ export default {
     <div class="card-header d-flex justify-content-between align-items-center mb-4" style="border-bottom: dashed;">
       <h1>Ticket #{{ ticket.id }}</h1>
       <!-- status -->
-      <StatusBadge :status-id="ticket.status_id" :statuses="statuses" size="fs-5" />
+      <StatusBadge :status-id="ticket.status_id" :statuses="statuses" :size="'fs-5'" />
     </div>
 
     <!-- date -->
@@ -63,7 +63,7 @@ export default {
 
     <!-- Details -->
     <div v-if="ticket">
-      <!-- <p><strong>ID:</strong> {{ ticket.id }}</p> -->
+
       <div class="d-flex justify-content-between">
         <p><strong>Progetto:</strong> {{ getProjectName(ticket.project_id) }}</p>
         <p><strong>Area:</strong> {{ getAreaName(ticket.area_id) }}</p>
@@ -90,7 +90,7 @@ export default {
             </p>
             <small class="text-muted">{{
               new Date(comment.created_at).toLocaleString()
-            }}</small>
+              }}</small>
           </div>
         </div>
         <div v-else>

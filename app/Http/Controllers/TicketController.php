@@ -17,6 +17,43 @@ class TicketController extends Controller
 {
     use AuthorizesRequests;
 
+     /**
+     * Dashboard view
+     */
+    public function dashboard()
+    {
+        $user = Auth::user();
+
+        if ($user->roles->contains('id', 2) || $user->roles->contains('id', 3) || $user->roles->contains('id', 4)) {
+            // Se è tecnico (2), admin (3) o superadmin (4)
+            $tickets = Ticket::all();
+        } else {
+          // Altri utenti → solo i propri ticket
+          $tickets = Ticket::where('user_id', $user->id)
+          ->get();
+        }
+
+        $areas = Area::all();
+        $statuses = Status::all();
+        $projects = Project::all();
+        $userLog = [
+            'id' => Auth::user()->id,
+            'name' => Auth::user()->name,
+            'role_id' => Auth::user()->roles->first()->id
+
+        ];
+        // Ottieni tutti gli utenti con il ruolo di tecnico (role_id = 2)
+        $technicians = User::whereHas('roles', function ($query) {
+            $query->where('role_id', 2);
+        })->get();
+
+        //dd($comments);
+
+
+        return inertia('Dashboard', compact('tickets', 'areas', 'statuses', 'projects', 'userLog', 'technicians'));
+    }
+
+
 
 
     /**
@@ -55,38 +92,6 @@ class TicketController extends Controller
         return inertia('Tickets/Index', compact('tickets', 'areas', 'statuses', 'projects', 'userLog', 'technicians'));
     }
 
-    public function dashboard()
-    {
-        $user = Auth::user();
-
-        if ($user->roles->contains('id', 2) || $user->roles->contains('id', 3) || $user->roles->contains('id', 4)) {
-            // Se è tecnico (2), admin (3) o superadmin (4)
-            $tickets = Ticket::all();
-        } else {
-          // Altri utenti → solo i propri ticket
-          $tickets = Ticket::where('user_id', $user->id)
-          ->get();
-        }
-
-        $areas = Area::all();
-        $statuses = Status::all();
-        $projects = Project::all();
-        $userLog = [
-            'id' => Auth::user()->id,
-            'name' => Auth::user()->name,
-            'role_id' => Auth::user()->roles->first()->id
-
-        ];
-        // Ottieni tutti gli utenti con il ruolo di tecnico (role_id = 2)
-        $technicians = User::whereHas('roles', function ($query) {
-            $query->where('role_id', 2);
-        })->get();
-
-         //dd($comments);
-
-
-        return inertia('Dashboard', compact('tickets', 'areas', 'statuses', 'projects', 'userLog', 'technicians'));
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -148,6 +153,7 @@ class TicketController extends Controller
         $technicians = User::whereHas('roles', function ($query) {
             $query->where('role_id', 2);
         })->get();
+
 
         return inertia('Tickets/Show', compact('ticket', 'areas', 'statuses', 'projects', 'userLog', 'technicians', 'comments'));
     }

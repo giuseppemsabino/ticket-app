@@ -66,12 +66,10 @@ const ticketComments = (ticketId) =>
                   Ultimo aggiornamento: {{ new Date(ticket.updated_at).toLocaleString() }}
                 </span>
               </div>
-              <div class="mt-3 text-end">
-                <PrimaryButton>
-                  <Link :href="`/tickets/${ticket.id}`" class="btn-link text-decoration-none">
-                  Vedi Dettagli
-                  </Link>
-                </PrimaryButton>
+              <div class="card-footer mt-3 text-center">
+                <Link :href="`/tickets/${ticket.id}`" class=" text-decoration-none">
+                Vedi Dettagli
+                </Link>
               </div>
             </div>
           </div>
