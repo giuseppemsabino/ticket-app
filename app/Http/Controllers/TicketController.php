@@ -26,11 +26,12 @@ class TicketController extends Controller
 
         if ($user->roles->contains('id', 2) || $user->roles->contains('id', 3) || $user->roles->contains('id', 4)) {
             // Se è tecnico (2), admin (3) o superadmin (4)
-            $tickets = Ticket::all();
+            $tickets = Ticket::with('comments.user')->get();
         } else {
           // Altri utenti → solo i propri ticket
           $tickets = Ticket::where('user_id', $user->id)
-          ->get();
+                          ->with('comments.user')
+                          ->get();
         }
 
         $areas = Area::all();
@@ -47,12 +48,12 @@ class TicketController extends Controller
             $query->where('role_id', 2);
         })->get();
 
-       // dd($technicians);
 
-         //dd($tickets);
+        $comments = $tickets->flatMap(function ($ticket) {
+            return $ticket->comments;
+        });
 
-
-        return inertia('Dashboard', compact('tickets', 'areas', 'statuses', 'projects', 'userLog', 'technicians'));
+        return inertia('Dashboard', compact('tickets', 'areas', 'statuses', 'projects', 'userLog', 'technicians', 'comments'));
     }
 
 

@@ -60,18 +60,17 @@ console.log(props.ticket);
 
     <div class="container mt-5">
       <!-- Form principale ticket -->
-      <div class="card shadow mb-4">
+      <div class="card shadow-sm mb-4">
         <div class="card-body">
 
+          <div>
+            <strong>Descrizione:</strong>
+            <p class="text-center fs-3">
+              {{ props.ticket.description }}
+            </p>
+          </div>
+
           <form @submit.prevent="submit">
-            <!-- Descrizione -->
-            <div class="mb-3">
-              <label class="form-label">Descrizione</label>
-              <textarea v-model="form.description" class="form-control"></textarea>
-              <div v-if="form.errors.description" class="text-danger small">
-                {{ form.errors.description }}
-              </div>
-            </div>
 
             <!-- Area -->
             <div class="mb-3">
@@ -145,7 +144,7 @@ console.log(props.ticket);
       </div>
 
       <!-- Mini form per aggiungere commento -->
-      <div class="card shadow">
+      <div class="card shadow-sm mt-4  mb-4">
         <div class="card-body">
           <h5 class="mb-3">Aggiungi Commento</h5>
           <form @submit.prevent="submitComment">
@@ -170,8 +169,8 @@ console.log(props.ticket);
             <strong>{{ comment.user.name }}:</strong>
             {{ comment.content }}
           </p>
-          <small class="text-muted">{{ comment.created_at }}</small>
-          <button @click="deleteComment(comment.id)">
+          <small class="text-muted">{{ new Date(comment.created_at).toLocaleString() }}</small>
+          <button @click="deleteComment(comment.id)" class="btn btn-sm btn-danger ms-3">
             Elimina
           </button>
         </div>
