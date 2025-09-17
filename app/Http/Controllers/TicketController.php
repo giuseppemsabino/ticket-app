@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Storage;
 
 class TicketController extends Controller
 {
@@ -87,11 +88,12 @@ class TicketController extends Controller
 
 
 
-         //dd($tickets);
+        //dd($tickets);
 
         return inertia('Tickets/Index', compact('tickets', 'areas', 'statuses', 'projects', 'userLog', 'technicians'));
     }
 
+   
 
     /**
      * Show the form for creating a new resource.
@@ -126,7 +128,14 @@ class TicketController extends Controller
         $newTicket->description = $data['description'];
         $newTicket->user_id = Auth::user()->id;
 
-        // dd($data); //? se vuoi vedere i dati che stai passando alla vista decommenta questa linea
+
+        if (array_key_exists('u_images', $data)) {
+            $user_image_url = Storage::putFile("user_images", $data['u_images']);
+
+            $newTicket->u_images = $user_image_url;
+        }
+
+        //  dd($data); //? se vuoi vedere i dati che stai passando alla vista decommenta questa linea
         $newTicket->save();
 
         return redirect()->route('tickets.show', $newTicket);
@@ -204,6 +213,17 @@ class TicketController extends Controller
         $ticket->status_id = $data['status_id'];
         $ticket->description = $data['description'];
         $ticket->assigned_to = $data['assigned_to'];
+
+
+        if (array_key_exists('t_images', $data)) {
+            if ($ticket->t_images) {
+                Storage::delete($ticket->t_images);
+            }
+            $ticket->t_images = Storage::putFile("tech_images", $data['t_images']);
+        }
+
+
+        dd($request->all()); //? se vuoi vedere i dati che stai passando alla vista decommenta questa linea
 
         // Salva le modifiche al database
         $ticket->update();
