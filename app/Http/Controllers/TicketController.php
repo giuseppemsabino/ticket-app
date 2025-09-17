@@ -51,7 +51,7 @@ class TicketController extends Controller
 
 
 
-         //dd($tickets);
+        //dd($tickets);
 
         return inertia('Tickets/Index', compact('tickets', 'areas', 'statuses', 'projects', 'userLog', 'technicians'));
     }
@@ -64,9 +64,9 @@ class TicketController extends Controller
             // Se è tecnico (2), admin (3) o superadmin (4)
             $tickets = Ticket::all();
         } else {
-          // Altri utenti → solo i propri ticket
-          $tickets = Ticket::where('user_id', $user->id)
-          ->get();
+            // Altri utenti → solo i propri ticket
+            $tickets = Ticket::where('user_id', $user->id)
+                ->get();
         }
 
         $areas = Area::all();
@@ -83,7 +83,7 @@ class TicketController extends Controller
             $query->where('role_id', 2);
         })->get();
 
-         //dd($comments);
+        //dd($comments);
 
 
         return inertia('Dashboard', compact('tickets', 'areas', 'statuses', 'projects', 'userLog', 'technicians'));
@@ -123,13 +123,13 @@ class TicketController extends Controller
         $newTicket->user_id = Auth::user()->id;
 
 
-        if(array_key_exists('u_images', $data)){
+        if (array_key_exists('u_images', $data)) {
             $user_image_url = Storage::putFile("user_images", $data['u_images']);
 
             $newTicket->u_images = $user_image_url;
         }
 
-        dd($data); //? se vuoi vedere i dati che stai passando alla vista decommenta questa linea
+        //  dd($data); //? se vuoi vedere i dati che stai passando alla vista decommenta questa linea
         $newTicket->save();
 
         return redirect()->route('tickets.show', $newTicket);
@@ -208,18 +208,15 @@ class TicketController extends Controller
         $ticket->assigned_to = $data['assigned_to'];
 
 
-        if(array_key_exists('t_images', $data)){
-
-            if($ticket->t_images){
+        if (array_key_exists('t_images', $data)) {
+            if ($ticket->t_images) {
                 Storage::delete($ticket->t_images);
             }
-
-            $tech_image_url = Storage::putFile("tech_images", $data['t_images']);
-
-            $ticket->t_images = $tech_image_url;
+            $ticket->t_images = Storage::putFile("tech_images", $data['t_images']);
         }
 
-        dd($data); //? se vuoi vedere i dati che stai passando alla vista decommenta questa linea
+
+        dd($request->all()); //? se vuoi vedere i dati che stai passando alla vista decommenta questa linea
 
         // Salva le modifiche al database
         $ticket->update();
