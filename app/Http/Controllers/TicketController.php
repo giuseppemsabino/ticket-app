@@ -47,7 +47,9 @@ class TicketController extends Controller
             $query->where('role_id', 2);
         })->get();
 
-        //dd($comments);
+       // dd($technicians);
+
+         //dd($tickets);
 
 
         return inertia('Dashboard', compact('tickets', 'areas', 'statuses', 'projects', 'userLog', 'technicians'));

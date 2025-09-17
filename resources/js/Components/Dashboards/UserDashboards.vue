@@ -1,7 +1,11 @@
 <script setup>
+import { Link } from '@inertiajs/vue3';
+
+
+
+//Components
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import StatusBadge from '@/Components/StatusBadge.vue';
-import { Link } from '@inertiajs/vue3';
 
 const props = defineProps({
   tickets: Array,
