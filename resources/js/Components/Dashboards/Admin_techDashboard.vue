@@ -15,6 +15,7 @@ const page = usePage()
 
 const viewModeFiltered = ref('card')
 const viewModeTechnichian = ref('card')
+const showClosedTickets = ref(false) // Nuovo stato per controllare la visibilità dei ticket chiusi
 
 const toogleViewModeFiltered = () => {
   viewModeFiltered.value = viewModeFiltered.value === 'card' ? 'list' : 'card'
@@ -36,10 +37,17 @@ const filteredTickets = computed(() =>
 
 const technicianTickets = computed(() =>
   tickets.value.filter(t =>
-    Number(t.assigned_to ?? t.technician_id) === currentUserId.value
+    Number(t.assigned_to ?? t.technician_id) === currentUserId.value &&
+    Number(t.status_id) !== 3
   )
 )
 
+const closeTickets = computed(() =>
+  tickets.value.filter(t => Number(t.status_id) === 3
+  )
+)
+
+console.log('Closed Tickets:', closeTickets)
 </script>
 
 <template>
@@ -109,6 +117,20 @@ const technicianTickets = computed(() =>
 
     <div v-else class="list-view rounded border shadow-sm p-3 mb-5 bg-body-tertiary">
       <TicketTable :tickets="technicianTickets" :statuses="statuses" :users="users" :areas="areas" />
+    </div>
+
+    <hr>
+
+    <div v-if="closeTickets.length" class="d-flex gap-2 align-items-center mb-3">
+      <h2>Ticket chiusi</h2>
+      <button class="btn " @click="showClosedTickets = !showClosedTickets">
+        <span v-if="showClosedTickets">&#9650;</span>
+        <span v-else> &#9660;( {{ closeTickets.length }} )</span>
+      </button>
+    </div>
+
+    <div v-if="showClosedTickets" class="list-view rounded border shadow-sm p-3 mb-5 bg-body-tertiary">
+      <TicketTable :tickets="closeTickets" :statuses="statuses" :users="users" :areas="areas" />
     </div>
 
   </div>
