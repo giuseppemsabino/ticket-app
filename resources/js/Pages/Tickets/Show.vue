@@ -12,6 +12,7 @@ const props = defineProps({
   statuses: Array,
   technicians: Array,
   comments: Array,
+  userName: Array,
 });
 
 const getProjectName = (projectId) => {
@@ -25,15 +26,11 @@ const getAreaName = (areaId) => {
 };
 
 const getUserName = (userId) => {
-  if (userId === props.userLog.id) return props.userLog.name;
-  const commentUser = props.comments.find((c) => c.user.id === userId);
-  return commentUser ? commentUser.user.name : "N/A";
+  const user = props.userName.find(user => user.id === userId);
+  return user ? user.name : "N/A";
 };
 
-const getStatusName = (statusId) => {
-  const status = props.statuses.find((status) => status.id === statusId);
-  return status ? status.name : "N/A";
-};
+
 
 const getTechnicianName = (technicianId) => {
   const technician = props.technicians.find((tech) => tech.id === technicianId);
@@ -103,7 +100,7 @@ const getTechnicianName = (technicianId) => {
               </p>
               <small class="text-muted">{{
                 new Date(comment.created_at).toLocaleString()
-                }}</small>
+              }}</small>
             </div>
           </div>
           <div v-else>
