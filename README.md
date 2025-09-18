@@ -1,9 +1,6 @@
 # Sistema di Ticketing - Documentazione
 
 Questa documentazione fornisce una panoramica completa del sistema di ticketing, sviluppato per gestire richieste di assistenza tra utenti e tecnici.
-
-## Panoramica del Sistema
-
 Il sistema di ticketing è una piattaforma web progettata per gestire richieste di assistenza (ticket) in modo efficiente. Permette agli utenti di segnalare problemi che vengono poi presi in carico e risolti da tecnici specializzati, il tutto in un ambiente organizzato e tracciabile.
 
 ### Obiettivi Principali
