@@ -3,6 +3,7 @@ import { Head, Link } from '@inertiajs/vue3';
 import StatusBadge from '@/Components/StatusBadge.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
+import { getAreaName, getUserName, getTechnicianName } from '@/lib/utils';
 
 const props = defineProps({
   ticket: Object,
@@ -20,22 +21,9 @@ const getProjectName = (projectId) => {
   return project ? project.name : "N/A";
 };
 
-const getAreaName = (areaId) => {
-  const area = props.areas.find((area) => area.id === areaId);
-  return area ? area.name : "N/A";
-};
-
-const getUserName = (userId) => {
-  const user = props.userName.find(user => user.id === userId);
-  return user ? user.name : "N/A";
-};
-
-
-
-const getTechnicianName = (technicianId) => {
-  const technician = props.technicians.find((tech) => tech.id === technicianId);
-  return technician ? technician.name : "N/A";
-};
+const getArea = (areaId) => getAreaName(areaId, props.areas);
+const getUser = (userId) => getUserName(userId, props.userName);
+const getTechnician = (techId) => getTechnicianName(techId, props.technicians);
 </script>
 
 <template>
@@ -69,7 +57,7 @@ const getTechnicianName = (technicianId) => {
 
         <div class="d-flex justify-content-between">
           <p><strong>Progetto:</strong> {{ getProjectName(ticket.project_id) }}</p>
-          <p><strong>Area:</strong> {{ getAreaName(ticket.area_id) }}</p>
+          <p><strong>Area:</strong> {{ getArea(ticket.area_id) }}</p>
         </div>
         <p class="mt-4"><strong>Descrizione:</strong> </p>
         <p class="mb-4 fs-4">
@@ -82,10 +70,10 @@ const getTechnicianName = (technicianId) => {
             </a>
           </template>
         </div>
-        <p><strong>Creatore:</strong> {{ getUserName(ticket.user_id) }}</p>
+        <p><strong>Creatore:</strong> {{ getUser(ticket.user_id) }}</p>
         <p>
           <strong>Tecnico:</strong>
-          {{ getTechnicianName(ticket.assigned_to) }}
+          {{ getTechnician(ticket.assigned_to) }}
         </p>
 
 
@@ -100,7 +88,7 @@ const getTechnicianName = (technicianId) => {
               </p>
               <small class="text-muted">{{
                 new Date(comment.created_at).toLocaleString()
-              }}</small>
+                }}</small>
             </div>
           </div>
           <div v-else>

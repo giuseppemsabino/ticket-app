@@ -1,5 +1,6 @@
 <script setup>
-import { router } from "@inertiajs/vue3";
+import { getAreaName, getUserName, getTechnicianName, getStatusName, deleteTicket } from '@/lib/utils';
+import { router } from '@inertiajs/vue3'; // Import router for delete functionality
 
 const props = defineProps({
   tickets: Array,
@@ -10,40 +11,14 @@ const props = defineProps({
   userName: Array,
 });
 
-const getAreaName = (areaId) => {
-  const area = props.areas.find((area) => area.id === areaId);
-  return area ? area.name : "N/A";
-};
-
-const getUserName = (userId) => {
-  const user = props.userName.find(user => user.id === userId);
-  return user ? user.name : "N/A";
-};
-
-const getStatusName = (statusId) => {
-  const status = props.statuses.find(
-    (status) => status.id === statusId
-  );
-  return status ? status.name : "N/A";
-};
-
-const getTechnicianName = (technicianId) => {
-  const technician = props.technicians.find(
-    (tech) => tech.id === technicianId
-  );
-  return technician ? technician.name : "N/A";
-};
-
-const deleteTicket = (ticketId) => {
-  if (confirm("Sei sicuro di voler eliminare questo ticket?")) {
-    router.delete(route("tickets.destroy", ticketId));
-  }
-};
+const getArea = (areaId) => getAreaName(areaId, props.areas);
+const getUser = (userId) => getUserName(userId, props.userName);
+const getStatus = (statusId) => getStatusName(statusId, props.statuses);
+const getTechnician = (techId) => getTechnicianName(techId, props.technicians);
+const deleteTicketHandler = (ticketId) => deleteTicket(ticketId, router, route);
 
 console.log(props.userName);
-
 </script>
-
 
 <template>
   <div>
@@ -64,12 +39,12 @@ console.log(props.userName);
         <tr v-for="ticket in tickets" :key="ticket.id">
           <td>{{ ticket.id }}</td>
           <td>{{ ticket.description }}</td>
-          <td>{{ getAreaName(ticket.area_id) }}</td>
-          <td>{{ getUserName(ticket.user_id) }}</td>
-          <td>{{ getStatusName(ticket.status_id) }}</td>
-          <td>{{ getTechnicianName(ticket.assigned_to) }}</td>
+          <td>{{ getArea(ticket.area_id) }}</td>
+          <td>{{ getUser(ticket.user_id) }}</td>
+          <td>{{ getStatus(ticket.status_id) }}</td>
+          <td>{{ getTechnician(ticket.assigned_to) }}</td>
           <td>
-            <button @click="deleteTicket(ticket.id)">
+            <button @click="deleteTicketHandler(ticket.id)">
               Elimina
             </button>
           </td>

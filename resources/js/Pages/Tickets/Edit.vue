@@ -1,7 +1,7 @@
 <script setup>
 import { useForm, Head } from "@inertiajs/vue3";
-
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import { getUserName } from '@/lib/utils';
 
 const props = defineProps({
   ticket: Object,
@@ -46,10 +46,7 @@ function deleteComment(commentId) {
   }
 }
 
-const getUserName = (userId) => {
-  const user = props.userName.find(user => user.id === userId);
-  return user ? user.name : "N/A";
-};
+const getUser = (userId) => getUserName(userId, props.userName);
 </script>
 
 <template>
@@ -83,7 +80,7 @@ const getUserName = (userId) => {
           </div>
 
           <div>
-            <p>creato da : {{ getUserName(ticket.user_id) }}</p>
+            <p>creato da : {{ getUser(ticket.user_id) }}</p>
           </div>
 
           <form @submit.prevent="submit">
