@@ -44,6 +44,7 @@ class TicketController extends Controller
             'role_id' => Auth::user()->roles->first()->id
 
         ];
+        $userName = User::pluck('name');
         // Ottieni tutti gli utenti con il ruolo di tecnico (role_id = 2)
         $technicians = User::whereHas('roles', function ($query) {
             $query->where('role_id', 2);
@@ -54,7 +55,7 @@ class TicketController extends Controller
             return $ticket->comments;
         });
 
-        return inertia('Dashboard', compact('tickets', 'areas', 'statuses', 'projects', 'userLog', 'technicians', 'comments'));
+        return inertia('Dashboard', compact('tickets', 'areas', 'statuses', 'projects', 'userLog', 'technicians', 'comments', 'userName'));
     }
 
 
@@ -84,6 +85,8 @@ class TicketController extends Controller
             'role_id' => Auth::user()->roles->first()->id
 
         ];
+        $userName = User::pluck('name');
+
         // Ottieni tutti gli utenti con il ruolo di tecnico (role_id = 2)
         $technicians = User::whereHas('roles', function ($query) {
             $query->where('role_id', 2);
@@ -93,7 +96,7 @@ class TicketController extends Controller
 
         //dd($tickets);
 
-        return inertia('Tickets/Index', compact('tickets', 'areas', 'statuses', 'projects', 'userLog', 'technicians'));
+        return inertia('Tickets/Index', compact('tickets', 'areas', 'statuses', 'projects', 'userLog', 'technicians','userName'));
     }
 
 
