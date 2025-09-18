@@ -18,6 +18,7 @@ const form = useForm({
   area_id: '',
   status_id: '',
   project_id: '',
+   u_images: null, // immagine caricata dall’utente
 })
 
 // Submit del form
@@ -90,6 +91,24 @@ function submit() {
                 {{ form.errors.description }}
               </div>
             </div>
+
+           <!-- Upload immagine utente -->
+    <div>
+      <label for="u_images">Carica immagine (utente)</label>
+      <input
+        id="u_images"
+        type="file"
+        accept="image/*"
+        @change="e => form.u_images = e.target.files[0]"
+        class="block w-full text-sm text-gray-500
+               file:mr-4 file:py-2 file:px-4
+               file:rounded-full file:border-0
+               file:text-sm file:font-semibold
+               file:bg-blue-50 file:text-blue-700
+               hover:file:bg-blue-100"
+      />
+      <div v-if="form.errors.u_images" class="text-red-500 text-sm">{{ form.errors.u_images }}</div>
+    </div>
 
 
 
