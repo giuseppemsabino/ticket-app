@@ -19,7 +19,7 @@ class TicketController extends Controller
 {
     use AuthorizesRequests;
 
-     /**
+    /**
      * Dashboard view
      */
     public function dashboard()
@@ -30,10 +30,10 @@ class TicketController extends Controller
             // Se è tecnico (2), admin (3) o superadmin (4)
             $tickets = Ticket::with('comments.user')->get();
         } else {
-          // Altri utenti → solo i propri ticket
-          $tickets = Ticket::where('user_id', $user->id)
-                          ->with('comments.user')
-                          ->get();
+            // Altri utenti → solo i propri ticket
+            $tickets = Ticket::where('user_id', $user->id)
+                ->with('comments.user')
+                ->get();
         }
 
         $areas = Area::all();
@@ -71,11 +71,13 @@ class TicketController extends Controller
         $user = Auth::user();
 
         if ($user->roles->contains('id', 2) || $user->roles->contains('id', 3) || $user->roles->contains('id', 4)) {
-            // Se è tecnico (2), admin (3) o superadmin (4)
+            // Tecnico, admin o superadmin: vedono tutti i ticket e tutti i progetti
             $tickets = Ticket::all();
+            $projects = Project::all();
         } else {
-            // Altri utenti → solo i propri ticket
+            // Altri utenti: solo i propri ticket e solo i progetti assegnati
             $tickets = Ticket::where('user_id', $user->id)->get();
+            $projects = $user->projects; // Assumendo relazione n-n: User::projects()
         }
         $areas = Area::all();
         $statuses = Status::all();
@@ -97,7 +99,7 @@ class TicketController extends Controller
 
         //dd($tickets);
 
-        return inertia('Tickets/Index', compact('tickets', 'areas', 'statuses', 'projects', 'userLog', 'technicians','userName'));
+        return inertia('Tickets/Index', compact('tickets', 'areas', 'statuses', 'projects', 'userLog', 'technicians', 'userName'));
     }
 
 
@@ -107,9 +109,16 @@ class TicketController extends Controller
      */
     public function create()
     {
+        $user = Auth::user();
+        // Se tecnico (2), admin (3) o superadmin (4): tutti i progetti
+        if ($user->roles->contains('id', 2) || $user->roles->contains('id', 3) || $user->roles->contains('id', 4)) {
+            $projects = Project::all();
+        } else {
+            // Utente normale: solo i progetti assegnati
+            $projects = $user->projects; // Assicurati che la relazione User::projects() esista
+        }
         $areas = Area::all();
         $statuses = Status::all();
-        $projects = Project::all();
         $userLog = [
             'id' => Auth::user()->id,
             'name' => Auth::user()->name,
@@ -152,6 +161,18 @@ class TicketController extends Controller
     public function show(Ticket $ticket)
     {
         $ticket->load('comments.user');
+
+        $user = Auth::user();
+
+        // Controllo accesso
+        if (
+            !$user->roles->contains('id', 2)
+            && !$user->roles->contains('id', 3)
+            && !$user->roles->contains('id', 4)
+            && $ticket->user_id !== $user->id
+        ) {
+            abort(403, 'Accesso non autorizzato');
+        }
 
 
         // dd($ticket->comments);

@@ -3,44 +3,44 @@ import { useForm, Head } from '@inertiajs/vue3'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import PrimaryButton from '@/Components/PrimaryButton.vue'
 
-// Props che ricevi dal controller
+// Props dal controller
 const props = defineProps({
-  roles: Array,
-  projects: Array,
-  userLog: Object, // opzionale, per mostrare chi crea l’utente
+  user: Object,     // utente da modificare
+  roles: Array,     // tutti i ruoli disponibili
+  projects: Array,  // tutti i progetti disponibili
+  userLog: Object,  // opzionale: chi sta modificando
 })
 
-// Form con useForm
+// Inizializza form con dati dell’utente
 const form = useForm({
-  name: '',
-  email: '',
+  name: props.user.name || '',
+  email: props.user.email || '',
   password: '',
-  roles: [],     // array per checkbox N:N
-  projects: []   // array per checkbox N:N
+  roles: props.user.roles ? props.user.roles.map(r => r.id) : [],
+  projects: props.user.projects ? props.user.projects.map(p => p.id) : [],
 })
+
 
 // Submit del form
 function submit() {
-  form.post(route('users.store'))
-
+  form.put(route('users.update', props.user.id))
 }
 </script>
 
 <template>
-  <Head title="Crea Utente" />
+  <Head :title="`Modifica Utente: ${props.user.name}`" />
 
   <AuthenticatedLayout>
     <template #header>
-      <h2 class="fs-4 fw-semibold">Nuovo Utente</h2>
+      <h2 class="fs-4 fw-semibold">Modifica Utente</h2>
     </template>
 
     <div class="container mt-5">
       <div class="card shadow">
         <div class="card-body">
 
-          <!-- Mostra utente loggato -->
           <p v-if="props.userLog" class="text-muted mb-4">
-            Creato da: <strong>{{ props.userLog.name }}</strong>
+            Modificato da: <strong>{{ props.userLog.name }}</strong>
           </p>
 
           <form @submit.prevent="submit">
@@ -60,8 +60,8 @@ function submit() {
 
             <!-- Password -->
             <div class="mb-3">
-              <label class="form-label">Password*</label>
-              <input type="password" class="form-control" v-model="form.password" required />
+              <label class="form-label">Password (lascia vuoto se non vuoi cambiarla)</label>
+              <input type="password" class="form-control" v-model="form.password" />
               <div v-if="form.errors.password" class="text-danger small">{{ form.errors.password }}</div>
             </div>
 
@@ -98,14 +98,12 @@ function submit() {
             </div>
 
             <!-- Pulsante salva -->
-            <PrimaryButton :disabled="form.processing" :type="'submit'">
-              Crea Utente
+            <PrimaryButton :disabled="form.processing" type="submit">
+              Salva Modifiche
             </PrimaryButton>
           </form>
         </div>
       </div>
-
-      <small class="text-danger p-3">* campi obbligatori</small>
     </div>
   </AuthenticatedLayout>
 </template>
