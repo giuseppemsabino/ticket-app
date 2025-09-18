@@ -79,7 +79,11 @@ const getTechnicianName = (technicianId) => {
           {{ ticket.description }}
         </p>
         <div class="image">
-          <img :src="ticket.u_images" alt="">
+          <template v-if="ticket.u_images">
+            <a :href="`/storage/${ticket.u_images}`" target="_blank">
+              <img :src="`/storage/${ticket.u_images}`" alt="Ticket image" class="img-fluid rounded">
+            </a>
+          </template>
         </div>
         <p><strong>Creatore:</strong> {{ getUserName(ticket.user_id) }}</p>
         <p>
@@ -99,7 +103,7 @@ const getTechnicianName = (technicianId) => {
               </p>
               <small class="text-muted">{{
                 new Date(comment.created_at).toLocaleString()
-              }}</small>
+                }}</small>
             </div>
           </div>
           <div v-else>

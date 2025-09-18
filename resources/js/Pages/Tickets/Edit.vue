@@ -68,6 +68,13 @@ console.log(props.ticket);
             <p class="text-center fs-3">
               {{ props.ticket.description }}
             </p>
+            <div class="image w-25 mx-auto mb-4">
+              <template v-if="ticket.u_images">
+                <a :href="`/storage/${ticket.u_images}`" target="_blank">
+                  <img :src="`/storage/${ticket.u_images}`" alt="Ticket image" class="img-fluid rounded">
+                </a>
+              </template>
+            </div>
           </div>
 
           <form @submit.prevent="submit">
