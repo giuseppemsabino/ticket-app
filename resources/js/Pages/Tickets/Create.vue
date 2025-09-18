@@ -53,8 +53,8 @@ function submit() {
               <div class="row row-cols-1 row-cols-md-2 g-3">
                 <!-- Progetto -->
                 <div class="col">
-                  <label class="form-label">Progetto</label>
-                  <select v-model="form.project_id" class="form-select">
+                  <label class="form-label">Progetto*</label>
+                  <select v-model="form.project_id" class="form-select" required>
                     <option disabled value="">-- Seleziona Progetto --</option>
                     <option v-for="project in props.projects" :key="project.id" :value="project.id">
                       {{ project.name }}
@@ -67,8 +67,8 @@ function submit() {
 
                 <!-- Area -->
                 <div class="col">
-                  <label class="form-label">Area</label>
-                  <select v-model="form.area_id" class="form-select">
+                  <label class="form-label">Area*</label>
+                  <select v-model="form.area_id" class="form-select" required>
                     <option disabled value="">-- Seleziona Area --</option>
                     <option v-for="area in props.areas" :key="area.id" :value="area.id">
                       {{ area.name }}
@@ -84,9 +84,9 @@ function submit() {
 
             <!-- Descrizione -->
             <div class="mb-3">
-              <label class="form-label">Descrizione</label>
+              <label class="form-label">Descrizione*</label>
               <textarea v-model="form.description" class="form-control"
-                placeholder="Inserisci la descrizione del ticket"></textarea>
+                placeholder="Inserisci la descrizione del ticket" req></textarea>
               <div v-if="form.errors.description" class="text-danger small">
                 {{ form.errors.description }}
               </div>
@@ -97,7 +97,7 @@ function submit() {
               <label class="mb-2" for="u_images">Carica immagine</label>
               <input id="u_images" type="file" accept="image/*" @change="e => form.u_images = e.target.files[0]"
                 class="form-control  mb-2" />
-              <div v-if="form.errors.u_images" class="text-red-500 text-sm">{{ form.errors.u_images }}</div>
+              <div v-if="form.errors.u_images" class="text-red-500 text-sm"></div>
             </div>
 
 
@@ -109,6 +109,9 @@ function submit() {
           </form>
         </div>
       </div>
+      <small class="text-danger p-3">
+        * campi obbligatori
+      </small>
     </div>
   </AuthenticatedLayout>
 

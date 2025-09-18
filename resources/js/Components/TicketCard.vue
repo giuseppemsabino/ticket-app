@@ -29,7 +29,7 @@ function getUserName(userId) {
 <template>
   <Link :href="`/tickets/${ticket.id}/edit`" class="text-decoration-none text-dark">
 
-  <div class="card h-100 shadow-sm">
+  <div class="card h-100 shadow-sm" style="width: 20rem;">
     <div class="card-header">
       <div class="d-flex justify-content-between align-items-center">
         <span>

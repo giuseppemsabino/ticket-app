@@ -39,7 +39,7 @@ console.log(props.projects);
         <div class="row">
 
           <!-- Profile details-->
-          <div class="col-4">
+          <div class="col-3">
             <div class="border-top border-light py-3">
               <h3>UTENTE</h3>
               <img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png" alt=""
@@ -69,7 +69,7 @@ console.log(props.projects);
           </div>
 
           <!-- Dashboard content-->
-          <div class="col-7">
+          <div class="col-9">
 
             <!-- User Dashboard -->
             <div v-if="role === 1">

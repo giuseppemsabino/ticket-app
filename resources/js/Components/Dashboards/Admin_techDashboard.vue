@@ -33,20 +33,20 @@ const technicianTickets = computed(() =>
 
 <template>
   <div>
-    <h2>Lista Ticket in attesa</h2>
-    <div class="row">
-      <div v-for="ticket in filteredTickets" :key="ticket.id" class="col-md-4 mb-4">
+    <h2>Ticket in attesa</h2>
+    <div class="row flex-nowrap overflow-x-auto g-3 mb-5" style="max-height: 500px;">
+      <div v-for="ticket in filteredTickets" :key="ticket.id" class="col mb-4">
 
         <TicketCard :ticket="ticket" :statuses="statuses" :users="users" :areas="areas" />
       </div>
     </div>
-
+    <hr>
 
     <h2>
-      I tuoi Ticket assegnati
+      Ticket assegnati
     </h2>
-    <div class="row">
-      <div v-for="ticket in technicianTickets" :key="ticket.id" class="col-md-4 mb-4">
+    <div class="row flex-nowrap overflow-x-auto" style="max-height: 500px;">
+      <div v-for="ticket in technicianTickets" :key="ticket.id" class="col mb-4">
 
         <TicketCard :ticket="ticket" :statuses="statuses" :users="users" :areas="areas" />
       </div>

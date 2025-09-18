@@ -63,9 +63,6 @@ const getTechnicianName = (technicianId) => {
         <p class="text-muted">
           Creato il: {{ new Date(ticket.created_at).toLocaleString() }}
         </p>
-        <p v-if="ticket.updated_at" class="text-muted mb-4">
-          Ultimo aggiornamento: {{ new Date(ticket.updated_at).toLocaleString() }}
-        </p>
         <hr>
       </div>
 
@@ -80,6 +77,9 @@ const getTechnicianName = (technicianId) => {
         <p class="mb-4 fs-4">
           {{ ticket.description }}
         </p>
+        <div class="image">
+          <img :src="ticket.u_images" alt="">
+        </div>
         <p><strong>Creatore:</strong> {{ getUserName(ticket.user_id) }}</p>
         <p>
           <strong>Tecnico:</strong>
@@ -98,7 +98,7 @@ const getTechnicianName = (technicianId) => {
               </p>
               <small class="text-muted">{{
                 new Date(comment.created_at).toLocaleString()
-              }}</small>
+                }}</small>
             </div>
           </div>
           <div v-else>
