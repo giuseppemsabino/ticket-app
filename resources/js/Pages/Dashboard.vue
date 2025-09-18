@@ -39,7 +39,7 @@ console.log(props.projects);
         <div class="row">
 
           <!-- Profile details-->
-          <div class="col-3">
+          <div class="col-3 border rounded-3 shadow-sm bg-white px-4">
             <div class="border-top border-light py-3">
               <h3>
                 <Link href="{{ route('profile.edit') }}" class="text-decoration-none text-dark">
