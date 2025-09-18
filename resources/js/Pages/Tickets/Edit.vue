@@ -10,6 +10,7 @@ const props = defineProps({
   projects: Array,
   userLog: Object, // tecnico loggato
   technicians: Array, // lista tecnici
+  userName: Array,
 });
 
 const comments = props.ticket.comments || []; // lista commenti del ticket
@@ -44,7 +45,11 @@ function deleteComment(commentId) {
     commentForm.delete(route("comments.destroy", commentId));
   }
 }
-console.log(props.ticket);
+
+const getUserName = (userId) => {
+  const user = props.userName.find(user => user.id === userId);
+  return user ? user.name : "N/A";
+};
 </script>
 
 <template>
@@ -75,6 +80,10 @@ console.log(props.ticket);
                 </a>
               </template>
             </div>
+          </div>
+
+          <div>
+            <p>creato da : {{ getUserName(ticket.user_id) }}</p>
           </div>
 
           <form @submit.prevent="submit">

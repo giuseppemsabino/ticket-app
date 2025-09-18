@@ -170,7 +170,7 @@ class TicketController extends Controller
         })->get();
 
 
-        return inertia('Tickets/Show', compact('ticket', 'areas', 'statuses', 'projects', 'userLog', 'technicians', 'comments'));
+        return inertia('Tickets/Show', compact('ticket', 'areas', 'statuses', 'projects', 'userLog', 'technicians', 'comments', 'userName'));
     }
 
     /**
@@ -201,7 +201,7 @@ class TicketController extends Controller
             $query->where('role_id', 2);
         })->get();
 
-        return inertia('Tickets/Edit', compact('ticket', 'areas', 'statuses', 'projects', 'userLog', 'technicians'));
+        return inertia('Tickets/Edit', compact('ticket', 'areas', 'statuses', 'projects', 'userLog', 'technicians', 'userName'));
     }
 
     /**
