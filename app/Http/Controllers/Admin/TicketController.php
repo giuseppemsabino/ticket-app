@@ -29,16 +29,17 @@ class TicketController extends Controller
         if ($user->roles->contains('id', 2) || $user->roles->contains('id', 3) || $user->roles->contains('id', 4)) {
             // Se è tecnico (2), admin (3) o superadmin (4)
             $tickets = Ticket::with('comments.user')->get();
+            $projects = Project::all();
         } else {
             // Altri utenti → solo i propri ticket
             $tickets = Ticket::where('user_id', $user->id)
                 ->with('comments.user')
                 ->get();
+            $projects = $user->projects;
         }
 
         $areas = Area::all();
         $statuses = Status::all();
-        $projects = Project::all();
         $userLog = [
             'id' => Auth::user()->id,
             'name' => Auth::user()->name,

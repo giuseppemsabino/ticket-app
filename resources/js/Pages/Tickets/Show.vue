@@ -89,9 +89,9 @@ const getTechnicianName = (technicianId) => {
 
 
         <!-- Interventi -->
-        <div class=" comments mt-4">
+        <div v-if="comments && comments.length" class=" comments mt-4">
           <h2 class="text-danger fw-bold">Interventi</h2>
-          <div v-if="comments && comments.length">
+          <div>
             <div v-for="comment in comments" :key="comment.id" class="comment p-2 mb-2 border rounded">
               <p>
                 <strong>{{ comment.user.name }}:</strong>
@@ -101,9 +101,6 @@ const getTechnicianName = (technicianId) => {
                 new Date(comment.created_at).toLocaleString()
               }}</small>
             </div>
-          </div>
-          <div v-else>
-            <p>Nessun commento ancora.</p>
           </div>
         </div>
       </div>

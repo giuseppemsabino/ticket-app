@@ -41,9 +41,11 @@ console.log(props.projects);
           <!-- Profile details-->
           <div class="col-3">
             <div class="border-top border-light py-3">
-              <h3>UTENTE</h3>
-              <img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png" alt=""
-                style="width:200px ;">
+              <h3>
+                <Link href="{{ route('profile.edit') }}" class="text-decoration-none text-dark">
+                Profilo
+                </Link>
+              </h3>
               <div class="px-3">
                 <div class="fs-6 fw-medium text-dark">
                   {{ $page.props.auth.user.name }}
@@ -53,9 +55,9 @@ console.log(props.projects);
                 </div>
               </div>
 
+              <h3 class="mt-5">Progetti</h3>
               <div class=" d-flex flex-column gap-2 px-3">
                 <div class="projects">
-                  <h5 class="mt-3">Progetti</h5>
                   <ul class="list-group list-group-flush">
                     <li v-for="project in projects" :key="project.id" class="list-group-item p-1">
 

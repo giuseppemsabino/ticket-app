@@ -18,6 +18,7 @@ function destroy(userId) {
 </script>
 
 <template>
+
   <Head title="Utenti" />
 
   <AuthenticatedLayout>
@@ -27,8 +28,8 @@ function destroy(userId) {
 
     <div class="container mt-5">
       <div class="mb-3">
-        <Link href="{{ route('users.create') }}">
-          <PrimaryButton>Crea Nuovo Utente</PrimaryButton>
+        <Link href="/users/create">
+        <PrimaryButton>Crea Nuovo Utente</PrimaryButton>
         </Link>
       </div>
 
@@ -71,15 +72,6 @@ function destroy(userId) {
             </tbody>
           </table>
         </div>
-      </div>
-
-      <!-- Se vuoi paginazione -->
-      <div class="mt-3">
-        <!-- esempio semplice, se il controller restituisce pagination -->
-        <!--
-        <Link v-if="props.users.prev_page_url" :href="props.users.prev_page_url">Precedente</Link>
-        <Link v-if="props.users.next_page_url" :href="props.users.next_page_url">Successivo</Link>
-        -->
       </div>
     </div>
   </AuthenticatedLayout>
