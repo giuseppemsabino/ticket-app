@@ -15,10 +15,13 @@ const props = defineProps({
   tickets: Array,
   userLog: Object,
   statuses: Array,
-  comments: Array
+  comments: Array,
+  projects: Array,
 });
 
 const role = props.userLog?.role_id ?? '—';
+
+console.log(props.projects);
 
 </script>
 
@@ -51,7 +54,16 @@ const role = props.userLog?.role_id ?? '—';
               </div>
 
               <div class=" d-flex flex-column gap-2 px-3">
+                <div class="projects">
+                  <h5 class="mt-3">Progetti</h5>
+                  <ul class="list-group list-group-flush">
+                    <li v-for="project in projects" :key="project.id" class="list-group-item p-1">
 
+                      {{ project.name }}
+
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>

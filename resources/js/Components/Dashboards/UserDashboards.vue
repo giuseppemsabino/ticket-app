@@ -11,7 +11,7 @@ const props = defineProps({
   tickets: Array,
   userLog: Object,
   statuses: Array,
-  comments: Array
+  comments: Array,
 });
 
 const ticketComments = (ticketId) =>
