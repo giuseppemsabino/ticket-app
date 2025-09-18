@@ -47,7 +47,6 @@ const closeTickets = computed(() =>
   )
 )
 
-console.log('Closed Tickets:', closeTickets)
 </script>
 
 <template>

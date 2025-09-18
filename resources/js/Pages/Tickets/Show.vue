@@ -1,7 +1,8 @@
 <script setup>
-import { Head } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 import StatusBadge from '@/Components/StatusBadge.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import PrimaryButton from '@/Components/PrimaryButton.vue';
 
 const props = defineProps({
   ticket: Object,
@@ -98,7 +99,7 @@ const getTechnicianName = (technicianId) => {
               </p>
               <small class="text-muted">{{
                 new Date(comment.created_at).toLocaleString()
-                }}</small>
+              }}</small>
             </div>
           </div>
           <div v-else>
@@ -109,6 +110,13 @@ const getTechnicianName = (technicianId) => {
       <div v-else>
         <p>Caricamento ticket...</p>
       </div>
+    </div>
+    <div class="text-center mt-4">
+      <PrimaryButton>
+        <Link href="/dashboard" class="btn-link text-decoration-none ">
+        Torna alla Dashboard
+        </Link>
+      </PrimaryButton>
     </div>
   </AuthenticatedLayout>
 </template>
