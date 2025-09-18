@@ -9,6 +9,7 @@ const props = defineProps({
   statuses: Array,
   users: Array,
   areas: Array,
+  userName: Array
 })
 
 const page = usePage()
@@ -72,7 +73,7 @@ const closeTickets = computed(() =>
       <div class="row flex-nowrap overflow-x-auto mb-5" style="max-height: 500px;">
         <div v-for="ticket in filteredTickets" :key="ticket.id" class="col-auto mb-4">
 
-          <TicketCard :ticket="ticket" :statuses="statuses" :users="users" :areas="areas" />
+          <TicketCard :ticket="ticket" :statuses="statuses" :users="users" :areas="areas" :userName="userName" />
         </div>
       </div>
     </div>
@@ -108,7 +109,7 @@ const closeTickets = computed(() =>
       <div class="row flex-nowrap overflow-x-auto" style="max-height: 500px;">
 
         <div v-for="ticket in technicianTickets" :key="ticket.id" class="col-auto mb-4">
-          <TicketCard :ticket="ticket" :statuses="statuses" :users="users" :areas="areas" />
+          <TicketCard :ticket="ticket" :statuses="statuses" :users="users" :areas="areas" :userName="userName" />
         </div>
 
       </div>

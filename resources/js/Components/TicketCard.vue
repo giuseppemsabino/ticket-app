@@ -6,24 +6,22 @@ import StatusBadge from '../Components/StatusBadge.vue'
 const props = defineProps({
   ticket: Object,
   statuses: Array,
-  users: Array,
   areas: Array,
 })
 
 const page = usePage()
 
 const statuses = computed(() => props.statuses ?? page.props?.statuses ?? [])
-const users = computed(() => props.users ?? page.props?.users ?? [])
 const areas = computed(() => props.areas ?? page.props?.areas ?? [])
 
 function getAreaName(areaId) {
   const area = areas.value.find((area) => area.id === areaId);
   return area ? area.name : "N/A";
 }
-function getUserName(userId) {
-  const user = users.value.find((user) => user.id === userId);
+const getUserName = (userId) => {
+  const user = props.userName.find(user => user.id === userId);
   return user ? user.name : "N/A";
-}
+};
 </script>
 
 <template>
@@ -42,7 +40,6 @@ function getUserName(userId) {
     <div class="card-body d-flex flex-column">
       <h5 class="card-title">{{ ticket.description }}</h5>
       <p class="card-text mb-1"><strong>Area:</strong> {{ getAreaName(ticket.area_id) }}</p>
-      <p class="card-text mb-1"><strong>Utente:</strong> {{ getUserName(ticket.user_id) }}</p>
       <div class="mt-auto">
         <p class="card-text"><small class="text-muted">Creato il: {{ new
           Date(ticket.created_at).toLocaleString() }}</small></p>
