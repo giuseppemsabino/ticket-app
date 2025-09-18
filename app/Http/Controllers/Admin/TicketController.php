@@ -137,7 +137,7 @@ class TicketController extends Controller
 
 
         if ($request->hasFile('u_images')) {
-            $user_image_url = Storage::disk('public')->putFile("user_images", $data['u_images']);
+            $user_image_url = Storage::putFile("user_images", $data['u_images']);
             $newTicket->u_images = $user_image_url;
         }
 

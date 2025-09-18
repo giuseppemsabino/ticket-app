@@ -7,6 +7,7 @@ const props = defineProps({
   userLog: Object,
   statuses: Array,
   technicians: Array,
+  userName: Array,
 });
 
 const getAreaName = (areaId) => {
@@ -15,9 +16,8 @@ const getAreaName = (areaId) => {
 };
 
 const getUserName = (userId) => {
-  return props.userLog && props.userLog.id === userId
-    ? props.userLog.name
-    : "N/A";
+  const user = props.userName.find((user) => user.id === userId);
+  return user ? user.name : "N/A";
 };
 
 const getStatusName = (statusId) => {
@@ -39,6 +39,8 @@ const deleteTicket = (ticketId) => {
     router.delete(route("tickets.destroy", ticketId));
   }
 };
+
+
 </script>
 
 
