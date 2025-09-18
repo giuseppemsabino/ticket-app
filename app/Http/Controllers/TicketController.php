@@ -96,7 +96,7 @@ class TicketController extends Controller
         return inertia('Tickets/Index', compact('tickets', 'areas', 'statuses', 'projects', 'userLog', 'technicians'));
     }
 
-   
+
 
     /**
      * Show the form for creating a new resource.
@@ -132,13 +132,11 @@ class TicketController extends Controller
         $newTicket->user_id = Auth::user()->id;
 
 
-        if (array_key_exists('u_images', $data)) {
+        if ($request->hasFile('u_images')) {
             $user_image_url = Storage::putFile("user_images", $data['u_images']);
-
             $newTicket->u_images = $user_image_url;
         }
 
-        //  dd($data); //? se vuoi vedere i dati che stai passando alla vista decommenta questa linea
         $newTicket->save();
 
         return redirect()->route('tickets.show', $newTicket);
@@ -226,7 +224,7 @@ class TicketController extends Controller
         }
 
 
-        dd($request->all()); //? se vuoi vedere i dati che stai passando alla vista decommenta questa linea
+        //dd($request->all()); //? se vuoi vedere i dati che stai passando alla vista decommenta questa linea
 
         // Salva le modifiche al database
         $ticket->update();

@@ -1,7 +1,8 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { usePage } from '@inertiajs/vue3'
 import TicketCard from '../TicketCard.vue'
+import TicketTable from '../TicketTable.vue'
 
 const props = defineProps({
   tickets: Array,
@@ -12,6 +13,16 @@ const props = defineProps({
 
 const page = usePage()
 
+const viewModeFiltered = ref('card')
+const viewModeTechnichian = ref('card')
+
+const toogleViewModeFiltered = () => {
+  viewModeFiltered.value = viewModeFiltered.value === 'card' ? 'list' : 'card'
+}
+
+const toogleViewModeTechnician = () => {
+  viewModeTechnichian.value = viewModeTechnichian.value === 'card' ? 'list' : 'card'
+}
 
 const tickets = computed(() => props.tickets ?? page.props?.tickets ?? [])
 
@@ -33,23 +44,71 @@ const technicianTickets = computed(() =>
 
 <template>
   <div>
-    <h2>Ticket in attesa</h2>
-    <div class="row flex-nowrap overflow-x-auto g-3 mb-5" style="max-height: 500px;">
-      <div v-for="ticket in filteredTickets" :key="ticket.id" class="col mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
 
-        <TicketCard :ticket="ticket" :statuses="statuses" :users="users" :areas="areas" />
+      <h2>Ticket in attesa</h2>
+
+      <div class="btn-group  mb-3 " role="group">
+        <button class="btn" :class="viewModeFiltered === 'card' ? 'btn-secondary' : 'btn-outline-secondary'"
+          @click="viewModeFiltered = 'card'">
+          &#10066;
+        </button>
+        <button class="btn" :class="viewModeFiltered === 'list' ? 'btn-secondary' : 'btn-outline-secondary'"
+          @click="viewModeFiltered = 'list'">
+          &#9776;
+        </button>
       </div>
     </div>
+
+
+    <div v-if="viewModeFiltered === 'card'" class="cards">
+      <div class="row flex-nowrap overflow-x-auto mb-5" style="max-height: 500px;">
+        <div v-for="ticket in filteredTickets" :key="ticket.id" class="col-auto mb-4">
+
+          <TicketCard :ticket="ticket" :statuses="statuses" :users="users" :areas="areas" />
+        </div>
+      </div>
+    </div>
+
+    <div v-else class="list-view rounded border shadow-sm p-3 mb-5 bg-body-tertiary">
+      <TicketTable :tickets="filteredTickets" :statuses="statuses" :users="users" :areas="areas" />
+    </div>
+
     <hr>
 
-    <h2>
-      Ticket assegnati
-    </h2>
-    <div class="row flex-nowrap overflow-x-auto" style="max-height: 500px;">
-      <div v-for="ticket in technicianTickets" :key="ticket.id" class="col mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
 
-        <TicketCard :ticket="ticket" :statuses="statuses" :users="users" :areas="areas" />
+      <h2>
+        Ticket assegnati
+      </h2>
+
+      <div class="btn-group  mb-3 " role="group">
+        <button type="button" class="btn "
+          :class="viewModeTechnichian === 'card' ? 'btn-secondary' : 'btn-outline-secondary'"
+          @click="viewModeTechnichian = 'card'">
+          &#10066;
+        </button>
+        <button type="button" class="btn"
+          :class="viewModeTechnichian === 'list' ? 'btn-secondary' : 'btn-outline-secondary'"
+          @click="viewModeTechnichian = 'list'">
+          &#9776;
+        </button>
       </div>
+    </div>
+
+
+    <div v-if="viewModeTechnichian === 'card'" class="card-view">
+      <div class="row flex-nowrap overflow-x-auto" style="max-height: 500px;">
+
+        <div v-for="ticket in technicianTickets" :key="ticket.id" class="col-auto mb-4">
+          <TicketCard :ticket="ticket" :statuses="statuses" :users="users" :areas="areas" />
+        </div>
+
+      </div>
+    </div>
+
+    <div v-else class="list-view rounded border shadow-sm p-3 mb-5 bg-body-tertiary">
+      <TicketTable :tickets="technicianTickets" :statuses="statuses" :users="users" :areas="areas" />
     </div>
 
   </div>
