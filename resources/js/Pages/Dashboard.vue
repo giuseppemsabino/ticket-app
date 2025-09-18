@@ -7,6 +7,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 //Components
 import UserDashboards from '@/Components/Dashboards/UserDashboards.vue';
 import Admin_techDashboard from '@/Components/Dashboards/Admin_techDashboard.vue';
+import SuperAdminDashboard from '@/Components/Dashboards/SuperAdminDashboard.vue';
 
 
 
@@ -20,9 +21,6 @@ const props = defineProps({
 });
 
 const role = props.userLog?.role_id ?? '—';
-
-console.log(props.projects);
-
 </script>
 
 <template>
@@ -33,8 +31,12 @@ console.log(props.projects);
     <template #header class="header">
       <h2 class="fs-4 fw-semibold">Dashboard</h2>
     </template>
+    <div v-if="role === 4">
+      <SuperAdminDashboard :users="users" />
+    </div>
 
-    <div class="py-4">
+
+    <div v-else class="py-4">
       <div class="container-fluid container-lg">
         <div class="row">
 
@@ -60,9 +62,7 @@ console.log(props.projects);
                 <div class="projects">
                   <ul class="list-group list-group-flush">
                     <li v-for="project in projects" :key="project.id" class="list-group-item p-1">
-
                       {{ project.name }}
-
                     </li>
                   </ul>
                 </div>
@@ -80,9 +80,8 @@ console.log(props.projects);
             </div>
 
             <!-- Admin / Technician Dashboard -->
-            <div v-else="role === 2 || role === 3 || role === 4">
+            <div v-else-if="role === 2 || role === 3">
               <Admin_techDashboard />
-
             </div>
 
 

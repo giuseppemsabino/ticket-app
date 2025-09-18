@@ -52,14 +52,16 @@ function destroy(userId) {
                 <td>{{ user.name }}</td>
                 <td>{{ user.email }}</td>
                 <td>
-                  <span v-for="role in user.roles" :key="role.id" class="badge bg-primary me-1">
-                    {{ role.name }}
-                  </span>
+                  <div v-if="user.roles.length">
+                    {{user.roles.map(role => role.name).join(', ')}}
+                  </div>
+                  <div v-else>-</div>
                 </td>
                 <td>
-                  <span v-for="project in user.projects" :key="project.id" class="badge bg-success me-1">
-                    {{ project.name }}
-                  </span>
+                  <div v-if="user.projects.length">
+                    {{user.projects.map(project => project.name).join(', ')}}
+                  </div>
+                  <div v-else>-</div>
                 </td>
                 <td>
                   <Link :href="route('users.edit', user.id)" class="btn btn-sm btn-warning me-2">Modifica</Link>

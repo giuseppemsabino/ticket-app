@@ -1,5 +1,8 @@
 <script setup>
-import { router } from "@inertiajs/vue3";
+import { Head, Link, router } from "@inertiajs/vue3";
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import PrimaryButton from '@/Components/PrimaryButton.vue';
+import StatusBadge from '@/Components/StatusBadge.vue';
 
 const props = defineProps({
   tickets: Array,
@@ -7,6 +10,8 @@ const props = defineProps({
   userLog: Object,
   statuses: Array,
   technicians: Array,
+  userName: Array,
+  projects: Array,
 });
 
 const getAreaName = (areaId) => {
@@ -15,16 +20,13 @@ const getAreaName = (areaId) => {
 };
 
 const getUserName = (userId) => {
-  return props.userLog && props.userLog.id === userId
-    ? props.userLog.name
-    : "N/A";
+  const user = props.userName.find((name, index) => index + 1 === userId);
+  return user || "N/A";
 };
 
-const getStatusName = (statusId) => {
-  const status = props.statuses.find(
-    (status) => status.id === statusId
-  );
-  return status ? status.name : "N/A";
+const getProjectName = (projectId) => {
+  const project = props.projects.find((project) => project.id === projectId);
+  return project ? project.name : "N/A";
 };
 
 const getTechnicianName = (technicianId) => {
@@ -43,35 +45,70 @@ const deleteTicket = (ticketId) => {
 
 
 <template>
-  <div>
-    <h2>Lista Ticket</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Descrizione</th>
-          <th>Area</th>
-          <th>Utente</th>
-          <th>Status</th>
-          <th>Tecnico</th>
-          <th>Azioni</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="ticket in tickets" :key="ticket.id">
-          <td>{{ ticket.id }}</td>
-          <td>{{ ticket.description }}</td>
-          <td>{{ getAreaName(ticket.area_id) }}</td>
-          <td>{{ getUserName(ticket.user_id) }}</td>
-          <td>{{ getStatusName(ticket.status_id) }}</td>
-          <td>{{ getTechnicianName(ticket.assigned_to) }}</td>
-          <td>
-            <button @click="deleteTicket(ticket.id)">
-              Elimina
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+
+  <Head title="Tickets" />
+
+  <AuthenticatedLayout>
+    <template #header>
+      <h2 class="fs-4 fw-semibold">Gestione Tickets</h2>
+    </template>
+
+    <div class="container mt-5">
+      <div class="d-flex justify-content-end mb-4">
+        <div>
+          <Link href="/tickets/archive" class="btn btn-outline-secondary">
+          Archivio Ticket
+          </Link>
+        </div>
+      </div>
+
+      <div class="card shadow">
+        <div class="card-body p-0">
+          <table class="table table-striped table-hover mb-0 p-3">
+            <thead class="table-dark">
+              <tr>
+                <th>ID</th>
+                <th>Progetto</th>
+                <th>Area</th>
+                <th>Stato</th>
+                <th>Utente</th>
+                <th>Tecnico</th>
+                <th>Data</th>
+                <th>Azioni</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="ticket in props.tickets" :key="ticket.id">
+                <td>{{ ticket.id }}</td>
+                <td>{{ getProjectName(ticket.project_id) }}</td>
+                <td>{{ getAreaName(ticket.area_id) }}</td>
+                <td>
+                  <StatusBadge :status-id="ticket.status_id" :statuses="props.statuses" size="fs-6" />
+                </td>
+                <td>{{ getUserName(ticket.user_id) }}</td>
+                <td>{{ getTechnicianName(ticket.assigned_to) || 'Non assegnato' }}</td>
+                <td>{{ new Date(ticket.created_at).toLocaleDateString() }}</td>
+                <td>
+                  <div class="d-flex gap-1">
+                    <Link :href="route('tickets.show', ticket.id)" class="btn btn-sm btn-primary">
+                    Visualizza
+                    </Link>
+                    <Link :href="route('tickets.edit', ticket.id)" class="btn btn-sm btn-warning">
+                    Modifica
+                    </Link>
+                    <button class="btn btn-sm btn-danger" @click="deleteTicket(ticket.id)">
+                      Elimina
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr v-if="props.tickets.length === 0">
+                <td colspan="9" class="text-center text-muted py-4">Nessun ticket trovato</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </AuthenticatedLayout>
 </template>
