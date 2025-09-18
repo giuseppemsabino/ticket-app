@@ -16,7 +16,12 @@ const getAreaName = (areaId) => {
 };
 
 const getUserName = (userId) => {
-  const user = props.userName.find((user) => user.id === userId);
+  // First check if it's the current user
+  if (props.userLog && userId === props.userLog.id) {
+    return props.userLog.name;
+  }
+ // Then check in userName array
+  const user = props.userName.find(user => user.id === userId);
   return user ? user.name : "N/A";
 };
 
@@ -40,6 +45,7 @@ const deleteTicket = (ticketId) => {
   }
 };
 
+console.log(props.userName);
 
 </script>
 

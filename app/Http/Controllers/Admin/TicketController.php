@@ -45,7 +45,7 @@ class TicketController extends Controller
             'role_id' => Auth::user()->roles->first()->id
 
         ];
-        $userName = User::pluck('name');
+         $userName = User::select('id', 'name')->get();
         // Ottieni tutti gli utenti con il ruolo di tecnico (role_id = 2)
         $technicians = User::whereHas('roles', function ($query) {
             $query->where('role_id', 2);
@@ -86,8 +86,8 @@ class TicketController extends Controller
             'role_id' => Auth::user()->roles->first()->id
 
         ];
-        $userName = User::pluck('name');
-
+        $userName = User::select('id', 'name')->get();
+        //dd($userName);
         // Ottieni tutti gli utenti con il ruolo di tecnico (role_id = 2)
         $technicians = User::whereHas('roles', function ($query) {
             $query->where('role_id', 2);
@@ -164,6 +164,7 @@ class TicketController extends Controller
             'name' => Auth::user()->name,
             'role_id' => Auth::user()->roles->first()->id
         ];
+        $userName = User::select('id', 'name')->get();
         $technicians = User::whereHas('roles', function ($query) {
             $query->where('role_id', 2);
         })->get();
@@ -195,6 +196,7 @@ class TicketController extends Controller
             'name' => Auth::user()->name,
             'role_id' => Auth::user()->roles->first()->id
         ];
+        $userName = User::select('id', 'name')->get();
         $technicians = User::whereHas('roles', function ($query) {
             $query->where('role_id', 2);
         })->get();
