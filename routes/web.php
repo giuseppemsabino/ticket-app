@@ -1,13 +1,12 @@
 <?php
 
-use App\Http\Controllers\CommentController;
+use App\Http\Controllers\Admin\CommentController as AdminCommentController;
+use App\Http\Controllers\Admin\TicketController as AdminTicketController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\TicketController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use App\Models\Ticket;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -18,7 +17,7 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', [TicketController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [AdminTicketController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -26,13 +25,16 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::post('tickets/{ticket}/comments', [CommentController::class, 'store'])->name('comments.store');
-Route::delete('comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
-
-Route::get('tickets/archive', [TicketController::class, 'archive'])->name('tickets.archive');
-Route::get('tickets/{ticket}/restore', [TicketController::class, 'restore'])->name('tickets.restore');
-Route::delete('tickets/{ticket}/force', [TicketController::class,'forceDestroy'])->name('tickets.forceDestroy');
-Route::resource('tickets', TicketController::class);
+Route::middleware(['auth', 'verified'])->group(function () {
+    // Rotte protette da autenticazione e verifica email
+    Route::post('tickets/{ticket}/comments', [AdminCommentController::class, 'store'])->name('comments.store');
+    Route::delete('comments/{comment}', [AdminCommentController::class, 'destroy'])->name('comments.destroy');
+    
+    Route::get('tickets/archive', [AdminTicketController::class, 'archive'])->name('tickets.archive');
+    Route::get('tickets/{ticket}/restore', [AdminTicketController::class, 'restore'])->name('tickets.restore');
+    Route::delete('tickets/{ticket}/force', [AdminTicketController::class,'forceDestroy'])->name('tickets.forceDestroy');
+    Route::resource('tickets', AdminTicketController::class);
+});
 
 
 
