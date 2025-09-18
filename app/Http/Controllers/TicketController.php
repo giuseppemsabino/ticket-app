@@ -27,11 +27,12 @@ class TicketController extends Controller
 
         if ($user->roles->contains('id', 2) || $user->roles->contains('id', 3) || $user->roles->contains('id', 4)) {
             // Se è tecnico (2), admin (3) o superadmin (4)
-            $tickets = Ticket::all();
+            $tickets = Ticket::with('comments.user')->get();
         } else {
           // Altri utenti → solo i propri ticket
           $tickets = Ticket::where('user_id', $user->id)
-          ->get();
+                          ->with('comments.user')
+                          ->get();
         }
 
         $areas = Area::all();
@@ -48,10 +49,12 @@ class TicketController extends Controller
             $query->where('role_id', 2);
         })->get();
 
-        //dd($comments);
 
+        $comments = $tickets->flatMap(function ($ticket) {
+            return $ticket->comments;
+        });
 
-        return inertia('Dashboard', compact('tickets', 'areas', 'statuses', 'projects', 'userLog', 'technicians'));
+        return inertia('Dashboard', compact('tickets', 'areas', 'statuses', 'projects', 'userLog', 'technicians', 'comments'));
     }
 
 
@@ -93,7 +96,7 @@ class TicketController extends Controller
         return inertia('Tickets/Index', compact('tickets', 'areas', 'statuses', 'projects', 'userLog', 'technicians'));
     }
 
-   
+
 
     /**
      * Show the form for creating a new resource.
@@ -129,13 +132,11 @@ class TicketController extends Controller
         $newTicket->user_id = Auth::user()->id;
 
 
-        if (array_key_exists('u_images', $data)) {
+        if ($request->hasFile('u_images')) {
             $user_image_url = Storage::putFile("user_images", $data['u_images']);
-
             $newTicket->u_images = $user_image_url;
         }
 
-        //  dd($data); //? se vuoi vedere i dati che stai passando alla vista decommenta questa linea
         $newTicket->save();
 
         return redirect()->route('tickets.show', $newTicket);
@@ -223,7 +224,7 @@ class TicketController extends Controller
         }
 
 
-        dd($request->all()); //? se vuoi vedere i dati che stai passando alla vista decommenta questa linea
+        //dd($request->all()); //? se vuoi vedere i dati che stai passando alla vista decommenta questa linea
 
         // Salva le modifiche al database
         $ticket->update();

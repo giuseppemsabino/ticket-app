@@ -1,6 +1,6 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
-import NavLink from '@/Components/NavLink.vue';
+
 //Layout
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 
@@ -15,10 +15,13 @@ const props = defineProps({
   tickets: Array,
   userLog: Object,
   statuses: Array,
-  comments: Array
+  comments: Array,
+  projects: Array,
 });
 
 const role = props.userLog?.role_id ?? '—';
+
+console.log(props.projects);
 
 </script>
 
@@ -36,7 +39,7 @@ const role = props.userLog?.role_id ?? '—';
         <div class="row">
 
           <!-- Profile details-->
-          <div class="col-4">
+          <div class="col-3">
             <div class="border-top border-light py-3">
               <h3>UTENTE</h3>
               <img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png" alt=""
@@ -51,13 +54,22 @@ const role = props.userLog?.role_id ?? '—';
               </div>
 
               <div class=" d-flex flex-column gap-2 px-3">
+                <div class="projects">
+                  <h5 class="mt-3">Progetti</h5>
+                  <ul class="list-group list-group-flush">
+                    <li v-for="project in projects" :key="project.id" class="list-group-item p-1">
 
+                      {{ project.name }}
+
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
 
           <!-- Dashboard content-->
-          <div class="col-7">
+          <div class="col-9">
 
             <!-- User Dashboard -->
             <div v-if="role === 1">

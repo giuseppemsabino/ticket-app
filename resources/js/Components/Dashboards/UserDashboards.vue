@@ -1,13 +1,17 @@
 <script setup>
+import { Link } from '@inertiajs/vue3';
+
+
+
+//Components
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import StatusBadge from '@/Components/StatusBadge.vue';
-import { Link } from '@inertiajs/vue3';
 
 const props = defineProps({
   tickets: Array,
   userLog: Object,
   statuses: Array,
-  comments: Array
+  comments: Array,
 });
 
 const ticketComments = (ticketId) =>
@@ -43,6 +47,8 @@ const ticketComments = (ticketId) =>
               </div>
             </button>
           </h2>
+
+
           <div :id="`collapse-${ticket.id}`" class="accordion-collapse collapse" data-bs-parent="#TicketAccordion"
             :aria-labelledby="`heading-${ticket.id}`">
             <div class="accordion-body">
@@ -61,12 +67,8 @@ const ticketComments = (ticketId) =>
                   <p>Nessun commento per questo ticket.</p>
                 </div>
               </div>
-              <div class="text-end">
-                <span class="text-muted">
-                  Ultimo aggiornamento: {{ new Date(ticket.updated_at).toLocaleString() }}
-                </span>
-              </div>
-              <div class="card-footer mt-3 text-center">
+              <hr>
+              <div class=" mt-3 text-center">
                 <Link :href="`/tickets/${ticket.id}`" class=" text-decoration-none">
                 Vedi Dettagli
                 </Link>
