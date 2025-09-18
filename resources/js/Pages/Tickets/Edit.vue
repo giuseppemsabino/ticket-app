@@ -1,7 +1,7 @@
 <script setup>
 import { useForm, Head } from "@inertiajs/vue3";
-
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import { getUserName } from '@/lib/utils';
 
 const props = defineProps({
   ticket: Object,
@@ -10,6 +10,7 @@ const props = defineProps({
   projects: Array,
   userLog: Object, // tecnico loggato
   technicians: Array, // lista tecnici
+  userName: Array,
 });
 
 const comments = props.ticket.comments || []; // lista commenti del ticket
@@ -44,7 +45,8 @@ function deleteComment(commentId) {
     commentForm.delete(route("comments.destroy", commentId));
   }
 }
-console.log(props.ticket);
+
+const getUser = (userId) => getUserName(userId, props.userName);
 </script>
 
 <template>
@@ -68,6 +70,17 @@ console.log(props.ticket);
             <p class="text-center fs-3">
               {{ props.ticket.description }}
             </p>
+            <div class="image w-25 mx-auto mb-4">
+              <template v-if="ticket.u_images">
+                <a :href="`/storage/${ticket.u_images}`" target="_blank">
+                  <img :src="`/storage/${ticket.u_images}`" alt="Ticket image" class="img-fluid rounded">
+                </a>
+              </template>
+            </div>
+          </div>
+
+          <div>
+            <p>creato da : {{ getUser(ticket.user_id) }}</p>
           </div>
 
           <form @submit.prevent="submit">

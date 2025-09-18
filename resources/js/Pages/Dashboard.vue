@@ -1,5 +1,5 @@
 <script setup>
-import { Head, Link } from '@inertiajs/vue3';
+import { Head } from '@inertiajs/vue3';
 
 //Layout
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
@@ -7,7 +7,6 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 //Components
 import UserDashboards from '@/Components/Dashboards/UserDashboards.vue';
 import Admin_techDashboard from '@/Components/Dashboards/Admin_techDashboard.vue';
-
 
 
 //Props
@@ -21,7 +20,6 @@ const props = defineProps({
 
 const role = props.userLog?.role_id ?? '—';
 
-console.log(props.projects);
 
 </script>
 
