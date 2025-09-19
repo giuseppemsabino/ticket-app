@@ -166,7 +166,7 @@ class TicketController extends Controller
 
 
         if ($request->hasFile('u_images')) {
-            
+
             $user_image_url = Storage::putFile("user_images", $data['u_images']);
             $newTicket->u_images = $user_image_url;
         }
@@ -262,6 +262,7 @@ class TicketController extends Controller
         $ticket->status_id = $data['status_id'];
         $ticket->description = $data['description'];
         $ticket->assigned_to = $data['assigned_to'];
+        $ticket->user_visibility = isset($data['user_visibility']) ? (bool)$data['user_visibility'] : false;
 
 
         if (array_key_exists('t_images', $data)) {
@@ -271,6 +272,7 @@ class TicketController extends Controller
             $ticket->t_images = Storage::putFile("tech_images", $data['t_images']);
         }
 
+        dd($data);
 
         //dd($request->all()); //? se vuoi vedere i dati che stai passando alla vista decommenta questa linea
 

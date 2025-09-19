@@ -16,6 +16,7 @@ const props = defineProps({
   userLog: Object, // tecnico loggato
   technicians: Array, // lista tecnici
   userName: Array,
+  user_visibility: Boolean,
 });
 
 //comments list
@@ -28,6 +29,7 @@ const form = useForm({
   project_id: props.ticket.project_id,
   status_id: props.ticket.status_id,
   assigned_to: props.ticket.assigned_to || "", // selection dei tecnici
+  user_visibility: props.ticket.user_visibility || false,
 });
 
 // update form submit
@@ -162,6 +164,18 @@ const getUser = (userId) => getUserName(userId, props.userName);
                 </div>
               </div>
 
+              <!-- Visibilità per l'utente -->
+              <div class="col-md-6 mb-3 d-flex align-items-center">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" v-model="form.user_visibility" id="userVisibility">
+                  <label class="form-check-label" for="userVisibility">
+                    <i class="fas fa-eye me-2 text-primary"></i>Rendi visibile all'utente
+                  </label>
+                </div>
+                <div v-if="form.errors.user_visibility" class="text-danger small mt-1 ms-3">
+                  <i class="fas fa-exclamation-circle me-1"></i>{{ form.errors.user_visibility }}
+                </div>
+              </div>
               <!-- Tecnico assegnato -->
               <div class="col-md-6 mb-3">
                 <label class="form-label">
@@ -218,6 +232,7 @@ const getUser = (userId) => getUserName(userId, props.userName);
           </form>
         </div>
       </div>
+
       <!-- Sezione Commenti -->
       <div class="card shadow">
         <div class="card-header bg-light py-3">
