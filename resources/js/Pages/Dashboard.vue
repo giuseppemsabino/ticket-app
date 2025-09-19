@@ -48,9 +48,7 @@ const role = props.userLog?.role_id ?? '—';
             <!-- Profile details-->
             <div class="border-top border-light py-3">
               <h3>
-                <Link href="{{ route('profile.edit') }}" class="text-decoration-none text-dark">
-                <i class="fas fa-user me-2"></i>Profilo
-                </Link>
+                <i class="fa-solid fa-user me-2"></i>Profilo
               </h3>
               <div class="px-3">
                 <div class="fs-6 fw-medium text-dark">

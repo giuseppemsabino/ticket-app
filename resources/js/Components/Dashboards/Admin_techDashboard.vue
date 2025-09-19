@@ -34,7 +34,10 @@ const currentUserId = computed(() =>
 )
 
 const filteredTickets = computed(() =>
-  tickets.value.filter(t => Number(t.status_id) === 1)
+  tickets.value.filter(t =>
+    Number(t.status_id) === 1 &&
+    projects.value.some(p => p.id === t.project_id)
+  )
 )
 
 const technicianTickets = computed(() =>
