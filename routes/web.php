@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\CommentController as AdminCommentController;
+use App\Http\Controllers\Admin\ProjectController as AdminProjectController;
 use App\Http\Controllers\Admin\TicketController as AdminTicketController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\ProfileController;
@@ -28,14 +29,25 @@ Route::middleware('auth')->group(function () {
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
+
+    // !Rotte protette da autenticazione e verifica email
+
+    // *Rotte resource per la gestione dei progetti
+    Route::resource('projects', AdminProjectController::class);
+    
+    // *Rotte resource per la gestione degli utenti (solo per superadmin)
     Route::resource('users', AdminUserController::class);
-    // Rotte protette da autenticazione e verifica email
+
+    // *Rotte per la gestione dei commenti
     Route::post('tickets/{ticket}/comments', [AdminCommentController::class, 'store'])->name('comments.store');
     Route::delete('comments/{comment}', [AdminCommentController::class, 'destroy'])->name('comments.destroy');
-    
+
+    // *Rotte per la gestione dei ticket soft-deleted
     Route::get('tickets/archive', [AdminTicketController::class, 'archive'])->name('tickets.archive');
     Route::get('tickets/{ticket}/restore', [AdminTicketController::class, 'restore'])->name('tickets.restore');
     Route::delete('tickets/{ticket}/force', [AdminTicketController::class,'forceDestroy'])->name('tickets.forceDestroy');
+
+    // *Rotte resource per i ticket
     Route::resource('tickets', AdminTicketController::class);
 });
 

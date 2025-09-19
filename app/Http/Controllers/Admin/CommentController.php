@@ -40,6 +40,7 @@ class CommentController extends Controller
         $comment->ticket_id = $ticket->id ;
         $comment->user_id = Auth::user()->id ;
         $comment->content = $data['content'];
+        $comment->user_visibility = isset($data['user_visibility']) ? (bool)$data['user_visibility'] : false;
 
         $comment->save();
 

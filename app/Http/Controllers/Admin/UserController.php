@@ -77,6 +77,7 @@ class UserController extends Controller
         $user->load('roles', 'projects');
 
         return inertia('Users/UserShow', compact('user'));
+        return inertia('Users/Show', compact('user'));
     }
 
     /**
