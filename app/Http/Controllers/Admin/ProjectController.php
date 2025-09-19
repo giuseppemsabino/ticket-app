@@ -7,13 +7,18 @@ use App\Models\Area;
 use App\Models\Project;
 use Illuminate\Http\Request;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class ProjectController extends Controller
 {
+    use AuthorizesRequests;
+    
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+        $this->authorize('viewAny', Project::class);
+
         $projects = Project::all();
         
         return inertia('Projects/ProjectIndex', compact('projects'));
@@ -24,6 +29,8 @@ class ProjectController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Project::class);
+
         $areas = Area::all();
 
         return inertia('Projects/ProjectCreate', compact('areas'));
@@ -34,6 +41,8 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', Project::class);
+
         $data = $request->all();
 
         // Creazione progetto
@@ -64,6 +73,8 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
+        $this->authorize('update', $project);
+
         $areas = Area::all();
 
         return inertia('Projects/ProjectEdit', compact('project', 'areas'));
@@ -74,6 +85,8 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
+        $this->authorize('update', $project);
+
         $data = $request->all();
 
         $project->name = $data['name'];
@@ -93,6 +106,9 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
+        $this->authorize('delete', $project);
+
+        // Rimuovi le associazioni con le aree
         $project->areas()->detach();
         $project->delete();
 
