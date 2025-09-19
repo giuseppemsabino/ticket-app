@@ -6,6 +6,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 
 //Components
 import PrimaryButton from "@/Components/PrimaryButton.vue";
+import { getUserName } from '@/lib/utils';
 
 //Props
 const props = defineProps({
@@ -14,7 +15,7 @@ const props = defineProps({
   areas: Array,
   projects: Array,
   userLog: Object, // tecnico loggato
-  technicians: Array, // lista tecnici
+  technicians: Array,
   userName: Array,
   user_visibility: Boolean,
 });
@@ -54,7 +55,6 @@ function deleteComment(commentId) {
   }
 }
 
-const getUser = (userId) => getUserName(userId, props.userName);
 </script>
 
 <template>
@@ -104,7 +104,16 @@ const getUser = (userId) => getUserName(userId, props.userName);
             </div>
           </div>
 
-          <h5 class="mb-3">
+          <div class="my-3">
+            <p class="mb-2">
+              <i class="fas fa-user me-2 text-primary"></i><strong>Creatore:</strong>
+              {{ getUserName(ticket.user_id, props.userName) }}
+            </p>
+          </div>
+          <hr>
+
+          <!-- Form di modifica -->
+          <h5 class="mt-4 mb-3">
             <i class="fas fa-pen-to-square me-2 text-primary"></i>Modifica informazioni
           </h5>
 
@@ -112,25 +121,19 @@ const getUser = (userId) => getUserName(userId, props.userName);
             <div class="row g-3">
               <!-- Progetto -->
               <div class="col-md-6 mb-3">
-                <label class="form-label">
+                <label class="form-label fw-bold">
                   <i class="fas fa-project-diagram me-2 text-primary"></i>Progetto
                 </label>
-                <select v-model="form.project_id" class="form-select">
-                  <option disabled value="">
-                    -- Seleziona Progetto --
-                  </option>
-                  <option v-for="project in props.projects" :key="project.id" :value="project.id">
-                    {{ project.name }}
-                  </option>
-                </select>
-                <div v-if="form.errors.project_id" class="text-danger small mt-1">
-                  <i class="fas fa-exclamation-circle me-1"></i>{{ form.errors.project_id }}
+                <div class="p-2">
+                  <span class="fw-medium">
+                    {{props.projects.find(p => p.id === props.ticket.project_id)?.name || 'Nessun progetto'}}
+                  </span>
                 </div>
               </div>
 
               <!-- Area -->
               <div class="col-md-6 mb-3">
-                <label class="form-label">
+                <label class="form-label fw-bold">
                   <i class="fas fa-layer-group me-2 text-primary"></i>Area
                 </label>
                 <select v-model="form.area_id" class="form-select">
@@ -148,7 +151,7 @@ const getUser = (userId) => getUserName(userId, props.userName);
 
               <!-- Stato -->
               <div class="col-md-6 mb-3">
-                <label class="form-label">
+                <label class="form-label fw-bold">
                   <i class="fas fa-tasks me-2 text-primary"></i>Stato
                 </label>
                 <select v-model="form.status_id" class="form-select">
@@ -178,7 +181,7 @@ const getUser = (userId) => getUserName(userId, props.userName);
               </div>
               <!-- Tecnico assegnato -->
               <div class="col-md-6 mb-3">
-                <label class="form-label">
+                <label class="form-label fw-bold">
                   <i class="fas fa-user-cog me-2 text-primary"></i>Assegnato a
                 </label>
                 <select v-model="form.assigned_to" class="form-select">

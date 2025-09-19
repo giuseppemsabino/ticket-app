@@ -6,6 +6,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 //Components
 import StatusBadge from '@/Components/StatusBadge.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
+import { getAreaName, getUserName, getTechnicianName } from '@/lib/utils';
 
 
 //Props
@@ -23,23 +24,6 @@ const props = defineProps({
 const getProjectName = (projectId) => {
   const project = props.projects.find((project) => project.id === projectId);
   return project ? project.name : "N/A";
-};
-
-const getAreaName = (areaId) => {
-  const area = props.areas.find((area) => area.id === areaId);
-  return area ? area.name : "N/A";
-};
-
-const getUserName = (userId) => {
-  const user = props.userName.find((name, index) => index + 1 === userId);
-  return user || "N/A";
-};
-
-const getTechnicianName = (technicianId) => {
-  const technician = props.technicians.find(
-    (tech) => tech.id === technicianId
-  );
-  return technician ? technician.name : "N/A";
 };
 
 </script>
@@ -89,7 +73,7 @@ const getTechnicianName = (technicianId) => {
               <div class="col-md-6">
                 <p class="mb-2">
                   <i class="fas fa-layer-group me-2 text-primary"></i><strong>Area:</strong>
-                  {{ getAreaName(ticket.area_id) }}
+                  {{ getAreaName(ticket.area_id, props.areas) }}
                 </p>
               </div>
             </div>
@@ -116,13 +100,13 @@ const getTechnicianName = (technicianId) => {
               <div class="col-md-6">
                 <p class="mb-2">
                   <i class="fas fa-user me-2 text-primary"></i><strong>Creatore:</strong>
-                  {{ getUserName(ticket.user_id) }}
+                  {{ getUserName(ticket.user_id, props.userName) }}
                 </p>
               </div>
               <div class="col-md-6">
                 <p class="mb-2">
                   <i class="fas fa-user-cog me-2 text-primary"></i><strong>Tecnico:</strong>
-                  {{ getTechnicianName(ticket.assigned_to) || 'Non assegnato' }}
+                  {{ getTechnicianName(ticket.assigned_to, props.technicians) || 'Non assegnato' }}
                 </p>
               </div>
             </div>

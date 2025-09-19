@@ -3,6 +3,7 @@ import { Head, Link, router } from "@inertiajs/vue3";
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import StatusBadge from '@/Components/StatusBadge.vue';
+import { getAreaName, getUserName, getTechnicianName } from '@/lib/utils';
 
 const props = defineProps({
   tickets: Array,
@@ -13,26 +14,9 @@ const props = defineProps({
   projects: Array,
 });
 
-const getAreaName = (areaId) => {
-  const area = props.areas.find((area) => area.id === areaId);
-  return area ? area.name : "N/A";
-};
-
-const getUserName = (userId) => {
-  const user = props.technicians.find((tech) => tech.id === userId);
-  return user ? user.name : "N/A";
-};
-
 const getProjectName = (projectId) => {
   const project = props.projects.find((project) => project.id === projectId);
   return project ? project.name : "N/A";
-};
-
-const getTechnicianName = (technicianId) => {
-  const technician = props.technicians.find(
-    (tech) => tech.id === technicianId
-  );
-  return technician ? technician.name : "N/A";
 };
 
 const forceDeleteTicket = (ticketId) => {
@@ -86,15 +70,15 @@ const restore = (ticketId) => {
               <tr v-for="ticket in props.tickets" :key="ticket.id">
                 <td>{{ ticket.id }}</td>
                 <td>{{ getProjectName(ticket.project_id) }}</td>
-                <td>{{ getAreaName(ticket.area_id) }}</td>
+                <td>{{ getAreaName(ticket.area_id, props.areas) }}</td>
                 <td>{{ ticket.description ? (ticket.description.length > 30 ? ticket.description.substring(0, 30) +
                   '...' :
                   ticket.description) : 'N/A' }}</td>
                 <td>
                   <StatusBadge :status-id="ticket.status_id" :statuses="props.statuses" size="fs-6" />
                 </td>
-                <td>{{ getUserName(ticket.user_id) }}</td>
-                <td>{{ getTechnicianName(ticket.assigned_to) || 'Non assegnato' }}</td>
+                <td>{{ getUserName(ticket.user_id, props.technicians) }}</td>
+                <td>{{ getTechnicianName(ticket.assigned_to, props.technicians) || 'Non assegnato' }}</td>
                 <td>{{ new Date(ticket.deleted_at).toLocaleDateString() }}</td>
                 <td>
                   <div class="d-flex gap-2">

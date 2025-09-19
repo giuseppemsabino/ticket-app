@@ -3,6 +3,7 @@ import { Head, Link, router } from "@inertiajs/vue3";
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import StatusBadge from '@/Components/StatusBadge.vue';
+import { getAreaName, getUserName, getTechnicianName, deleteTicket } from '@/lib/utils';
 
 const props = defineProps({
   tickets: Array,
@@ -14,32 +15,9 @@ const props = defineProps({
   projects: Array,
 });
 
-const getAreaName = (areaId) => {
-  const area = props.areas.find((area) => area.id === areaId);
-  return area ? area.name : "N/A";
-};
-
-const getUserName = (userId) => {
-  const user = props.userName.find((name, index) => index + 1 === userId);
-  return user || "N/A";
-};
-
 const getProjectName = (projectId) => {
   const project = props.projects.find((project) => project.id === projectId);
   return project ? project.name : "N/A";
-};
-
-const getTechnicianName = (technicianId) => {
-  const technician = props.technicians.find(
-    (tech) => tech.id === technicianId
-  );
-  return technician ? technician.name : "N/A";
-};
-
-const deleteTicket = (ticketId) => {
-  if (confirm("Sei sicuro di voler eliminare questo ticket?")) {
-    router.delete(route("tickets.destroy", ticketId));
-  }
 };
 </script>
 
@@ -82,12 +60,12 @@ const deleteTicket = (ticketId) => {
               <tr v-for="ticket in props.tickets" :key="ticket.id">
                 <td>{{ ticket.id }}</td>
                 <td>{{ getProjectName(ticket.project_id) }}</td>
-                <td>{{ getAreaName(ticket.area_id) }}</td>
+                <td>{{ getAreaName(ticket.area_id, props.areas) }}</td>
                 <td>
                   <StatusBadge :status-id="ticket.status_id" :statuses="props.statuses" size="fs-6" />
                 </td>
-                <td>{{ getUserName(ticket.user_id) }}</td>
-                <td>{{ getTechnicianName(ticket.assigned_to) || 'Non assegnato' }}</td>
+                <td>{{ getUserName(ticket.user_id, props.userName) }}</td>
+                <td>{{ getTechnicianName(ticket.assigned_to, props.technicians) || 'Non assegnato' }}</td>
                 <td>{{ new Date(ticket.created_at).toLocaleDateString() }}</td>
                 <td>
                   <div class="d-flex gap-2">
@@ -97,7 +75,8 @@ const deleteTicket = (ticketId) => {
                     <Link :href="route('tickets.edit', ticket.id)" class="btn btn-sm btn-warning" title="Modifica">
                     <i class="fas fa-pencil-alt"></i>
                     </Link>
-                    <button class="btn btn-sm btn-danger" @click="deleteTicket(ticket.id)" title="Elimina">
+                    <button class="btn btn-sm btn-danger" @click="deleteTicket(ticket.id, router, route)"
+                      title="Elimina">
                       <i class="fas fa-trash-alt"></i>
                     </button>
                   </div>
