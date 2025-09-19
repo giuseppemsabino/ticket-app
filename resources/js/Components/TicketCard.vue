@@ -2,7 +2,7 @@
 import { usePage, Link } from '@inertiajs/vue3'
 import { computed } from 'vue'
 import StatusBadge from '../Components/StatusBadge.vue'
-
+import { getAreaName, getProjectName } from '@/lib/utils'
 
 const props = defineProps({
   ticket: Object,
@@ -16,18 +16,6 @@ const page = usePage()
 const statuses = computed(() => props.statuses ?? page.props?.statuses ?? [])
 const areas = computed(() => props.areas ?? page.props?.areas ?? [])
 const projects = computed(() => props.projects ?? page.props?.projects ?? [])
-
-function getAreaName(areaId) {
-  const area = areas.value.find((area) => area.id === areaId);
-  return area ? area.name : "N/A";
-}
-
-
-
-function getProjectName(projectId) {
-  const project = projects.value.find((project) => project.id === projectId);
-  return project ? project.name : "N/A";
-}
 </script>
 
 <template>
@@ -52,11 +40,11 @@ function getProjectName(projectId) {
       <div class="card-details">
         <p class="card-text mb-2">
           <i class="fas fa-project-diagram  me-2"></i>
-          <strong>Progetto:</strong> {{ getProjectName(ticket.project_id) }}
+          <strong>Progetto:</strong> {{ getProjectName(ticket.project_id, projects) }}
         </p>
         <p class="card-text mb-2">
           <i class="fas fa-layer-group me-2"></i>
-          <strong>Area:</strong> {{ getAreaName(ticket.area_id) }}
+          <strong>Area:</strong> {{ getAreaName(ticket.area_id, areas) }}
         </p>
 
       </div>

@@ -6,6 +6,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 
 //Components
 import PrimaryButton from "@/Components/PrimaryButton.vue";
+import { getUserName } from '@/lib/utils';
 
 //Props
 const props = defineProps({
@@ -52,7 +53,7 @@ function deleteComment(commentId) {
   }
 }
 
-const getUser = (userId) => getUserName(userId, props.userName);
+// Rimuovere il getUser che non viene utilizzato
 </script>
 
 <template>
