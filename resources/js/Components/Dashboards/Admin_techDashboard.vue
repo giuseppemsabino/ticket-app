@@ -9,7 +9,7 @@ const props = defineProps({
   statuses: Array,
   users: Array,
   areas: Array,
-  userName: Array
+  projects: Array,
 })
 
 const page = usePage()
@@ -27,6 +27,7 @@ const toogleViewModeTechnician = () => {
 }
 
 const tickets = computed(() => props.tickets ?? page.props?.tickets ?? [])
+const projects = computed(() => props.projects ?? page.props?.projects ?? [])
 
 const currentUserId = computed(() =>
   Number(page.props?.auth?.user?.id)
@@ -56,14 +57,14 @@ const closeTickets = computed(() =>
 
       <h2>Ticket in attesa</h2>
 
-      <div class="btn-group  mb-3 " role="group">
+      <div class="btn-group mb-3" role="group">
         <button class="btn" :class="viewModeFiltered === 'card' ? 'btn-secondary' : 'btn-outline-secondary'"
-          @click="viewModeFiltered = 'card'">
-          &#10066;
+          @click="viewModeFiltered = 'card'" title="Vista a cards">
+          <i class="fas fa-th-large"></i>
         </button>
         <button class="btn" :class="viewModeFiltered === 'list' ? 'btn-secondary' : 'btn-outline-secondary'"
-          @click="viewModeFiltered = 'list'">
-          &#9776;
+          @click="viewModeFiltered = 'list'" title="Vista a lista">
+          <i class="fas fa-list"></i>
         </button>
       </div>
     </div>
@@ -72,14 +73,13 @@ const closeTickets = computed(() =>
     <div v-if="viewModeFiltered === 'card'" class="cards">
       <div class="row flex-nowrap overflow-x-auto mb-5" style="max-height: 500px;">
         <div v-for="ticket in filteredTickets" :key="ticket.id" class="col-auto mb-4">
-
-          <TicketCard :ticket="ticket" :statuses="statuses" :users="users" :areas="areas" :userName="userName" />
+          <TicketCard :ticket="ticket" :statuses="statuses" :users="users" :areas="areas" :projects="projects" />
         </div>
       </div>
     </div>
 
     <div v-else class="list-view rounded border shadow-sm p-3 mb-5 bg-body-tertiary">
-      <TicketTable :tickets="filteredTickets" :statuses="statuses" :users="users" :areas="areas" />
+      <TicketTable :tickets="filteredTickets" :statuses="statuses" :users="users" :areas="areas" :projects="projects" />
     </div>
 
     <hr>
@@ -90,16 +90,16 @@ const closeTickets = computed(() =>
         Ticket assegnati
       </h2>
 
-      <div class="btn-group  mb-3 " role="group">
-        <button type="button" class="btn "
+      <div class="btn-group mb-3" role="group">
+        <button type="button" class="btn"
           :class="viewModeTechnichian === 'card' ? 'btn-secondary' : 'btn-outline-secondary'"
-          @click="viewModeTechnichian = 'card'">
-          &#10066;
+          @click="viewModeTechnichian = 'card'" title="Vista a cards">
+          <i class="fas fa-th-large"></i>
         </button>
         <button type="button" class="btn"
           :class="viewModeTechnichian === 'list' ? 'btn-secondary' : 'btn-outline-secondary'"
-          @click="viewModeTechnichian = 'list'">
-          &#9776;
+          @click="viewModeTechnichian = 'list'" title="Vista a lista">
+          <i class="fas fa-list"></i>
         </button>
       </div>
     </div>
@@ -109,23 +109,28 @@ const closeTickets = computed(() =>
       <div class="row flex-nowrap overflow-x-auto" style="max-height: 500px;">
 
         <div v-for="ticket in technicianTickets" :key="ticket.id" class="col-auto mb-4">
-          <TicketCard :ticket="ticket" :statuses="statuses" :users="users" :areas="areas" :userName="userName" />
+          <TicketCard :ticket="ticket" :statuses="statuses" :users="users" :areas="areas" :projects="projects" />
         </div>
 
       </div>
     </div>
 
     <div v-else class="list-view rounded border shadow-sm p-3 mb-5 bg-body-tertiary">
-      <TicketTable :tickets="technicianTickets" :statuses="statuses" :users="users" :areas="areas" />
+      <TicketTable :tickets="technicianTickets" :statuses="statuses" :users="users" :areas="areas"
+        :projects="projects" />
     </div>
 
     <hr>
 
     <div v-if="closeTickets.length" class="d-flex gap-2 align-items-center mb-3">
       <h2>Ticket chiusi</h2>
-      <button class="btn " @click="showClosedTickets = !showClosedTickets">
-        <span v-if="showClosedTickets">&#9650;</span>
-        <span v-else> &#9660;( {{ closeTickets.length }} )</span>
+      <button class="btn" @click="showClosedTickets = !showClosedTickets"
+        :title="showClosedTickets ? 'Nascondi ticket chiusi' : 'Mostra ticket chiusi'">
+        <i v-if="showClosedTickets" class="fas fa-chevron-up"></i>
+        <span v-else>
+          <i class="fas fa-chevron-down"></i>
+          <span class="ms-1">( {{ closeTickets.length }} )</span>
+        </span>
       </button>
     </div>
 

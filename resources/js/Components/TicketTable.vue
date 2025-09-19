@@ -15,7 +15,10 @@ const page = usePage()
 const statuses = computed(() => props.statuses ?? page.props?.statuses ?? [])
 const areas = computed(() => props.areas ?? page.props?.areas ?? [])
 
-const getArea = (areaId) => getAreaName(areaId, areas.value);
+function getAreaName(areaId) {
+  const area = areas.value.find((area) => area.id === areaId);
+  return area ? area.name : "N/A";
+}
 </script>
 
 
@@ -27,7 +30,6 @@ const getArea = (areaId) => getAreaName(areaId, areas.value);
         <th>descrizione</th>
         <th>Area</th>
         <th>Stato</th>
-        <th>Utente</th>
         <th>Data</th>
         <th>Azioni</th>
       </tr>
