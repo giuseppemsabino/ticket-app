@@ -6,8 +6,9 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 
 //Components
 import UserDashboards from '@/Components/Dashboards/UserDashboards.vue';
-import Admin_techDashboard from '@/Components/Dashboards/Admin_techDashboard.vue';
 import SuperAdminDashboard from '@/Components/Dashboards/SuperAdminDashboard.vue';
+import TechDashboard from '@/Components/Dashboards/TechDashboard.vue';
+import AdminDashboard from '@/Components/Dashboards/AdminDashboard.vue';
 
 
 //Props
@@ -17,6 +18,7 @@ const props = defineProps({
   statuses: Array,
   comments: Array,
   projects: Array,
+  userName: Array,
 });
 
 const role = props.userLog?.role_id ?? '—';
@@ -82,10 +84,20 @@ const role = props.userLog?.role_id ?? '—';
                 :comments="props.comments" />
             </div>
 
-            <!-- Admin / Technician Dashboard -->
-            <div v-else-if="role === 2 || role === 3">
-              <Admin_techDashboard :tickets="props.tickets" :statuses="props.statuses" :users="props.userLog"
+            <!-- Technician Dashboard -->
+            <div v-else-if="role === 2">
+              <TechDashboard :tickets="props.tickets" :statuses="props.statuses" :users="props.userLog"
                 :areas="props.areas" :projects="props.projects" />
+            </div>
+
+            <!-- Admin Dashboard -->
+            <div v-else-if="role === 3">
+              <AdminDashboard :tickets="props.tickets" :statuses="props.statuses" :users="props.userName"
+                :areas="props.areas" :projects="props.projects" />
+            </div>
+
+            <div v-else>
+              <p class="text-center">Ruolo non definito</p>
             </div>
 
 
