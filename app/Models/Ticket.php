@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Ticket extends Model
 {
+    use SoftDeletes;
+    
     public function projects()
     {
         return $this->belongsTo(Project::class);
@@ -29,5 +32,10 @@ class Ticket extends Model
     public function statuses()
     {
         return $this->belongsTo(Status::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
     }
 }

@@ -1,0 +1,90 @@
+<script setup>
+import { Head, Link, router } from '@inertiajs/vue3'
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
+import PrimaryButton from '@/Components/PrimaryButton.vue'
+
+// Props dal controller
+const props = defineProps({
+  users: Array, // lista utenti
+  auth: Object, // utente loggato
+})
+
+// Funzione delete
+function destroy(userId) {
+  if (confirm('Sei sicuro di voler eliminare questo utente?')) {
+    router.delete(route('users.destroy', userId))
+  }
+}
+</script>
+
+<template>
+
+  <Head title="Utenti">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  </Head>
+
+  <AuthenticatedLayout>
+    <template #header>
+      <h2 class="fs-4 fw-semibold"><i class="fa-solid fa-users"></i> Gestione Utenti</h2>
+    </template>
+
+    <div class="container mt-5">
+      <div class="mb-3">
+        <Link href="/users/create">
+        <PrimaryButton>
+          <i class="fas fa-user-plus me-2"></i>Crea Utente
+        </PrimaryButton>
+        </Link>
+      </div>
+
+      <div class="card shadow">
+        <div class="card-body p-0">
+          <table class="table table-striped mb-0">
+            <thead class="table-dark">
+              <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Ruoli</th>
+                <th>Progetti</th>
+                <th>Azioni</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="user in props.users" :key="user.id">
+                <td>{{ user.id }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.email }}</td>
+                <td>
+                  <div v-if="user.roles.length">
+                    {{user.roles.map(role => role.name).join(', ')}}
+                  </div>
+                  <div v-else>-</div>
+                </td>
+                <td>
+                  <div v-if="user.projects.length">
+                    {{user.projects.map(project => project.name).join(', ')}}
+                  </div>
+                  <div v-else>-</div>
+                </td>
+                <td>
+                  <div class="d-flex gap-2">
+                    <Link :href="route('users.edit', user.id)" class="btn btn-sm btn-warning" title="Modifica">
+                    <i class="fas fa-pencil-alt"></i>
+                    </Link>
+                    <button class="btn btn-sm btn-danger" @click="destroy(user.id)" title="Elimina">
+                      <i class="fas fa-trash-alt"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr v-if="props.users.length === 0">
+                <td colspan="6" class="text-center text-muted">Nessun utente trovato</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </AuthenticatedLayout>
+</template>

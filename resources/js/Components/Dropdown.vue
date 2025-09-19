@@ -1,84 +1,64 @@
 <script setup>
-import { computed, onMounted, onUnmounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
+import * as bootstrap from 'bootstrap';
 
 const props = defineProps({
-    align: {
-        type: String,
-        default: 'right',
-    },
-    width: {
-        type: String,
-        default: '48',
-    },
-    contentClasses: {
-        type: String,
-        default: 'py-1 bg-white',
-    },
+  align: {
+    type: String,
+    default: 'right',
+  },
+  width: {
+    type: String,
+    default: '48',
+  },
+  contentClasses: {
+    type: String,
+    default: 'py-1 bg-white',
+  },
 });
 
-const closeOnEscape = (e) => {
-    if (open.value && e.key === 'Escape') {
-        open.value = false;
-    }
-};
+const dropdownElement = ref(null);
+const dropdownInstance = ref(null);
+let isInitialized = false;
 
-onMounted(() => document.addEventListener('keydown', closeOnEscape));
-onUnmounted(() => document.removeEventListener('keydown', closeOnEscape));
-
-const widthClass = computed(() => {
-    return {
-        48: 'w-48',
-    }[props.width.toString()];
+onMounted(() => {
+  if (!isInitialized && dropdownElement.value) {
+    dropdownInstance.value = new bootstrap.Dropdown(dropdownElement.value);
+    isInitialized = true;
+  }
 });
 
 const alignmentClasses = computed(() => {
-    if (props.align === 'left') {
-        return 'ltr:origin-top-left rtl:origin-top-right start-0';
-    } else if (props.align === 'right') {
-        return 'ltr:origin-top-right rtl:origin-top-left end-0';
-    } else {
-        return 'origin-top';
-    }
+  if (props.align === 'left') {
+    return 'dropdown-menu-start';
+  } else if (props.align === 'right') {
+    return 'dropdown-menu-end';
+  } else {
+    return '';
+  }
 });
 
-const open = ref(false);
+const widthClass = computed(() => {
+  return {
+    48: 'dropdown-menu-lg-end',
+  }[props.width.toString()];
+});
+
+const toggleDropdown = () => {
+  if (dropdownInstance.value) {
+    dropdownInstance.value.toggle();
+  }
+};
 </script>
 
 <template>
-    <div class="relative">
-        <div @click="open = !open">
-            <slot name="trigger" />
-        </div>
-
-        <!-- Full Screen Dropdown Overlay -->
-        <div
-            v-show="open"
-            class="fixed inset-0 z-40"
-            @click="open = false"
-        ></div>
-
-        <Transition
-            enter-active-class="transition ease-out duration-200"
-            enter-from-class="opacity-0 scale-95"
-            enter-to-class="opacity-100 scale-100"
-            leave-active-class="transition ease-in duration-75"
-            leave-from-class="opacity-100 scale-100"
-            leave-to-class="opacity-0 scale-95"
-        >
-            <div
-                v-show="open"
-                class="absolute z-50 mt-2 rounded-md shadow-lg"
-                :class="[widthClass, alignmentClasses]"
-                style="display: none"
-                @click="open = false"
-            >
-                <div
-                    class="rounded-md ring-1 ring-black ring-opacity-5"
-                    :class="contentClasses"
-                >
-                    <slot name="content" />
-                </div>
-            </div>
-        </Transition>
+  <div class="dropdown">
+    <div ref="dropdownElement" data-bs-toggle="dropdown" aria-expanded="false">
+      <slot name="trigger" />
     </div>
+
+    <ul class="dropdown-menu" :class="[widthClass, alignmentClasses, contentClasses]">
+      <slot name="content" />
+    </ul>
+  </div>
 </template>
