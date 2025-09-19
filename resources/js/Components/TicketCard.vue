@@ -52,11 +52,11 @@ function getProjectName(projectId) {
 
       <div class="card-details">
         <p class="card-text mb-2">
-          <i class="fas fa-project-diagram text-primary me-2"></i>
+          <i class="fas fa-project-diagram  me-2"></i>
           <strong>Progetto:</strong> {{ getProjectName(ticket.project_id) }}
         </p>
         <p class="card-text mb-2">
-          <i class="fas fa-layer-group text-primary me-2"></i>
+          <i class="fas fa-layer-group me-2"></i>
           <strong>Area:</strong> {{ getAreaName(ticket.area_id) }}
         </p>
 

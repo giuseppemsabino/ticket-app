@@ -35,6 +35,7 @@ const user = computed(() => page.props.auth.user)
     <div class="py-12">
       <div class="mx-4">
         <div class="text-center mt-4 mb-8">
+          <i class="fa-solid fa-user-tie" style="font-size: 10rem;"></i>
           <h1>{{ user.name }}</h1>
           <p class="text-sm text-gray-600">{{ user.email }}</p>
         </div>

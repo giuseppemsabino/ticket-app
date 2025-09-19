@@ -33,17 +33,20 @@ const role = props.userLog?.role_id ?? '—';
     <template #header class="header">
       <h2 class="fs-4 fw-semibold"><i class="fa-solid fa-house"></i> Dashboard</h2>
     </template>
+
+    <!-- Superadmin Dashboard -->
     <div v-if="role === 4">
       <SuperAdminDashboard :users="users" />
     </div>
 
-
+    <!-- other user Dashboard -->
     <div v-else class="py-4">
       <div class="container-fluid container-lg">
         <div class="row">
 
-          <!-- Profile details-->
           <div class="col-3 border rounded-3 shadow-sm bg-white px-4">
+
+            <!-- Profile details-->
             <div class="border-top border-light py-3">
               <h3>
                 <Link href="{{ route('profile.edit') }}" class="text-decoration-none text-dark">
@@ -59,6 +62,7 @@ const role = props.userLog?.role_id ?? '—';
                 </div>
               </div>
 
+              <!--  Project List -->
               <h3 class="mt-5"><i class="fa-solid fa-briefcase me-2"></i>Progetti</h3>
               <div class=" d-flex flex-column gap-2 px-3">
                 <div class="projects">

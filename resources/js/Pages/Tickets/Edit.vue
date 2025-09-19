@@ -1,8 +1,13 @@
 <script setup>
 import { useForm, Head } from "@inertiajs/vue3";
+
+//Layout
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+
+//Components
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 
+//Props
 const props = defineProps({
   ticket: Object,
   statuses: Array,
@@ -12,9 +17,10 @@ const props = defineProps({
   technicians: Array, // lista tecnici
 });
 
-const comments = props.ticket.comments || []; // lista commenti del ticket
+//comments list
+const comments = props.ticket.comments || [];
 
-// Form principale per update
+// update form
 const form = useForm({
   description: props.ticket.description,
   area_id: props.ticket.area_id,
@@ -23,12 +29,12 @@ const form = useForm({
   assigned_to: props.ticket.assigned_to || "", // selection dei tecnici
 });
 
-// Submit verso update
+// update form submit
 function submit() {
   form.put(route("tickets.update", props.ticket.id));
 }
 
-// Form mini commento
+// comment form
 const commentForm = useForm({
   content: "", // campo del commento
 });
@@ -65,7 +71,7 @@ console.log(props.ticket);
     <div class="container mt-5">
 
 
-      <!-- Form principale ticket -->
+      <!-- Ticket Form -->
       <div class="card shadow mb-4">
         <div class="card-header bg-light py-3">
           <h4 class="mb-0">
