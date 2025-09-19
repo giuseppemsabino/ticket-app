@@ -52,14 +52,14 @@ const deleteTicket = (ticketId) => {
 
   <AuthenticatedLayout>
     <template #header>
-      <h2 class="fs-4 fw-semibold">Gestione Tickets</h2>
+      <h2 class="fs-4 fw-semibold"><i class="fa-solid fa-ticket"></i> Gestione Tickets</h2>
     </template>
 
     <div class="container mt-5">
       <div class="d-flex justify-content-end mb-4">
         <div>
           <Link href="/tickets/archive" class="btn btn-outline-secondary">
-          Archivio Ticket
+          <i class="fa-solid fa-box-archive"></i> Archivio Ticket
           </Link>
         </div>
       </div>

@@ -25,13 +25,15 @@ function destroy(userId) {
 
   <AuthenticatedLayout>
     <template #header>
-      <h2 class="fs-4 fw-semibold">Gestione Utenti</h2>
+      <h2 class="fs-4 fw-semibold"><i class="fa-solid fa-users"></i> Gestione Utenti</h2>
     </template>
 
     <div class="container mt-5">
       <div class="mb-3">
         <Link href="/users/create">
-        <PrimaryButton>Crea Nuovo Utente</PrimaryButton>
+        <PrimaryButton>
+          <i class="fas fa-user-plus me-2"></i>Crea Utente
+        </PrimaryButton>
         </Link>
       </div>
 

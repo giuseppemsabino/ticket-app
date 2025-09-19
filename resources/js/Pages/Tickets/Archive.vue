@@ -54,7 +54,7 @@ const restore = (ticketId) => {
 
   <AuthenticatedLayout>
     <template #header>
-      <h2 class="fs-4 fw-semibold">Archivio Tickets</h2>
+      <h2 class="fs-4 fw-semibold"><i class="fa-solid fa-box-archive"></i> Archivio Tickets</h2>
     </template>
 
     <div class="container mt-5">

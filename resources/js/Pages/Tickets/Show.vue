@@ -98,10 +98,14 @@ const getTechnicianName = (technicianId) => {
               </div>
             </div>
 
-            <div v-if="ticket.u_images" class="mb-4">
-              <h4 class="mb-2"><i class="fas fa-image me-2 text-primary"></i><strong>Allegato:</strong></h4>
-              <div class="image">
-                <img :src="ticket.u_images" alt="Immagine allegata" class="img-fluid rounded border">
+            <div v-if="props.ticket.u_images" class="mb-4">
+              <h5 class="mb-2">
+                <i class="fas fa-image me-2 text-primary"></i>Immagine allegata:
+              </h5>
+              <div class="text-center p-3 border rounded bg-light">
+                <a :href="`/storage/${ticket.u_images}`" target="_blank">
+                  <img :src="`/storage/${ticket.u_images}`" alt="Ticket image" class="img-fluid rounded w-50">
+                </a>
               </div>
             </div>
 
