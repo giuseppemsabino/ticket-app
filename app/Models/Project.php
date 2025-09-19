@@ -8,7 +8,7 @@ class Project extends Model
 {
     public function areas()
     {
-        return $this->hasMany(Area::class);
+        return $this->belongsToMany(Area::class);
     }
 
     public function tickets()

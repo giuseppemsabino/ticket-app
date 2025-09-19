@@ -33,7 +33,6 @@ class UserController extends Controller
         $this->authorize('create', User::class);
         $roles = Role::all();
         $projects = Project::all();
-        // dd($roles);
 
         return inertia('Users/Create', compact('roles', 'projects'));
     }
@@ -52,7 +51,6 @@ class UserController extends Controller
         $newUser->email = $data['email'];
         $newUser->password = bcrypt($data['password']);
 
-        // dd($data);
         $newUser->save();
 
         // Attach ruoli (N:N)
@@ -75,7 +73,6 @@ class UserController extends Controller
     public function show(User $user)
     {
         $this->authorize('view', $user);
-        // dd($user->projects);
         return inertia('Users/Show', compact('user'));
     }
 

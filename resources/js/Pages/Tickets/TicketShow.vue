@@ -18,6 +18,7 @@ const props = defineProps({
   technicians: Array,
   comments: Array,
   userName: Array,
+  
 });
 
 const getProjectName = (projectId) => {
@@ -127,6 +128,7 @@ const getTechnicianName = (technicianId) => {
               </div>
             </div>
 
+             
             <!-- Comments -->
             <div v-if="comments && comments.length" class="mt-5">
               <h4 class="mb-3 d-flex align-items-center">

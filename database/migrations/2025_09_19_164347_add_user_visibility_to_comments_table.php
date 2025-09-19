@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('tickets', function (Blueprint $table) {
-            $table->boolean('user_visibility')->default(false)->after('status_id');
+        Schema::table('comments', function (Blueprint $table) {
+            $table->boolean('user_visibility')->default(false)->after('content');
         });
     }
 
@@ -21,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('tickets', function (Blueprint $table) {
+        Schema::table('comments', function (Blueprint $table) {
             $table->dropColumn('user_visibility');
         });
     }
