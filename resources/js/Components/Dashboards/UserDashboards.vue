@@ -25,7 +25,7 @@ const ticketComments = (ticketId) =>
       <!-- New Ticket -->
       <PrimaryButton>
         <Link href="/tickets/create" class="btn-link text-decoration-none ">
-        + Nuovo Ticket
+        +<i class="fas fa-ticket-alt me-2"></i>Nuovo Ticket
         </Link>
       </PrimaryButton>
     </div>

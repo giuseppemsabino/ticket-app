@@ -43,104 +43,145 @@ const getTechnicianName = (technicianId) => {
 
 <template>
 
-  <Head :title="`Ticket #${ticket.id}`" />
+  <Head :title="`Ticket #${ticket.id}`">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  </Head>
 
   <AuthenticatedLayout>
     <template #header>
-      <h2 class="text-xl font-semibold leading-tight text-gray-800">
-        Ticket #{{ ticket.id }}
+      <h2 class="fs-4 fw-semibold">
+        <i class="fas fa-ticket-alt me-2"></i>Ticket #{{ ticket.id }}
       </h2>
     </template>
-    <div class="ticket-show card p-4 shadow">
 
-      <div class="card-header d-flex justify-content-between align-items-center mb-4" style="border-bottom: dashed;">
-        <h1>Ticket #{{ ticket.id }}</h1>
-        <!-- status -->
-        <StatusBadge :status-id="ticket.status_id" :statuses="statuses" :size="'fs-5'" />
-      </div>
+    <div class="container mt-5">
 
-      <!-- date -->
-      <div class="dates">
-        <p class="text-muted">
-          Creato il: {{ new Date(ticket.created_at).toLocaleString() }}
-        </p>
-        <hr>
-      </div>
 
-      <!-- Details -->
-      <div v-if="ticket">
-
-        <div class="d-flex justify-content-between">
-          <p><strong>Progetto:</strong> {{ getProjectName(ticket.project_id) }}</p>
-          <p><strong>Area:</strong> {{ getAreaName(ticket.area_id) }}</p>
+      <div class="card shadow">
+        <div class="card-header d-flex justify-content-between align-items-center py-3">
+          <h3 class="mb-0"><i class="fas fa-ticket-alt me-2"></i>Ticket #{{ ticket.id }}</h3>
+          <!-- status -->
+          <StatusBadge :status-id="ticket.status_id" :statuses="statuses" :size="'fs-5'" />
         </div>
-        <p class="mt-4"><strong>Descrizione:</strong> </p>
-        <p class="mb-4 fs-4">
-          {{ ticket.description }}
-        </p>
-        <div class="image">
-          <img :src="ticket.u_images" alt="">
-        </div>
-        <p><strong>Creatore:</strong> {{ getUserName(ticket.user_id) }}</p>
-        <p>
-          <strong>Tecnico:</strong>
-          {{ getTechnicianName(ticket.assigned_to) }}
-        </p>
 
+        <div class="card-body p-4">
+          <!-- date -->
+          <div class="mb-3">
+            <p class="text-muted">
+              <i class="far fa-calendar-alt me-2"></i>Creato il: {{ new Date(ticket.created_at).toLocaleString() }}
+            </p>
+            <hr>
+          </div>
 
-        <!-- Interventi -->
-        <div v-if="comments && comments.length" class=" comments mt-4">
-          <h2 class="text-danger fw-bold">Interventi</h2>
-          <div>
-            <div v-for="comment in comments" :key="comment.id" class="comment p-2 mb-2 border rounded">
-              <p>
-                <strong>{{ comment.user.name }}:</strong>
-                {{ comment.content }}
-              </p>
-              <small class="text-muted">{{
-                new Date(comment.created_at).toLocaleString()
-              }}</small>
+          <!-- Details -->
+          <div v-if="ticket">
+            <div class="row mb-4">
+              <div class="col-md-6">
+                <p class="mb-2">
+                  <i class="fas fa-project-diagram me-2 text-primary"></i><strong>Progetto:</strong> {{
+                    getProjectName(ticket.project_id) }}
+                </p>
+              </div>
+              <div class="col-md-6">
+                <p class="mb-2">
+                  <i class="fas fa-layer-group me-2 text-primary"></i><strong>Area:</strong> {{
+                    getAreaName(ticket.area_id)
+                  }}
+                </p>
+              </div>
             </div>
+
+            <div class="mb-4">
+              <h4 class="mb-2"><i class="fas fa-align-left me-2 text-primary"></i><strong>Descrizione:</strong></h4>
+              <div class="p-3 border-start border-primary border-3">
+                <p class="mb-0 fs-5">{{ ticket.description }}</p>
+              </div>
+            </div>
+
+            <div v-if="ticket.u_images" class="mb-4">
+              <h4 class="mb-2"><i class="fas fa-image me-2 text-primary"></i><strong>Allegato:</strong></h4>
+              <div class="image">
+                <img :src="ticket.u_images" alt="Immagine allegata" class="img-fluid rounded border">
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <p class="mb-2">
+                  <i class="fas fa-user me-2 text-primary"></i><strong>Creatore:</strong> {{ getUserName(ticket.user_id)
+                  }}
+                </p>
+              </div>
+              <div class="col-md-6">
+                <p class="mb-2">
+                  <i class="fas fa-user-cog me-2 text-primary"></i><strong>Tecnico:</strong> {{
+                    getTechnicianName(ticket.assigned_to) || 'Non assegnato' }}
+                </p>
+              </div>
+            </div>
+
+            <!-- Interventi -->
+            <div v-if="comments && comments.length" class="mt-5">
+              <h4 class="mb-3 d-flex align-items-center">
+                <i class="fas fa-comments me-2 text-danger"></i>
+                <span class="text-danger fw-bold">Interventi</span>
+              </h4>
+              <div class="ps-4">
+                <div v-for="comment in comments" :key="comment.id" class="comment p-3 mb-3 border rounded bg-light">
+                  <div class="d-flex align-items-center mb-2">
+                    <i class="fas fa-user-circle me-2 text-secondary"></i>
+                    <strong>{{ comment.user.name }}:</strong>
+                  </div>
+                  <p class="mb-2 ps-4">{{ comment.content }}</p>
+                  <small class="text-muted d-block text-end">
+                    <i class="far fa-clock me-1"></i>{{ new Date(comment.created_at).toLocaleString() }}
+                  </small>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div v-else class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-3">Caricamento ticket...</p>
           </div>
         </div>
       </div>
-      <div v-else>
-        <p>Caricamento ticket...</p>
+
+      <div class="text-center mt-4">
+        <PrimaryButton>
+          <Link href="/dashboard" class="btn-link text-decoration-none">
+          <i class="fas fa-home me-2"></i>Torna alla Dashboard
+          </Link>
+        </PrimaryButton>
       </div>
-    </div>
-    <div class="text-center mt-4">
-      <PrimaryButton>
-        <Link href="/dashboard" class="btn-link text-decoration-none ">
-        Torna alla Dashboard
-        </Link>
-      </PrimaryButton>
     </div>
   </AuthenticatedLayout>
 </template>
 
 <style scoped>
-.ticket-show {
-  max-width: 600px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.ticket-show h1 {
-  margin-bottom: 1.5rem;
-}
-
-.ticket-show p {
-  margin: 0.5rem 0;
-}
-
-.comments h2 {
-  margin-bottom: 1rem;
+.card {
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .comment {
-  background: #f9f9f9;
+  transition: all 0.2s ease;
+}
+
+.comment:hover {
+  background: #f0f0f0;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.border-start.border-primary {
+  background-color: rgba(13, 110, 253, 0.03);
+}
+
+img.img-fluid {
+  max-height: 300px;
+  object-fit: contain;
 }
 </style>

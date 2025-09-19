@@ -28,7 +28,10 @@ function submit() {
 </script>
 
 <template>
-  <Head :title="`Modifica Utente: ${props.user.name}`" />
+
+  <Head :title="`Modifica Utente: ${props.user.name}`">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  </Head>
 
   <AuthenticatedLayout>
     <template #header>
@@ -68,15 +71,14 @@ function submit() {
             <!-- Ruoli (checkbox N:N) -->
             <div class="mb-3">
               <label class="form-label">Ruoli*</label>
-              <div class="form-check" v-for="role in props.roles" :key="role.id">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  :id="'role-' + role.id"
-                  :value="role.id"
-                  v-model="form.roles"
-                />
-                <label class="form-check-label" :for="'role-' + role.id">{{ role.name }}</label>
+              <div class="row row-cols-1 row-cols-md-2 g-2">
+                <div class="col" v-for="role in props.roles" :key="role.id">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" :id="'role-' + role.id" :value="role.id"
+                      v-model="form.roles" />
+                    <label class="form-check-label" :for="'role-' + role.id">{{ role.name }}</label>
+                  </div>
+                </div>
               </div>
               <div v-if="form.errors.roles" class="text-danger small">{{ form.errors.roles }}</div>
             </div>
@@ -84,26 +86,28 @@ function submit() {
             <!-- Progetti (checkbox N:N) -->
             <div class="mb-3">
               <label class="form-label">Progetti*</label>
-              <div class="form-check" v-for="project in props.projects" :key="project.id">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  :id="'project-' + project.id"
-                  :value="project.id"
-                  v-model="form.projects"
-                />
-                <label class="form-check-label" :for="'project-' + project.id">{{ project.name }}</label>
+              <div class="row row-cols-1 row-cols-md-2 g-2">
+                <div class="col" v-for="project in props.projects" :key="project.id">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" :id="'project-' + project.id" :value="project.id"
+                      v-model="form.projects" />
+                    <label class="form-check-label" :for="'project-' + project.id">{{ project.name }}</label>
+                  </div>
+                </div>
               </div>
               <div v-if="form.errors.projects" class="text-danger small">{{ form.errors.projects }}</div>
             </div>
 
             <!-- Pulsante salva -->
             <PrimaryButton :disabled="form.processing" type="submit">
-              Salva Modifiche
+              <i class="fas fa-save me-2"></i>Salva Modifiche
             </PrimaryButton>
           </form>
         </div>
       </div>
+      <small class="text-danger p-3">
+        * campi obbligatori
+      </small>
     </div>
   </AuthenticatedLayout>
 </template>

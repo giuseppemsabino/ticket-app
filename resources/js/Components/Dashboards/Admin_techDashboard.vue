@@ -9,6 +9,7 @@ const props = defineProps({
   statuses: Array,
   users: Array,
   areas: Array,
+  projects: Array,
 })
 
 const page = usePage()
@@ -26,6 +27,7 @@ const toogleViewModeTechnician = () => {
 }
 
 const tickets = computed(() => props.tickets ?? page.props?.tickets ?? [])
+const projects = computed(() => props.projects ?? page.props?.projects ?? [])
 
 const currentUserId = computed(() =>
   Number(page.props?.auth?.user?.id)
@@ -71,14 +73,13 @@ const closeTickets = computed(() =>
     <div v-if="viewModeFiltered === 'card'" class="cards">
       <div class="row flex-nowrap overflow-x-auto mb-5" style="max-height: 500px;">
         <div v-for="ticket in filteredTickets" :key="ticket.id" class="col-auto mb-4">
-
-          <TicketCard :ticket="ticket" :statuses="statuses" :users="users" :areas="areas" />
+          <TicketCard :ticket="ticket" :statuses="statuses" :users="users" :areas="areas" :projects="projects" />
         </div>
       </div>
     </div>
 
     <div v-else class="list-view rounded border shadow-sm p-3 mb-5 bg-body-tertiary">
-      <TicketTable :tickets="filteredTickets" :statuses="statuses" :users="users" :areas="areas" />
+      <TicketTable :tickets="filteredTickets" :statuses="statuses" :users="users" :areas="areas" :projects="projects" />
     </div>
 
     <hr>
@@ -108,14 +109,15 @@ const closeTickets = computed(() =>
       <div class="row flex-nowrap overflow-x-auto" style="max-height: 500px;">
 
         <div v-for="ticket in technicianTickets" :key="ticket.id" class="col-auto mb-4">
-          <TicketCard :ticket="ticket" :statuses="statuses" :users="users" :areas="areas" />
+          <TicketCard :ticket="ticket" :statuses="statuses" :users="users" :areas="areas" :projects="projects" />
         </div>
 
       </div>
     </div>
 
     <div v-else class="list-view rounded border shadow-sm p-3 mb-5 bg-body-tertiary">
-      <TicketTable :tickets="technicianTickets" :statuses="statuses" :users="users" :areas="areas" />
+      <TicketTable :tickets="technicianTickets" :statuses="statuses" :users="users" :areas="areas"
+        :projects="projects" />
     </div>
 
     <hr>

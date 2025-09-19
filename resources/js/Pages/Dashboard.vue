@@ -83,7 +83,8 @@ const role = props.userLog?.role_id ?? '—';
 
             <!-- Admin / Technician Dashboard -->
             <div v-else-if="role === 2 || role === 3">
-              <Admin_techDashboard />
+              <Admin_techDashboard :tickets="props.tickets" :statuses="props.statuses" :users="props.userLog"
+                :areas="props.areas" :projects="props.projects" />
             </div>
 
 
