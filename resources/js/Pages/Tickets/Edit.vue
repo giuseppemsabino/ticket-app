@@ -88,7 +88,9 @@ console.log(props.ticket);
               <i class="fas fa-image me-2 text-primary"></i>Immagine allegata:
             </h5>
             <div class="text-center p-3 border rounded bg-light">
-              <img :src="props.ticket.u_images" alt="Immagine del ticket" class="img-fluid rounded ticket-image">
+              <a :href="`/storage/${ticket.u_images}`" target="_blank">
+                <img :src="`/storage/${ticket.u_images}`" alt="Ticket image" class="img-fluid rounded w-50">
+              </a>
             </div>
           </div>
 

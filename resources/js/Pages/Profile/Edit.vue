@@ -21,12 +21,14 @@ const user = computed(() => page.props.auth.user)
 
 <template>
 
-  <Head title="Profile" />
+  <Head title="Profilo">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  </Head>
 
   <AuthenticatedLayout>
     <template #header>
       <h2 class="fw-bold">
-        Profilo
+        <i class="fa-solid fa-user"></i> Profilo
       </h2>
     </template>
 

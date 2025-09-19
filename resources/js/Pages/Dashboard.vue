@@ -31,7 +31,7 @@ const role = props.userLog?.role_id ?? '—';
 
   <AuthenticatedLayout>
     <template #header class="header">
-      <h2 class="fs-4 fw-semibold">Dashboard</h2>
+      <h2 class="fs-4 fw-semibold"><i class="fa-solid fa-house"></i> Dashboard</h2>
     </template>
     <div v-if="role === 4">
       <SuperAdminDashboard :users="users" />
