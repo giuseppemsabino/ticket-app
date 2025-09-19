@@ -48,7 +48,9 @@ const restore = (ticketId) => {
 
 <template>
 
-  <Head title="Archivio Tickets" />
+  <Head title="Archivio Tickets">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  </Head>
 
   <AuthenticatedLayout>
     <template #header>
@@ -58,8 +60,8 @@ const restore = (ticketId) => {
     <div class="container mt-5">
       <div class="d-flex justify-content-end mb-4">
         <div>
-          <Link href="/tickets" class="btn btn-outline-primary">
-          Torna ai Ticket Attivi
+          <Link href="/tickets" class="btn btn-outline-primary" title="Torna ai Ticket Attivi">
+          <i class="fas fa-arrow-left me-2"></i>Torna ai Ticket Attivi
           </Link>
         </div>
       </div>
@@ -95,12 +97,13 @@ const restore = (ticketId) => {
                 <td>{{ getTechnicianName(ticket.assigned_to) || 'Non assegnato' }}</td>
                 <td>{{ new Date(ticket.deleted_at).toLocaleDateString() }}</td>
                 <td>
-                  <div class="d-flex gap-1">
-                    <button class="btn btn-sm btn-success" @click="restore(ticket.id)">
-                      Ripristina
+                  <div class="d-flex gap-2">
+                    <button class="btn btn-sm btn-success" @click="restore(ticket.id)" title="Ripristina">
+                      <i class="fas fa-undo-alt"></i>
                     </button>
-                    <button class="btn btn-sm btn-danger" @click="forceDeleteTicket(ticket.id)">
-                      Elimina
+                    <button class="btn btn-sm btn-danger" @click="forceDeleteTicket(ticket.id)"
+                      title="Elimina definitivamente">
+                      <i class="fas fa-trash-alt"></i>
                     </button>
                   </div>
                 </td>

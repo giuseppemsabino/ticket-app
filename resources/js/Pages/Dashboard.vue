@@ -25,7 +25,9 @@ const role = props.userLog?.role_id ?? '—';
 
 <template>
 
-  <Head title="Dashboard" />
+  <Head title="Dashboard">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  </Head>
 
   <AuthenticatedLayout>
     <template #header class="header">
@@ -45,7 +47,7 @@ const role = props.userLog?.role_id ?? '—';
             <div class="border-top border-light py-3">
               <h3>
                 <Link href="{{ route('profile.edit') }}" class="text-decoration-none text-dark">
-                Profilo
+                <i class="fas fa-user me-2"></i>Profilo
                 </Link>
               </h3>
               <div class="px-3">
@@ -57,7 +59,7 @@ const role = props.userLog?.role_id ?? '—';
                 </div>
               </div>
 
-              <h3 class="mt-5">Progetti</h3>
+              <h3 class="mt-5"><i class="fa-solid fa-briefcase me-2"></i>Progetti</h3>
               <div class=" d-flex flex-column gap-2 px-3">
                 <div class="projects">
                   <ul class="list-group list-group-flush">

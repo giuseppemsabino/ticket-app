@@ -19,7 +19,9 @@ function destroy(userId) {
 
 <template>
 
-  <Head title="Utenti" />
+  <Head title="Utenti">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  </Head>
 
   <AuthenticatedLayout>
     <template #header>
@@ -64,8 +66,14 @@ function destroy(userId) {
                   <div v-else>-</div>
                 </td>
                 <td>
-                  <Link :href="route('users.edit', user.id)" class="btn btn-sm btn-warning me-2">Modifica</Link>
-                  <button class="btn btn-sm btn-danger" @click="destroy(user.id)">Elimina</button>
+                  <div class="d-flex gap-2">
+                    <Link :href="route('users.edit', user.id)" class="btn btn-sm btn-warning" title="Modifica">
+                    <i class="fas fa-pencil-alt"></i>
+                    </Link>
+                    <button class="btn btn-sm btn-danger" @click="destroy(user.id)" title="Elimina">
+                      <i class="fas fa-trash-alt"></i>
+                    </button>
+                  </div>
                 </td>
               </tr>
               <tr v-if="props.users.length === 0">

@@ -46,7 +46,9 @@ const deleteTicket = (ticketId) => {
 
 <template>
 
-  <Head title="Tickets" />
+  <Head title="Tickets">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  </Head>
 
   <AuthenticatedLayout>
     <template #header>
@@ -89,15 +91,15 @@ const deleteTicket = (ticketId) => {
                 <td>{{ getTechnicianName(ticket.assigned_to) || 'Non assegnato' }}</td>
                 <td>{{ new Date(ticket.created_at).toLocaleDateString() }}</td>
                 <td>
-                  <div class="d-flex gap-1">
-                    <Link :href="route('tickets.show', ticket.id)" class="btn btn-sm btn-primary">
-                    Visualizza
+                  <div class="d-flex gap-2">
+                    <Link :href="route('tickets.show', ticket.id)" class="btn btn-sm btn-primary" title="Visualizza">
+                    <i class="fas fa-eye"></i>
                     </Link>
-                    <Link :href="route('tickets.edit', ticket.id)" class="btn btn-sm btn-warning">
-                    Modifica
+                    <Link :href="route('tickets.edit', ticket.id)" class="btn btn-sm btn-warning" title="Modifica">
+                    <i class="fas fa-pencil-alt"></i>
                     </Link>
-                    <button class="btn btn-sm btn-danger" @click="deleteTicket(ticket.id)">
-                      Elimina
+                    <button class="btn btn-sm btn-danger" @click="deleteTicket(ticket.id)" title="Elimina">
+                      <i class="fas fa-trash-alt"></i>
                     </button>
                   </div>
                 </td>
