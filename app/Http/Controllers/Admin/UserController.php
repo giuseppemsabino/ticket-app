@@ -21,7 +21,7 @@ class UserController extends Controller
         $this->authorize('viewAny', User::class);
         $users = User::with(['roles', 'projects'])->get();
 
-        return inertia('Users/Index', compact('users'));
+        return inertia('Users/UserIndex', compact('users'));
     }
 
 
@@ -33,9 +33,8 @@ class UserController extends Controller
         $this->authorize('create', User::class);
         $roles = Role::all();
         $projects = Project::all();
-        // dd($roles);
 
-        return inertia('Users/Create', compact('roles', 'projects'));
+        return inertia('Users/UserCreate', compact('roles', 'projects'));
     }
 
     /**
@@ -44,6 +43,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $this->authorize('create', User::class);
+
         $data = $request->all();
 
         // Creazione utente
@@ -52,7 +52,6 @@ class UserController extends Controller
         $newUser->email = $data['email'];
         $newUser->password = bcrypt($data['password']);
 
-        // dd($data);
         $newUser->save();
 
         // Attach ruoli (N:N)
@@ -75,8 +74,9 @@ class UserController extends Controller
     public function show(User $user)
     {
         $this->authorize('view', $user);
-        // dd($user->projects);
-        return inertia('Users/Show', compact('user'));
+        $user->load('roles', 'projects');
+
+        return inertia('Users/UserShow', compact('user'));
     }
 
     /**
@@ -85,12 +85,13 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $this->authorize('update', $user);
+
         $roles = Role::all();
         $projects = Project::all();
 
         $user->load('roles', 'projects');
 
-        return inertia('Users/Edit', compact('user', 'roles', 'projects'));
+        return inertia('Users/UserEdit', compact('user', 'roles', 'projects'));
     }
 
     /**
@@ -99,6 +100,7 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {   
         $this->authorize('update', $user);
+
         $data = $request->all();
 
         $user->name = $data['name'];
@@ -129,9 +131,11 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $this->authorize('delete', $user);
+        
         // Rimuovi relazioni N:N
         $user->roles()->detach();
         $user->projects()->detach();
+
         $user->delete();
 
 

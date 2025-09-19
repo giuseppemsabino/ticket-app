@@ -32,9 +32,10 @@ class TicketController extends Controller
         } else {
             // Altri utenti → solo i propri ticket
             $tickets = Ticket::where('user_id', $user->id)
-                ->with('comments.user')
-                ->get();
+            ->with('comments.user')
+            ->get();
         }
+
         if ($user->roles->contains('id', 4)) {
             // Superadmin → tutti i progetti
             $projects = Project::all();
@@ -112,9 +113,8 @@ class TicketController extends Controller
 
 
 
-        //dd($tickets);
 
-        return inertia('Tickets/Index', compact('tickets', 'areas', 'statuses', 'projects', 'userLog', 'technicians', 'userName'));
+        return inertia('Tickets/TicketIndex', compact('tickets', 'areas', 'statuses', 'projects', 'userLog', 'technicians', 'userName'));
     }
 
 
@@ -146,7 +146,7 @@ class TicketController extends Controller
         ];
         // dd($userLog, $areas, $statuses, $projects);  //? se vuoi vedere i dati che stai passando alla vista decommenta questa linea
 
-        return inertia('Tickets/Create', compact('areas', 'statuses', 'projects', 'userLog'));
+        return inertia('Tickets/TicketCreate', compact('areas', 'statuses', 'projects', 'userLog'));
     }
 
     /**
@@ -206,13 +206,14 @@ class TicketController extends Controller
             'name' => Auth::user()->name,
             'role_id' => Auth::user()->roles->first()->id
         ];
+
         $userName = User::select('id', 'name')->get();
         $technicians = User::whereHas('roles', function ($query) {
             $query->where('role_id', 2);
         })->get();
 
 
-        return inertia('Tickets/Show', compact('ticket', 'areas', 'statuses', 'projects', 'userLog', 'technicians', 'comments', 'userName'));
+        return inertia('Tickets/TicketShow', compact('ticket', 'areas', 'statuses', 'projects', 'userLog', 'technicians', 'comments', 'userName'));
     }
 
     /**
@@ -227,7 +228,6 @@ class TicketController extends Controller
 
         $ticket->load('comments.user');
 
-        // dd($ticket->comments);
         $comments = $ticket->comments;
 
         $areas = Area::all();
@@ -243,7 +243,7 @@ class TicketController extends Controller
             $query->where('role_id', 2);
         })->get();
 
-        return inertia('Tickets/Edit', compact('ticket', 'areas', 'statuses', 'projects', 'userLog', 'technicians', 'userName'));
+        return inertia('Tickets/TicketEdit', compact('ticket', 'areas', 'statuses', 'projects', 'userLog', 'technicians', 'userName'));
     }
 
     /**
@@ -293,7 +293,7 @@ class TicketController extends Controller
             $query->where('role_id', 2);
         })->get();
 
-        return inertia('Tickets/Archive', compact('tickets', 'areas', 'statuses', 'projects', 'technicians'));
+        return inertia('Tickets/TicketArchive', compact('tickets', 'areas', 'statuses', 'projects', 'technicians'));
     }
 
     public function restore($id)
