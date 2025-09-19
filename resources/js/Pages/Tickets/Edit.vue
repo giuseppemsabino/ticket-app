@@ -15,7 +15,7 @@ const props = defineProps({
   areas: Array,
   projects: Array,
   userLog: Object, // tecnico loggato
-  technicians: Array, // lista tecnici
+  technicians: Array,
   userName: Array,
 });
 
@@ -53,7 +53,6 @@ function deleteComment(commentId) {
   }
 }
 
-// Rimuovere il getUser che non viene utilizzato
 </script>
 
 <template>

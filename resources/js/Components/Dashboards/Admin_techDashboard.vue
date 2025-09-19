@@ -16,7 +16,8 @@ const page = usePage()
 
 const viewModeFiltered = ref('card')
 const viewModeTechnichian = ref('card')
-const showClosedTickets = ref(false) // Nuovo stato per controllare la visibilità dei ticket chiusi
+const showClosedTickets = ref(false)
+const selectedProjectId = ref(null)
 
 const toogleViewModeFiltered = () => {
   viewModeFiltered.value = viewModeFiltered.value === 'card' ? 'list' : 'card'
@@ -34,16 +35,25 @@ const currentUserId = computed(() =>
 )
 
 const filteredTickets = computed(() =>
-  tickets.value.filter(t =>
-    Number(t.status_id) === 1 &&
-    projects.value.some(p => p.id === t.project_id)
-  )
+  tickets.value.filter(t => {
+    const filterStatus = Number(t.status_id) === 1;
+    const filterProjectId = projects.value.some(p => p.id === t.project_id);
+    const filterProjectName = selectedProjectId.value ? t.project_id === selectedProjectId.value : true;
+
+    return filterStatus && filterProjectId && filterProjectName;
+  })
 )
 
 const technicianTickets = computed(() =>
-  tickets.value.filter(t =>
-    Number(t.assigned_to ?? t.technician_id) === currentUserId.value &&
-    Number(t.status_id) !== 3
+  tickets.value.filter(t => {
+
+    const filtereTechniscian = Number(t.assigned_to ?? t.technician_id) === currentUserId.value &&
+      Number(t.status_id) !== 3
+    const filterProjectName = selectedProjectId.value ? t.project_id === selectedProjectId.value : true;
+
+    return filtereTechniscian && filterProjectName
+  }
+
   )
 )
 
@@ -56,6 +66,20 @@ const closeTickets = computed(() =>
 
 <template>
   <div>
+    <div class="mb-4">
+      <div class="d-flex align-items-center gap-3">
+        <h4 class="mb-0">Filtro progetto:</h4>
+        <div class="d-flex align-items-center">
+          <select v-model="selectedProjectId" class="form-select">
+            <option :value="null">Tutti i progetti</option>
+            <option v-for="project in projects" :key="project.id" :value="project.id">
+              {{ project.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+
     <div class="d-flex justify-content-between align-items-center mb-3">
 
       <h2>Ticket in attesa</h2>
