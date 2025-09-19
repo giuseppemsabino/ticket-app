@@ -43,7 +43,6 @@ const deleteTicket = (ticketId) => {
 };
 </script>
 
-
 <template>
 
   <Head title="Tickets">

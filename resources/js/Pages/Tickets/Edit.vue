@@ -15,6 +15,7 @@ const props = defineProps({
   projects: Array,
   userLog: Object, // tecnico loggato
   technicians: Array, // lista tecnici
+  userName: Array,
 });
 
 //comments list
@@ -50,7 +51,8 @@ function deleteComment(commentId) {
     commentForm.delete(route("comments.destroy", commentId));
   }
 }
-console.log(props.ticket);
+
+const getUser = (userId) => getUserName(userId, props.userName);
 </script>
 
 <template>

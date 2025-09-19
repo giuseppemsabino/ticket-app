@@ -1,5 +1,5 @@
 <script setup>
-import { Head, Link } from '@inertiajs/vue3';
+import { Head } from '@inertiajs/vue3';
 
 //Layout
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
@@ -8,7 +8,6 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import UserDashboards from '@/Components/Dashboards/UserDashboards.vue';
 import Admin_techDashboard from '@/Components/Dashboards/Admin_techDashboard.vue';
 import SuperAdminDashboard from '@/Components/Dashboards/SuperAdminDashboard.vue';
-
 
 
 //Props

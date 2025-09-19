@@ -7,6 +7,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import StatusBadge from '@/Components/StatusBadge.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 
+
 //Props
 const props = defineProps({
   ticket: Object,
@@ -16,6 +17,7 @@ const props = defineProps({
   statuses: Array,
   technicians: Array,
   comments: Array,
+  userName: Array,
 });
 
 const getProjectName = (projectId) => {
@@ -29,20 +31,17 @@ const getAreaName = (areaId) => {
 };
 
 const getUserName = (userId) => {
-  if (userId === props.userLog.id) return props.userLog.name;
-  const commentUser = props.comments.find((c) => c.user.id === userId);
-  return commentUser ? commentUser.user.name : "N/A";
-};
-
-const getStatusName = (statusId) => {
-  const status = props.statuses.find((status) => status.id === statusId);
-  return status ? status.name : "N/A";
+  const user = props.userName.find((name, index) => index + 1 === userId);
+  return user || "N/A";
 };
 
 const getTechnicianName = (technicianId) => {
-  const technician = props.technicians.find((tech) => tech.id === technicianId);
+  const technician = props.technicians.find(
+    (tech) => tech.id === technicianId
+  );
   return technician ? technician.name : "N/A";
 };
+
 </script>
 
 <template>

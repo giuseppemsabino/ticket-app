@@ -3,10 +3,10 @@ import { usePage, Link } from '@inertiajs/vue3'
 import { computed } from 'vue'
 import StatusBadge from '../Components/StatusBadge.vue'
 
+
 const props = defineProps({
   ticket: Object,
   statuses: Array,
-  users: Array,
   areas: Array,
   projects: Array
 })
@@ -14,7 +14,6 @@ const props = defineProps({
 const page = usePage()
 
 const statuses = computed(() => props.statuses ?? page.props?.statuses ?? [])
-const users = computed(() => props.users ?? page.props?.users ?? [])
 const areas = computed(() => props.areas ?? page.props?.areas ?? [])
 const projects = computed(() => props.projects ?? page.props?.projects ?? [])
 
