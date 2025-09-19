@@ -2,7 +2,7 @@
 import { usePage, Link } from '@inertiajs/vue3'
 import { computed } from 'vue'
 import StatusBadge from '../Components/StatusBadge.vue'
-import { getAreaName } from '@/lib/utils'
+
 
 const props = defineProps({
   ticket: Object,

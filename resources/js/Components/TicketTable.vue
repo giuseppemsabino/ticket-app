@@ -2,7 +2,7 @@
 import { usePage, Link } from '@inertiajs/vue3'
 import { computed } from 'vue'
 import StatusBadge from '../Components/StatusBadge.vue'
-import { getAreaName } from '@/lib/utils'
+
 
 const props = defineProps({
   tickets: Array,
@@ -15,7 +15,7 @@ const page = usePage()
 const statuses = computed(() => props.statuses ?? page.props?.statuses ?? [])
 const areas = computed(() => props.areas ?? page.props?.areas ?? [])
 
-function getAreaName(areaId) {
+function getArea(areaId) {
   const area = areas.value.find((area) => area.id === areaId);
   return area ? area.name : "N/A";
 }

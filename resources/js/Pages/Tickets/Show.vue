@@ -6,7 +6,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 //Components
 import StatusBadge from '@/Components/StatusBadge.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import { getAreaName, getUserName, getTechnicianName } from '@/lib/utils';
+
 
 //Props
 const props = defineProps({
@@ -25,9 +25,23 @@ const getProjectName = (projectId) => {
   return project ? project.name : "N/A";
 };
 
-const getArea = (areaId) => getAreaName(areaId, props.areas);
-const getUser = (userId) => getUserName(userId, props.userName);
-const getTechnician = (techId) => getTechnicianName(techId, props.technicians);
+const getAreaName = (areaId) => {
+  const area = props.areas.find((area) => area.id === areaId);
+  return area ? area.name : "N/A";
+};
+
+const getUserName = (userId) => {
+  const user = props.userName.find((name, index) => index + 1 === userId);
+  return user || "N/A";
+};
+
+const getTechnicianName = (technicianId) => {
+  const technician = props.technicians.find(
+    (tech) => tech.id === technicianId
+  );
+  return technician ? technician.name : "N/A";
+};
+
 </script>
 
 <template>
