@@ -27,21 +27,19 @@ class TicketController extends Controller
         $user = Auth::user();
 
         if ($user->roles->contains('id', 2) || $user->roles->contains('id', 3) || $user->roles->contains('id', 4)) {
-
+            // Tecnico, admin o superadmin: vedono tutti i ticket
             $tickets = Ticket::with('comments.user')->get();
-
         } else {
             // Altri utenti → solo i propri ticket
             $tickets = Ticket::where('user_id', $user->id)
                 ->with('comments.user')
                 ->get();
-
         }
         if ($user->roles->contains('id', 4)) {
-
+            // Superadmin → tutti i progetti
             $projects = Project::all();
         } else {
-
+            // Altri utenti → solo i progetti assegnati
             $projects = $user->projects;
         }
 
@@ -53,7 +51,9 @@ class TicketController extends Controller
             'role_id' => Auth::user()->roles->first()->id
 
         ];
-         $userName = User::select('id', 'name')->get();
+
+        $userName = User::select('id', 'name')->get();
+
         // Ottieni tutti gli utenti con il ruolo di tecnico (role_id = 2)
         $technicians = User::whereHas('roles', function ($query) {
             $query->where('role_id', 2);
@@ -79,13 +79,20 @@ class TicketController extends Controller
         $user = Auth::user();
 
         if ($user->roles->contains('id', 2) || $user->roles->contains('id', 3) || $user->roles->contains('id', 4)) {
-            // Tecnico, admin o superadmin: vedono tutti i ticket e tutti i progetti
-            $tickets = Ticket::all();
+
+            $tickets = Ticket::with('comments.user')->get();
+        } else {
+            // Altri utenti → solo i propri ticket
+            $tickets = Ticket::where('user_id', $user->id)
+            ->with('comments.user')
+            ->get();
+        }
+        if ($user->roles->contains('id', 4)) {
+            // Superadmin → tutti i progetti
             $projects = Project::all();
         } else {
-            // Altri utenti: solo i propri ticket e solo i progetti assegnati
-            $tickets = Ticket::where('user_id', $user->id)->get();
-            $projects = $user->projects; // Assumendo relazione n-n: User::projects()
+            // Altri utenti → solo i progetti assegnati
+            $projects = $user->projects;
         }
         $areas = Area::all();
         $statuses = Status::all();
@@ -97,7 +104,7 @@ class TicketController extends Controller
 
         ];
         $userName = User::select('id', 'name')->get();
-        //dd($userName);
+
         // Ottieni tutti gli utenti con il ruolo di tecnico (role_id = 2)
         $technicians = User::whereHas('roles', function ($query) {
             $query->where('role_id', 2);
@@ -120,11 +127,16 @@ class TicketController extends Controller
         $user = Auth::user();
         // Se tecnico (2), admin (3) o superadmin (4): tutti i progetti
         if ($user->roles->contains('id', 2) || $user->roles->contains('id', 3) || $user->roles->contains('id', 4)) {
+
             $projects = Project::all();
+
         } else {
+
             // Utente normale: solo i progetti assegnati
-            $projects = $user->projects; // Assicurati che la relazione User::projects() esista
+            $projects = $user->projects; 
+
         }
+
         $areas = Area::all();
         $statuses = Status::all();
         $userLog = [
@@ -154,6 +166,7 @@ class TicketController extends Controller
 
 
         if ($request->hasFile('u_images')) {
+            
             $user_image_url = Storage::putFile("user_images", $data['u_images']);
             $newTicket->u_images = $user_image_url;
         }
