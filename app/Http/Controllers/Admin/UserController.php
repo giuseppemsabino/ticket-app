@@ -8,13 +8,17 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class UserController extends Controller
 {
+    use AuthorizesRequests;
+    
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+        $this->authorize('viewAny', User::class);
         $users = User::with(['roles', 'projects'])->get();
 
         return inertia('Users/Index', compact('users'));
@@ -26,6 +30,7 @@ class UserController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', User::class);
         $roles = Role::all();
         $projects = Project::all();
         // dd($roles);
@@ -38,6 +43,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', User::class);
         $data = $request->all();
 
         // Creazione utente
@@ -68,6 +74,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        $this->authorize('view', $user);
         // dd($user->projects);
         return inertia('Users/Show', compact('user'));
     }
@@ -77,6 +84,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        $this->authorize('update', $user);
         $roles = Role::all();
         $projects = Project::all();
 
@@ -89,7 +97,8 @@ class UserController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, User $user)
-    {
+    {   
+        $this->authorize('update', $user);
         $data = $request->all();
 
         $user->name = $data['name'];
@@ -119,6 +128,10 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        $this->authorize('delete', $user);
+        // Rimuovi relazioni N:N
+        $user->roles()->detach();
+        $user->projects()->detach();
         $user->delete();
 
 

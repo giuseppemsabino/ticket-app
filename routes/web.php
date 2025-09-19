@@ -26,9 +26,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::resource('users', AdminUserController::class);
 
 Route::middleware(['auth', 'verified'])->group(function () {
+    Route::resource('users', AdminUserController::class);
     // Rotte protette da autenticazione e verifica email
     Route::post('tickets/{ticket}/comments', [AdminCommentController::class, 'store'])->name('comments.store');
     Route::delete('comments/{comment}', [AdminCommentController::class, 'destroy'])->name('comments.destroy');
