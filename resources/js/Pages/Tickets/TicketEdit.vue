@@ -16,7 +16,6 @@ const props = defineProps({
     userLog: Object, // tecnico loggato
     technicians: Array, // lista tecnici
     userName: Array,
-    user_visibility: Boolean, // visibilità utente (se il commento è visibile all'utente finale o meno)
 });
 
 //comments list
@@ -28,7 +27,6 @@ const form = useForm({
     area_id: props.ticket.area_id,
     project_id: props.ticket.project_id,
     status_id: props.ticket.status_id,
-    assigned_to: props.ticket.assigned_to || "", // selection dei tecnici
 });
 
 // update form submit
