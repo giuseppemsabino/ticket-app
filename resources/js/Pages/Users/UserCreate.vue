@@ -102,9 +102,9 @@ function submit() {
           </form>
         </div>
       </div>
-      <small class="text-danger p-3">
+      <p class="text-danger p-3 fs-4">
         * campi obbligatori
-      </small>
+      </p>
     </div>
   </AuthenticatedLayout>
 </template>
