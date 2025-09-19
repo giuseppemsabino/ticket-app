@@ -48,11 +48,9 @@ Il sistema implementa un controllo di accesso basato su ruoli (RBAC) con quattro
 
 ### 3. Admin (Role ID: 3)
 
--   Ha tutti i permessi del Tecnico
--   Può creare nuovi utenti e tecnici
--   Può assegnare progetti agli utenti
--   Può definire aree di competenza per i progetti
--   Può ripristinare o eliminare definitivamente i ticket archiviati
+-   Può visualizzare tutti i ticket
+-   Può modificare lo stato dei ticket
+-   Può visualizzare tutti gli utenti assegnati ai progetti da lui gestiti
 
 ### 4. SuperAdmin (Role ID: 4)
 
