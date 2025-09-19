@@ -15,7 +15,7 @@ const props = defineProps({
 });
 
 const ticketComments = (ticketId) =>
-  (props.comments || []).filter(c => c.ticket_id === ticketId);
+  (props.comments || []).filter(c => c.ticket_id === ticketId && c.user_visibility);
 </script>
 
 <template>
