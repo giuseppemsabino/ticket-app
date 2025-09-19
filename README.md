@@ -138,7 +138,7 @@ Il sistema implementa diverse misure di sicurezza:
 
 Il frontend dell'applicazione è costruito con Vue.js e Inertia.js, offrendo un'esperienza utente moderna e reattiva senza la necessità di creare un'API separata.
 
-### Struttura dei Componenti
+### Struttura dei Components
 
 L'interfaccia utente è organizzata in una struttura gerarchica di componenti Vue.js:
 
